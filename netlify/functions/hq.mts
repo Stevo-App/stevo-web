@@ -15,10 +15,10 @@ const get = async (p: string) => {
   return r.json();
 };
 
-function shell() {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8">
+function shell(apiPath: string, title: string) {
+  const page = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
-<title>Stevo HQ</title><style>
+<title>__TITLE__</title><style>
 body{margin:0;background:#0B0B0F;color:#F2F2F5;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh}
 .g{background:#131318;border:1px solid #24242C;border-radius:14px;padding:28px;width:min(320px,90vw);text-align:center}
 h1{font-size:22px;margin:0 0 4px;letter-spacing:1px}h1 span{color:#7C4DFF}
@@ -30,11 +30,12 @@ button{width:100%;background:#7C4DFF;color:#12061F;border:none;border-radius:8px
 <input id="pw" type="password" autocomplete="current-password"><button id="go">Enter</button><div class="err" id="err"></div></div>
 <script>
 var PASS=localStorage.getItem('stevo-hq-pass')||'';
-function load(){if(!PASS)return;fetch('/api/hq',{headers:{'x-dash-pass':PASS}}).then(function(r){if(r.status===401)throw 0;return r.text();}).then(function(h){document.open();document.write(h);document.close();}).catch(function(){document.getElementById('err').textContent=PASS?'Wrong password':'';});}
+function load(){if(!PASS)return;fetch('__API__',{headers:{'x-dash-pass':PASS}}).then(function(r){if(r.status===401)throw 0;return r.text();}).then(function(h){document.open();document.write(h);document.close();}).catch(function(){document.getElementById('err').textContent=PASS?'Wrong password':'';});}
 document.getElementById('go').onclick=function(){PASS=document.getElementById('pw').value;localStorage.setItem('stevo-hq-pass',PASS);load();};
 document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('go').click();});
 load();
 </script></body></html>`;
+  return page.replace(/__API__/g, apiPath).replace(/__TITLE__/g, title);
 }
 
 async function dashboard(): Promise<string> {
@@ -112,7 +113,7 @@ async function dashboard(): Promise<string> {
   const li = (items: string[], empty: string) => items.length ? items.map(t => `<li>${esc(t)}</li>`).join("") : `<li class="empty">${esc(empty)}</li>`;
   const links = [
     ["Bug Board", "https://bug-tracker-virid.vercel.app", "File, triage, review, close"],
-    ["Test Plan", "https://claude.ai/code/artifacts", "Device sessions (private artifact for now)"],
+    ["Test Plan", "/test-plan", "Device-testing sessions, live from the tracker"],
     ["Handoff Ledger", "https://github.com/Stevo-App/stevo/blob/main/HANDOFF.md", "Who owes whom what"],
     ["GitHub Repo", "https://github.com/Stevo-App/stevo", "Code, history, branches"],
     ["Pull Requests", "https://github.com/Stevo-App/stevo/pulls", "Approval gates"],
@@ -185,20 +186,140 @@ h2{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:600;font-size:19
 </div></body></html>`;
 }
 
+// ── Test plan: the device-testing sessions, rendered live ────────────────────
+const SESSIONS: [string, string, string, string, string, string[]][] = [
+  ["A","Settings & Payment","Solo · one phone · ~20 min","Quick wins on the Settings screens. No second account needed.","",["2e45d329","eff5a54d","7c9cc080","03145951","9117d4d3","d311689e","f33fc3a8","3b3211ea"]],
+  ["B","Login, App-Lock & Account Safety","Solo · one phone · ~45 min","Logout/login flows, Face ID, the app lock, password reset. Reinstall tests last.","",["2bcae661","8d64baf3","d7768bf2","b77a16f8","50f6f5ec","60ffd3bd","1be81f37","1bf86456","0e883325","b2c16f47","646d60c5"]],
+  ["C","Tour, Navigation & Voice","Solo · one phone · ~30 min","The first-launch tour, walkthroughs, tab navigation, and the dictation mic.","",["15e2acc8","48ff5061","bda4f039","889cce98","7866d12c","030394c1","2ae1556b","b8465256","d093699d","f8ae8252","f61030c4"]],
+  ["D","Friends, Crews & Notifications","Two phones · ~45 min","Grab a second device. Friend requests, crew invites, every notification behavior.","",["dd70b305","ae82d88c","7ccb0862","39691ecb","873fc12b","04b88929","5651c181","2255eb21","0ce4b305","69ac4082","e8c6dffe","ce98476d"]],
+  ["E","Bets & Money","Two phones · ~45 min","Custom bets, Face Off tabs, settlement math, the Venmo/Cash App handoff.","",["e4cf1b96","ba521105","1639689b","1a773c30","266a824e"]],
+  ["F","Poker Night","Two+ phones · ~1 hour · the fun one","Host a real tournament and work the list as the game runs.","",["b333be90","40a6d5fe","94002e91","d8cd28c6","d0f65ab6","0a683e17","2de35849","3b7ff9be","45ce35fe","a6671a9a","7777f88f","df436f93","0a51ebe5","2149570e","f38fc267","e7937e0a"]],
+  ["N","New Since The Roadmap","Fresh out of the bot shop","Fixes that reached review after the roadmap was drawn.","",[]],
+  ["G","Lines & Live Scores","Needs games flowing into Lines","Real games on the board required. Includes the tied-game Home check.","blocked",["a1490bd1","371dfa6c","b9f0f3c0","5bcb18f1"]],
+  ["H","Golf","Deferred — skip unless bored","Golf is on hold; fixes are merged and safe.","deferred",["b616e45c","000560cd","7050573c","0359e93e","2fbd40c2","69c15f98"]],
+];
+const NOTES: Record<string, string> = {
+  "3b3211ea":"Start here; the settle-modal half finishes in Session E once someone owes you money.",
+  "60ffd3bd":"Needs a delete + reinstall of the app — save for the end of the session.",
+  "646d60c5":"Log out and into a test account on the same phone.",
+  "889cce98":"Half of this one needs an Android device.",
+  "d093699d":"Dictate with a deliberate mid-sentence pause; watch for duplicated words.",
+  "e4cf1b96":"The $1-at-10x test: a losing proposer owes $1, not $10.",
+  "1639689b":"Both phones tap a result at the same moment.",
+  "d0f65ab6":"Check Tournament Info BEFORE finishing: preview must equal the final payouts.",
+  "2149570e":"Turn the volume up — clips should play at blind changes.",
+  "5bcb18f1":"During a real TIED game, Home must highlight neither team.",
+};
+
+async function testPlan(): Promise<string> {
+  const cards = await get("bugs?select=id,title,severity,status,how_to_test&status=in.(in-review,closed)");
+  const byShort: Record<string, any> = {};
+  for (const c of cards) byShort[c.id.slice(0, 8)] = c;
+  const mapped = new Set(SESSIONS.flatMap(s => s[5]));
+  const newIds = Object.keys(byShort).filter(k => !mapped.has(k) && byShort[k].status === "in-review").sort();
+
+  const cardHtml = (short: string) => {
+    const c = byShort[short];
+    if (!c) return "";
+    const sev = (c.severity || "Low").toLowerCase();
+    const note = NOTES[short] ? `<p class="note">${esc(NOTES[short])}</p>` : "";
+    if (c.status === "closed") {
+      return `<li class="card verified"><div class="cardrow"><span class="vmark">&#10003;</span><span class="sev sev-${sev}">${esc(c.severity)}</span><span class="ctitle">${esc(c.title)}</span></div><p class="vlabel">Verified &amp; closed on the tracker</p></li>`;
+    }
+    return `<li class="card"><label class="cardrow"><input type="checkbox" data-id="${short}"><span class="sev sev-${sev}">${esc(c.severity)}</span><span class="ctitle">${esc(c.title)}</span></label><details><summary>How to test</summary>${note}<p class="howto">${esc((c.how_to_test || "").trim())}</p><p class="cid">tracker card ${short}</p></details></li>`;
+  };
+
+  let sections = "";
+  for (const [letter, name, meta, blurb, flag, ids0] of SESSIONS) {
+    const ids = letter === "N" ? newIds : ids0;
+    const body = ids.map(cardHtml).join("");
+    if (!body) continue;
+    sections += `<section class="session${flag ? " session-" + flag : ""}"><header class="shead"><span class="sletter">${letter}</span><div><h2>${esc(name)}</h2><p class="smeta">${esc(meta)}</p></div><span class="scount"></span></header><p class="sblurb">${esc(blurb)}</p><ul class="cards">${body}</ul></section>`;
+  }
+
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Stevo Test Sessions</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#0E0E13;--surface:#17171E;--surface2:#1E1E27;--line:#26262F;--text:#F2F2F5;--muted:#8D8D9C;--accent:#8B63FF;--accent-ink:#12061F;--high:#FF5C6B;--high-ink:#2A0D11;--med:#FFB020;--med-ink:#2A1F05;--low:#3DDC85;--low-ink:#0A2416;--done:#3DDC85}
+*{box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;margin:0;padding:0 16px 80px;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto}.top{padding:28px 0 10px;border-bottom:1px solid var(--line);margin-bottom:20px}
+h1{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:700;font-size:clamp(34px,7vw,46px);letter-spacing:.5px;margin:0;text-transform:uppercase}
+.sub{color:var(--muted);margin:6px 0 14px}.progress{display:flex;align-items:center;gap:12px}
+.bar{flex:1;height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;display:flex}.bar i{display:block;height:100%;width:0;background:var(--done)}.bar b{display:block;height:100%;width:0;background:var(--accent)}
+.ptext{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);white-space:nowrap}
+.session{margin:26px 0}.shead{display:flex;align-items:center;gap:14px}
+.sletter{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:700;font-size:26px;background:var(--accent);color:var(--accent-ink);width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none}
+.session-blocked .sletter,.session-deferred .sletter{background:var(--surface2);color:var(--muted)}
+.shead h2{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:600;font-size:24px;letter-spacing:.4px;margin:0;text-transform:uppercase}
+.smeta{margin:0;color:var(--muted);font-size:14px}.scount{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted)}
+.sblurb{color:var(--muted);font-size:15px;margin:10px 0 12px;max-width:62ch}
+.cards{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.card.done{opacity:.55}.card.done .ctitle{text-decoration:line-through;text-decoration-color:var(--done)}
+.card.verified{border-color:var(--done);opacity:.75}.card.verified .ctitle{text-decoration:line-through;text-decoration-color:var(--done)}
+.vmark{color:var(--done);font-weight:700;font-size:18px;width:20px;text-align:center;flex:none}
+.vlabel{margin:4px 0 0 30px;font-size:12.5px;color:var(--done);font-family:'IBM Plex Mono',monospace}
+.cardrow{display:flex;align-items:flex-start;gap:10px;cursor:pointer}.card.verified .cardrow{cursor:default}
+.cardrow input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--done);flex:none}
+.sev{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border-radius:5px;padding:2px 6px;margin-top:3px;flex:none}
+.sev-high{background:var(--high);color:var(--high-ink)}.sev-medium{background:var(--med);color:var(--med-ink)}.sev-low{background:var(--low);color:var(--low-ink)}.sev-critical{background:var(--high);color:var(--high-ink)}
+.ctitle{font-size:15px;overflow-wrap:anywhere}details{margin:8px 0 2px 30px}summary{color:var(--accent);font-size:13.5px;cursor:pointer}
+.howto{font-size:14px;color:var(--text);background:var(--surface2);border-radius:8px;padding:10px 12px;margin:8px 0;white-space:pre-wrap}
+.note{font-size:13.5px;color:var(--med);margin:8px 0 0;font-style:italic}
+.cid{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);margin:4px 0 2px}
+.foot{color:var(--muted);font-size:13.5px;border-top:1px solid var(--line);margin-top:34px;padding-top:14px}
+a{color:var(--accent)}
+</style></head><body><div class="wrap">
+<header class="top"><h1>Stevo Test Sessions</h1>
+<p class="sub">Rendered live from the tracker. Checkmarks are private to this device (&ldquo;I ran it&rdquo;); closing a card on the tracker is the shared verify &mdash; green rows show what either tester closed. <a href="/hq">&larr; back to HQ</a></p>
+<div class="progress"><div class="bar"><i id="vbar"></i><b id="pbar"></b></div><span class="ptext" id="ptext"></span></div></header>
+${sections}
+<p class="foot">Anything that fails: don&rsquo;t close the card &mdash; write what you saw in its feedback box (or tell Claude) and the bots take it from there.</p>
+</div>
+<script>
+(function(){
+  var KEY='stevo-test-checks-v1';var state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){state={};}
+  var boxes=[].slice.call(document.querySelectorAll('input[type=checkbox]'));
+  var verified=document.querySelectorAll('.card.verified').length;
+  var total=boxes.length+verified;
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+  function refresh(){
+    var done=0;
+    boxes.forEach(function(b){var li=b.closest('.card');if(b.checked){done++;li.classList.add('done');}else li.classList.remove('done');});
+    var v=document.getElementById('vbar');if(v)v.style.width=(100*verified/total)+'%';
+    var el=document.getElementById('pbar');if(el)el.style.width=(100*done/total)+'%';
+    var t=document.getElementById('ptext');if(t)t.textContent=verified+' verified · '+done+' checked · '+total+' total';
+    document.querySelectorAll('.session').forEach(function(s){
+      var bs=[].slice.call(s.querySelectorAll('input[type=checkbox]'));
+      var vd=s.querySelectorAll('.card.verified').length;
+      var d=bs.filter(function(b){return b.checked;}).length;
+      var c=s.querySelector('.scount');if(c)c.textContent=(vd+d)+'/'+(bs.length+vd);
+    });
+  }
+  boxes.forEach(function(b){if(state[b.dataset.id])b.checked=true;b.addEventListener('change',function(){state[b.dataset.id]=b.checked?1:0;save();refresh();});});
+  refresh();
+})();
+</script></body></html>`;
+}
+
 export default async (req: Request) => {
   const url = new URL(req.url);
-  if (url.pathname === "/api/hq") {
+  const html = { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" };
+  if (url.pathname.startsWith("/api/")) {
     const pass = req.headers.get("x-dash-pass") || "";
     const DASH = Netlify.env.get("DASH_PASSWORD");
     if (!DASH) return new Response("DASH_PASSWORD not set in Netlify env", { status: 500 });
     if (pass !== DASH) return new Response("unauthorized", { status: 401 });
     try {
-      return new Response(await dashboard(), { status: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+      const body = url.pathname === "/api/test-plan" ? await testPlan() : await dashboard();
+      return new Response(body, { status: 200, headers: html });
     } catch (e) {
       return new Response("data error: " + String((e as Error)?.message || e), { status: 502 });
     }
   }
-  return new Response(shell(), { status: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+  if (url.pathname === "/test-plan") return new Response(shell("/api/test-plan", "Stevo Test Sessions"), { status: 200, headers: html });
+  return new Response(shell("/api/hq", "Stevo HQ"), { status: 200, headers: html });
 };
 
-export const config = { path: ["/hq", "/api/hq"] };
+export const config = { path: ["/hq", "/api/hq", "/test-plan", "/api/test-plan"] };
