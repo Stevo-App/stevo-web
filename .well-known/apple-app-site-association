@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "2B99FXY87V.com.stevoapp.stevo",
+        "paths": [
+          "/crew/join*",
+          "/invite/*"
+        ]
+      }
+    ]
+  }
+}

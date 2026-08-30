@@ -1,0 +1,2663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stevo | The Private Crew App</title>
+<meta name="description" content="Stevo is the private crew app for guys. Social bets, poker nights, golf, and more, all in one place for your crew.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;700&family=Chakra+Petch:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A10;
+    --surface: #111118;
+    --surface2: #1A1A22;
+    --border: #28283A;
+    --accent: #2563EB;
+    --accent-hover: #1D4ED8;
+    --red: #EF4444;
+    --red-deep: #B91C1C;
+    --blue: #3B82F6;
+    --blue-ice: #60A5FA;
+    --purple: #8B5CF6;
+    --gold: #FBBF24;
+    --gold-deep: #D97706;
+    --green: #22C55E;
+    --green-deep: #16A34A;
+    --cream: #FEF3C7;
+    --text: #E2E8F0;
+    --text2: #94A3B8;
+    --text3: #475569;
+    --text4: #1E293B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Chakra Petch', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Ambient gradient mesh background (very subtle colored lights) */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(ellipse 800px 600px at 15% 20%, rgba(37,99,235,0.08), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 85% 40%, rgba(139,92,246,0.07), transparent 60%),
+      radial-gradient(ellipse 600px 500px at 50% 90%, rgba(251,191,36,0.05), transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Film grain overlay (very subtle) */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.025;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  }
+
+  /* Scroll progress bar (fills as user scrolls) */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--blue-ice), var(--accent), var(--purple));
+    z-index: 9999;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 12px rgba(37,99,235,0.6);
+  }
+
+  /* Custom scrollbar (webkit) */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface2);
+    border-radius: 10px;
+    border: 2px solid var(--bg);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border); }
+
+  /* Editorial serif font for pull quotes and magazine-style moments */
+  .serif {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.08s; }
+  .reveal-d2 { transition-delay: 0.16s; }
+  .reveal-d3 { transition-delay: 0.24s; }
+  .reveal-d4 { transition-delay: 0.32s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .parallax { transform: none !important; }
+    .breathe { animation: none !important; }
+  }
+
+  /* ── TYPOGRAPHY HELPERS ── */
+  .script {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: 0;
+  }
+  .ts-thin {
+    font-weight: 300;
+  }
+  .mono-num {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  /* ── SIGNATURE WATERMARK (decorative suit symbols at section edges) ── */
+  .watermark {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(120px, 18vw, 260px);
+    line-height: 1;
+    color: var(--surface2);
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.6;
+    z-index: 0;
+  }
+  .watermark-digit {
+    font-size: clamp(180px, 22vw, 340px);
+    color: transparent;
+    -webkit-text-stroke: 2px var(--surface2);
+    text-stroke: 2px var(--surface2);
+    font-weight: 400;
+  }
+
+  /* ── BREATHING / FLOATING ANIMATIONS (slow, natural) ── */
+  @keyframes breathe {
+    0%, 100% { transform: translateY(0) rotate(var(--baseRot, 0deg)); }
+    50% { transform: translateY(-10px) rotate(calc(var(--baseRot, 0deg) + 0.3deg)); }
+  }
+  .breathe {
+    animation: breathe 7s ease-in-out infinite;
+  }
+  .breathe-slow { animation-duration: 9s; }
+  .breathe-slower { animation-duration: 11s; }
+
+  /* ── LETTER REVEAL ── */
+  .letter-reveal {
+    display: inline-block;
+  }
+  .letter-reveal .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: charReveal 0.7s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  @keyframes charReveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── EDITORIAL UNDERLINE (swipes in on hover/reveal) ── */
+  .swipe-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .swipe-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+    border-radius: 2px;
+  }
+  .swipe-underline.gold::after { background: var(--gold); }
+  .swipe-underline.red::after { background: var(--red); }
+  .swipe-underline.green::after { background: var(--green); }
+  .swipe-underline.visible::after,
+  .swipe-underline:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(11,17,32,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: padding 0.3s ease, background 0.3s ease,
+                box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  /* Condenses and lifts off the page once the user starts scrolling */
+  nav.scrolled {
+    padding: 10px 40px;
+    background: rgba(11,17,32,0.95);
+    border-bottom-color: rgba(255,255,255,0.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-left img {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+  }
+  .nav-wordmark {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 3px;
+    color: var(--text);
+  }
+
+  .nav-right {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .nav-right a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-right a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent);
+    color: #fff !important;
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent-hover); }
+
+  /* Focus */
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 140px 40px 100px;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    overflow: visible;
+  }
+  /* Oversized decorative 'S' behind the carousel */
+  .hero-decor {
+    position: absolute;
+    top: 20%;
+    right: 4%;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(260px, 30vw, 460px);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--surface2);
+    text-stroke: 2px var(--surface2);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    will-change: transform;
+  }
+  .hero-col-left, .hero-col-right { position: relative; z-index: 2; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(37,99,235,0.08);
+    border: 1px solid rgba(37,99,235,0.25);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: badgePulse 2.2s ease-in-out infinite;
+  }
+  @keyframes badgePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    line-height: 0.82;
+    letter-spacing: 0;
+    margin-bottom: 28px;
+    margin-top: 4px;
+  }
+  .hero-title > span {
+    display: block;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: titleIn 0.9s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .hero-title .line-1 {
+    font-size: clamp(36px, 4vw, 56px);
+    color: var(--text2);
+    font-weight: 300;
+    letter-spacing: 4px;
+    animation-delay: 0.1s;
+  }
+  .hero-title .line-2 {
+    font-size: clamp(78px, 10vw, 144px);
+    color: var(--text);
+    letter-spacing: -1px;
+    margin-top: 8px;
+    animation-delay: 0.2s;
+  }
+  .hero-title .line-3 {
+    font-size: clamp(78px, 10vw, 144px);
+    background: linear-gradient(135deg, var(--blue-ice) 0%, var(--accent) 50%, var(--purple) 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: titleIn 0.9s cubic-bezier(.2,.8,.2,1) 0.3s forwards, gradShift 8s ease-in-out infinite;
+    letter-spacing: -1px;
+    margin-top: -6px;
+  }
+  .hero-title .line-4 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(24px, 3vw, 38px);
+    color: var(--gold);
+    margin-top: 10px;
+    animation-delay: 0.5s;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  @keyframes titleIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes gradShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text2);
+    line-height: 1.65;
+    margin-bottom: 36px;
+    max-width: 460px;
+  }
+  .hero-sub em {
+    font-style: normal;
+    color: var(--text);
+    font-weight: 500;
+    background: linear-gradient(120deg, transparent 40%, rgba(37,99,235,0.18) 40%, rgba(37,99,235,0.18) 90%, transparent 90%);
+    padding: 0 2px;
+  }
+
+  .hero-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .hero-input {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: var(--text);
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .hero-input:focus { border-color: var(--accent); }
+  .hero-input::placeholder { color: var(--text3); }
+
+  .hero-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 24px;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .hero-btn:hover { background: var(--accent-hover); }
+
+  .hero-note {
+    font-size: 12px;
+    color: var(--text3);
+  }
+
+  .hero-success {
+    display: none;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .hero-proof {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .hero-proof-avatars {
+    display: flex;
+  }
+  .hero-proof-avatars span {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #000;
+    margin-left: -6px;
+  }
+  .hero-proof-avatars span:first-child { margin-left: 0; }
+  .hero-proof-text {
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .hero-proof-text strong { color: var(--text); }
+
+  .hero-socials {
+    display: flex;
+    gap: 8px;
+    margin-top: 28px;
+  }
+  .hero-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text3);
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .hero-socials a:hover {
+    color: var(--text2);
+    border-color: var(--text3);
+  }
+
+  /* Hero screenshot carousel (deck-style) */
+  .hero-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 24px;
+    perspective: 1400px;
+  }
+  .hero-carousel-stack {
+    position: relative;
+    width: 300px;
+    aspect-ratio: 9 / 19.5;
+    cursor: pointer;
+    user-select: none;
+    /* Extra space for the peeking cards behind */
+    padding-right: 50px;
+    padding-bottom: 30px;
+    transform-style: preserve-3d;
+    /* JS feeds live tilt into these vars; eases back to rest on leave */
+    transform: rotateX(var(--tiltX, 0deg)) rotateY(var(--tiltY, 0deg));
+    transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
+  }
+  .hero-carousel-stack.tilting {
+    transition: transform 0.08s linear;
+  }
+  .hero-carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    aspect-ratio: 9 / 19.5;
+    background: #000;
+    border-radius: 36px;
+    overflow: hidden;
+    border: 2px solid var(--border);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    transition: transform 0.5s cubic-bezier(.4,0,.2,1),
+                opacity 0.4s ease,
+                box-shadow 0.3s ease;
+    transform-origin: center center;
+  }
+  .hero-carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* Depth-0 = front (active) */
+  .hero-carousel-slide.depth-0 {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    z-index: 5;
+  }
+  /* Depth-1 = peeking one card back */
+  .hero-carousel-slide.depth-1 {
+    transform: translate(22px, 14px) scale(0.95);
+    opacity: 0.85;
+    z-index: 4;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+  /* Depth-2 = peeking two cards back */
+  .hero-carousel-slide.depth-2 {
+    transform: translate(40px, 26px) scale(0.9);
+    opacity: 0.6;
+    z-index: 3;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.35);
+  }
+  /* Everything further back is hidden */
+  .hero-carousel-slide.depth-hidden {
+    transform: translate(40px, 26px) scale(0.88);
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  /* Hover lifts the top card slightly and pushes the deck apart */
+  .hero-carousel-stack:hover .hero-carousel-slide.depth-0 {
+    transform: translate(-4px, -4px) scale(1.02);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  }
+  .hero-carousel-stack:hover .hero-carousel-slide.depth-1 {
+    transform: translate(28px, 18px) scale(0.95);
+  }
+  .hero-carousel-stack:hover .hero-carousel-slide.depth-2 {
+    transform: translate(48px, 32px) scale(0.9);
+  }
+  .hero-carousel-hint {
+    position: absolute;
+    bottom: 44px;
+    left: calc(50% - 25px);
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 20px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    white-space: nowrap;
+  }
+  .hero-carousel-stack:hover .hero-carousel-hint {
+    opacity: 1;
+  }
+  .hero-carousel-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  .hero-carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .hero-carousel-dot.active {
+    background: var(--accent);
+    transform: scale(1.3);
+  }
+  .hero-carousel-dot:hover {
+    background: var(--text3);
+  }
+  .hero-carousel-dot.active:hover {
+    background: var(--accent);
+  }
+
+  /* ── SECTION SHARED ── */
+  .section-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 480px;
+  }
+
+  /* ── PROBLEM ── */
+  .problem {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 100px 40px;
+  }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-top: 40px;
+  }
+  .problem-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .problem-item svg { margin-bottom: 12px; }
+  .problem-item-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .problem-item-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+  /* ── FEATURES ── */
+  .features {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .features-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 100px 40px;
+  }
+  .features-head {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .features-head .section-desc { margin: 0 auto; }
+
+  .features-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
+    padding-top: 0;
+    position: relative;
+  }
+  /* Vertical spine connecting the feature rows */
+  .features-grid::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    bottom: 40px;
+    left: 50%;
+    width: 2px;
+    background: linear-gradient(180deg,
+      transparent 0%,
+      var(--border) 8%,
+      var(--border) 92%,
+      transparent 100%);
+    transform: translateX(-1px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Each row holds the box and the picture as siblings */
+  .f-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: 48px;
+    align-items: center;
+    position: relative;
+  }
+  /* Row number marker centered on the spine */
+  .f-row-num {
+    position: absolute;
+    left: 50%;
+    top: -38px;
+    transform: translateX(-50%);
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0;
+    color: var(--text3);
+    z-index: 3;
+    transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+  .f-row:hover .f-row-num {
+    transform: translateX(-50%) scale(1.08);
+  }
+  .f-row[data-color="gold"]:hover .f-row-num { border-color: var(--gold); color: var(--gold); }
+  .f-row[data-color="purple"]:hover .f-row-num { border-color: var(--purple); color: var(--purple); }
+  .f-row[data-color="blue"]:hover .f-row-num { border-color: var(--blue); color: var(--blue); }
+
+  /* Giant outlined numeral as decorative watermark next to each feature row */
+  .f-row-bignum {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(160px, 22vw, 320px);
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--surface2);
+    text-stroke: 2px var(--surface2);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    opacity: 0.9;
+  }
+  .f-row:not(.reverse) .f-row-bignum { left: -40px; top: -60px; }
+  .f-row.reverse .f-row-bignum { right: -40px; top: -60px; }
+
+  /* Even rows reverse: image on left, box on right */
+  .f-row.reverse {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+  .f-row.reverse .f-card { order: 2; }
+  .f-row.reverse .f-photo { order: 1; }
+
+  .f-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 44px 40px;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    min-width: 0;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  }
+  .f-row:hover .f-card { border-color: var(--text3); transform: translateY(-3px); }
+  .f-row[data-color="gold"]:hover .f-card { border-color: rgba(251,191,36,0.35); }
+  .f-row[data-color="purple"]:hover .f-card { border-color: rgba(139,92,246,0.35); }
+  .f-row[data-color="blue"]:hover .f-card { border-color: rgba(59,130,246,0.35); }
+
+  /* Photo frame (wrapper) sits OUTSIDE the box with tape/sticker detail */
+  .f-photo {
+    position: relative;
+    display: block;
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+  }
+  .f-row:nth-of-type(1) .f-photo { --baseRot: 4deg; transform: rotate(4deg); }
+  .f-row:nth-of-type(2) .f-photo { --baseRot: -5deg; transform: rotate(-5deg); }
+  .f-row:nth-of-type(3) .f-photo { --baseRot: 3deg; transform: rotate(3deg); }
+  .f-row:hover .f-photo {
+    transform: rotate(0deg) scale(1.02);
+    animation: none;
+  }
+  /* Washi tape at top of photo (handmade/scrapbook feel) */
+  .f-photo::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 110px;
+    height: 26px;
+    background: rgba(251,191,36,0.3);
+    border: 1px solid rgba(251,191,36,0.4);
+    backdrop-filter: blur(2px);
+    z-index: 4;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .f-row[data-color="purple"] .f-photo::before { background: rgba(139,92,246,0.3); border-color: rgba(139,92,246,0.4); }
+  .f-row[data-color="blue"] .f-photo::before { background: rgba(59,130,246,0.3); border-color: rgba(59,130,246,0.4); }
+
+  .f-card-img {
+    display: block;
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 6px solid var(--surface2);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+    transition: box-shadow 0.3s ease, filter 0.4s ease;
+    filter: saturate(0.92) contrast(1.05);
+  }
+  .f-row:hover .f-card-img {
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+    filter: saturate(1) contrast(1.08);
+    animation: none;
+  }
+  /* Subtle grain on photos via layered pseudo */
+  .f-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23g)'/></svg>");
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .f-card-top {
+    width: 3px;
+    height: 24px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    transition: width 0.3s ease, height 0.3s ease;
+  }
+  .f-row:hover .f-card-top { width: 32px; height: 4px; }
+  .f-card-top.amber { background: var(--gold); }
+  .f-card-top.purple { background: var(--purple); }
+  .f-card-top.blue { background: var(--blue); }
+
+  .f-card-tag {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--text3);
+    margin-bottom: 4px;
+    display: block;
+    transform: rotate(-2deg);
+    transform-origin: left center;
+  }
+  .f-row[data-color="gold"] .f-card-tag { color: var(--gold); }
+  .f-row[data-color="purple"] .f-card-tag { color: var(--purple); }
+  .f-row[data-color="blue"] .f-card-tag { color: var(--blue-ice); }
+
+  .f-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+  }
+  .f-card-title::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+  }
+  .f-row[data-color="gold"] .f-card-title::after { background: var(--gold); }
+  .f-row[data-color="purple"] .f-card-title::after { background: var(--purple); }
+  .f-row[data-color="blue"] .f-card-title::after { background: var(--blue); }
+  .f-row:hover .f-card-title::after { transform: scaleX(1); }
+  .f-card-desc {
+    font-size: 17px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .f-card-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .f-card-list li {
+    font-size: 16px;
+    color: var(--text2);
+    padding-left: 20px;
+    position: relative;
+  }
+  .f-card-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--text3);
+  }
+
+  /* ── MORE FEATURES ── */
+  .more {
+    margin-top: 100px;
+    padding-top: 56px;
+    border-top: 1px solid var(--border);
+  }
+  .more-head {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .more-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .more-tile {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    transition: border-color 0.2s, transform 0.2s;
+    text-align: left;
+    position: relative;
+  }
+  .more-tile:hover {
+    border-color: var(--text3);
+    transform: translateY(-2px);
+  }
+  .more-tile-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(37,99,235,0.1);
+    border: 1px solid rgba(37,99,235,0.25);
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .more-tile-icon {
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: block;
+  }
+  .more-tile-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .more-tile-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 100px 40px;
+  }
+  .how-head {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .how-head .section-desc { margin: 0 auto; }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .how-step {
+    text-align: center;
+  }
+  .how-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .how-step-title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .how-step-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  /* ── BY THE NUMBERS (bold editorial banner) ── */
+  .stats {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+  }
+  .stats::before {
+    content: 'BY THE NUMBERS';
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--text3);
+  }
+  .stats::after {
+    content: 'data from our beta crews';
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--text3);
+  }
+  .stats-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 40px 100px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    text-align: left;
+  }
+  .stats-inner > div {
+    padding: 28px 24px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .stats-inner > div:last-child { border-right: none; }
+  .stats-inner > div::before {
+    content: attr(data-index);
+    position: absolute;
+    top: 28px;
+    right: 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text3);
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 6vw, 92px);
+    line-height: 0.95;
+    letter-spacing: -1px;
+  }
+  .stat-num.c-blue { color: var(--blue-ice); }
+  .stat-num.c-gold { color: var(--gold); }
+  .stat-num.c-purple { color: var(--purple); }
+  .stat-num.c-green { color: var(--green); }
+  .stat-lbl {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 10px;
+    line-height: 1.45;
+    letter-spacing: 0.3px;
+    max-width: 200px;
+  }
+  .stat-lbl .serif {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  /* ── TESTIMONIALS (cream magazine-spread contrast section) ── */
+  .testimonials {
+    background: #F5EFE0;
+    color: #1A1A22;
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .testimonials::before {
+    content: '"';
+    position: absolute;
+    top: -40px;
+    left: -20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 500px;
+    line-height: 0.8;
+    color: #E8DCC0;
+    font-weight: 900;
+    pointer-events: none;
+    user-select: none;
+  }
+  .testimonials-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+  .test-head {
+    text-align: left;
+    margin-bottom: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .test-head-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #8B7355;
+    margin-bottom: 14px;
+  }
+  .test-head h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(44px, 5.5vw, 72px);
+    line-height: 1;
+    color: #1A1A22;
+    letter-spacing: -1px;
+    max-width: 700px;
+  }
+  .test-head h2 em {
+    font-style: italic;
+    color: #8B5CF6;
+  }
+  .test-head-kicker {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: #8B7355;
+    max-width: 280px;
+    line-height: 1.5;
+    align-self: flex-end;
+  }
+  .test-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  .test-card {
+    background: transparent;
+    border: none;
+    border-top: 1px solid #1A1A22;
+    border-radius: 0;
+    padding: 32px 0 0 0;
+    position: relative;
+  }
+  .test-card-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: #8B7355;
+    margin-bottom: 20px;
+  }
+  .test-quote {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #1A1A22;
+    line-height: 1.35;
+    margin-bottom: 28px;
+    font-style: normal;
+    letter-spacing: -0.2px;
+  }
+  .test-quote::before {
+    content: none;
+  }
+  .test-quote em {
+    font-style: italic;
+    color: #8B5CF6;
+  }
+  .test-who {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .test-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: #F5EFE0;
+    background: #1A1A22;
+    border: 2px solid #1A1A22;
+  }
+  .test-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1A1A22;
+    letter-spacing: 0.5px;
+  }
+  .test-role {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: #8B7355;
+  }
+
+  /* ── FINAL CTA ── */
+  .cta-section {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 100px 40px;
+    text-align: center;
+  }
+  .cta-section .section-desc { margin: 0 auto; }
+  .cta-form {
+    display: flex;
+    gap: 8px;
+    max-width: 440px;
+    margin: 32px auto 12px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-brand img {
+    width: 28px; height: 28px;
+    border-radius: 5px;
+  }
+  .footer-brand-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--text);
+  }
+  .footer-tagline {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 6px;
+    max-width: 220px;
+  }
+  .footer-cols {
+    display: flex;
+    gap: 56px;
+  }
+  .footer-col-head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+  .footer-cols a {
+    display: block;
+    color: var(--text3);
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+  .footer-cols a:hover { color: var(--text2); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-copy { font-size: 12px; color: var(--text3); }
+  .footer-links {
+    display: flex;
+    gap: 8px;
+  }
+  .footer-links a {
+    width: 30px; height: 30px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text3);
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .footer-links a:hover { color: var(--text2); border-color: var(--text3); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; gap: 48px; padding-top: 120px; }
+    .hero-carousel { order: -1; }
+    .hero-decor { font-size: clamp(200px, 40vw, 320px); right: -10%; top: -5%; opacity: 0.6; }
+    .problem-grid { grid-template-columns: repeat(3, 1fr); }
+    .features-grid { gap: 90px; }
+    .features-grid::before { display: none; }
+    .f-row-num { display: none; }
+    .f-row-bignum { font-size: clamp(120px, 18vw, 200px); }
+    .f-row { gap: 32px; }
+    .f-card { padding: 28px; }
+    .f-card-title { font-size: 42px; }
+    .f-card-img { height: 380px; }
+    .how-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .stats-inner > div:nth-child(2) { border-right: none; }
+    .test-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .test-grid .test-card:last-child { grid-column: 1 / -1; max-width: 480px; margin: 0 auto; }
+    .more-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-right { display: none; }
+    .hero, .problem, .how, .testimonials, .cta-section { padding-left: 20px; padding-right: 20px; }
+    .features-inner, .stats-inner, footer { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 100px; }
+    .hero-decor { display: none; }
+    .hero-aside { display: block; margin-left: 0; margin-top: 4px; font-size: 20px; }
+    .problem-grid { grid-template-columns: 1fr 1fr; }
+    .features-grid { gap: 64px; }
+    .f-row, .f-row.reverse { grid-template-columns: 1fr; gap: 24px; }
+    .f-row.reverse .f-card { order: 0; }
+    .f-row.reverse .f-photo { order: 0; }
+    .f-row-bignum { font-size: 100px; top: -20px; left: -8px !important; right: auto !important; }
+    .f-card { padding: 28px; }
+    .f-card-title { font-size: 36px; }
+    .f-card-desc { font-size: 16px; }
+    .f-card-list li { font-size: 15px; }
+    .f-card-img { height: 260px; }
+    .f-row:nth-of-type(1) .f-photo,
+    .f-row:nth-of-type(2) .f-photo,
+    .f-row:nth-of-type(3) .f-photo { transform: rotate(-2deg); --baseRot: -2deg; }
+    .test-head { flex-direction: column; align-items: flex-start; }
+    .testimonials { padding: 80px 0; }
+    .testimonials::before { font-size: 280px; top: -20px; }
+    .test-grid { grid-template-columns: 1fr; gap: 48px; }
+    .how-grid { grid-template-columns: 1fr 1fr; }
+    .stats-inner { grid-template-columns: 1fr 1fr; padding: 60px 20px 80px; }
+    .stats-inner > div { padding: 20px 12px; }
+    .stats-inner > div:nth-child(even) { border-right: none; }
+    .stats-inner > div:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+    .stats::before, .stats::after { display: none; }
+    .more-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .hero-form, .cta-form { flex-direction: column; }
+    .footer-row { flex-direction: column; gap: 28px; }
+    .footer-cols { gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; }
+  }
+
+  @media (max-width: 480px) {
+    .problem-grid { grid-template-columns: 1fr; }
+    .how-grid { grid-template-columns: 1fr; }
+    .stats-inner { grid-template-columns: 1fr; }
+    .footer-cols { flex-direction: column; gap: 20px; }
+  }
+
+  /* ── LEGAL MODAL ── */
+  .legal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .legal-overlay.open {
+    display: flex;
+    opacity: 1;
+  }
+  .legal-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 820px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  }
+  .legal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .legal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: var(--text);
+  }
+  .legal-close {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text2);
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .legal-close:hover { color: var(--text); border-color: var(--text3); }
+
+  .legal-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 12px 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .legal-tab {
+    background: none;
+    border: none;
+    color: var(--text3);
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    margin-bottom: -1px;
+  }
+  .legal-tab:hover { color: var(--text2); }
+  .legal-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .legal-body {
+    overflow-y: auto;
+    padding: 28px 32px 36px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text2);
+  }
+  .legal-panel { display: none; }
+  .legal-panel.active { display: block; }
+
+  .legal-meta {
+    color: var(--text3);
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+  .legal-meta strong { color: var(--text2); }
+
+  .legal-body h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    color: var(--text);
+    margin-top: 28px;
+    margin-bottom: 10px;
+  }
+  .legal-body h3:first-child { margin-top: 0; }
+  .legal-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 16px;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .legal-body p { margin-bottom: 12px; }
+  .legal-body ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 12px;
+  }
+  .legal-body ul li {
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 6px;
+  }
+  .legal-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 10px;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .legal-body a { color: var(--accent); text-decoration: none; }
+  .legal-body a:hover { text-decoration: underline; }
+  .legal-contact {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .legal-note {
+    color: var(--text3);
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 10px;
+  }
+
+  .legal-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 18px;
+    font-size: 13px;
+  }
+  .legal-body th, .legal-body td {
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+    color: var(--text2);
+  }
+  .legal-body th {
+    background: var(--surface2);
+    color: var(--text);
+    font-weight: 700;
+  }
+  .legal-body td.legal-yes { color: #22C55E; font-weight: 700; text-align: center; }
+  .legal-body td.legal-no { color: var(--text3); font-weight: 700; text-align: center; }
+
+  .legal-body h3 a, .legal-body em { color: inherit; }
+
+  .legal-toc {
+    list-style: decimal inside;
+    padding: 16px 20px;
+    margin: 8px 0 20px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .legal-toc li {
+    padding: 4px 0;
+    color: var(--text3);
+    font-size: 13px;
+  }
+  .legal-toc li a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .legal-toc li a:hover { text-decoration: underline; }
+
+  body.legal-open { overflow: hidden; }
+
+  @media (max-width: 640px) {
+    .legal-head { padding: 18px 20px; }
+    .legal-tabs { padding: 10px 20px 0; }
+    .legal-tab { padding: 10px 12px; font-size: 12px; }
+    .legal-body { padding: 22px 22px 28px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<nav>
+  <a href="#" class="nav-left">
+    <img src="stevo-logo.png" alt="Stevo">
+    <div class="nav-wordmark">STEVO</div>
+  </a>
+  <div class="nav-right">
+    <a href="#features">Features</a>
+    <a href="#how">How It Works</a>
+    <a href="#waitlist" class="nav-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-decor parallax" data-speed="0.15" aria-hidden="true">S</div>
+  <div class="hero-col-left">
+    <div class="hero-badge">Coming Soon</div>
+    <h1 class="hero-title">
+      <span class="line-1">THE PRIVATE</span>
+      <span class="line-2">CREW</span>
+      <span class="line-3">APP.</span>
+      <span class="line-4">finally, one place for the guys.</span>
+    </h1>
+    <p class="hero-sub">
+      Your crew deserves better than <em>GroupMe, Venmo, and a notes app</em>. Stevo brings social bets, poker nights, golf rounds, and settlements into one private place.
+    </p>
+
+    <div id="hero-wrap">
+      <div class="hero-success" id="hero-success">You're on the list. We'll let you know when Stevo drops.</div>
+      <div class="hero-form" id="hero-form">
+        <input type="email" class="hero-input" id="email-1" placeholder="your@email.com" autocomplete="email">
+        <button class="hero-btn" onclick="signup('hero')">Get Early Access</button>
+      </div>
+      <p class="hero-note" id="hero-note">No spam. Just a heads up when we launch.</p>
+    </div>
+
+    <div class="hero-proof">
+      <div class="hero-proof-avatars">
+        <span style="background:var(--accent)">S</span>
+        <span style="background:var(--blue)">J</span>
+        <span style="background:var(--purple)">D</span>
+      </div>
+      <span class="hero-proof-text"><strong id="waitlist-count">100</strong> guys on the waitlist</span>
+    </div>
+
+    <div class="hero-socials">
+      <a href="https://instagram.com/stevoapp" target="_blank" rel="noopener" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg></a>
+      <a href="https://tiktok.com/@stevoapp" target="_blank" rel="noopener" aria-label="TikTok"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1 0-5.78c.3 0 .6.04.88.13v-3.5a6.37 6.37 0 0 0-.88-.07A6.27 6.27 0 0 0 3.23 15.2a6.27 6.27 0 0 0 6.26 6.26 6.27 6.27 0 0 0 6.26-6.26V8.88a8.2 8.2 0 0 0 3.84 1v-3.49z"/></svg></a>
+      <a href="https://twitter.com/stevoapp" target="_blank" rel="noopener" aria-label="X"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://youtube.com/@stevoapp" target="_blank" rel="noopener" aria-label="YouTube"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+    </div>
+  </div>
+
+  <div class="hero-carousel hero-col-right">
+    <div class="hero-carousel-stack" id="carousel" role="button" tabindex="0" aria-label="App screenshot, click to see next screen">
+      <div class="hero-carousel-slide depth-0" data-slide="0"><img src="screen-1.png" alt="Stevo app screen 1"></div>
+      <div class="hero-carousel-slide depth-1" data-slide="1"><img src="screen-2.png" alt="Stevo app screen 2" loading="lazy"></div>
+      <div class="hero-carousel-slide depth-2" data-slide="2"><img src="screen-3.png" alt="Stevo app screen 3" loading="lazy"></div>
+      <div class="hero-carousel-slide depth-hidden" data-slide="3"><img src="screen-4.png" alt="Stevo app screen 4" loading="lazy"></div>
+      <div class="hero-carousel-slide depth-hidden" data-slide="4"><img src="screen-5.png" alt="Stevo app screen 5" loading="lazy"></div>
+      <div class="hero-carousel-hint">Tap to flip</div>
+    </div>
+    <div class="hero-carousel-dots" role="tablist" aria-label="Screen selector">
+      <button class="hero-carousel-dot active" data-dot="0" aria-label="Screen 1"></button>
+      <button class="hero-carousel-dot" data-dot="1" aria-label="Screen 2"></button>
+      <button class="hero-carousel-dot" data-dot="2" aria-label="Screen 3"></button>
+      <button class="hero-carousel-dot" data-dot="3" aria-label="Screen 4"></button>
+      <button class="hero-carousel-dot" data-dot="4" aria-label="Screen 5"></button>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="reveal">
+    <div class="section-tag">The Problem</div>
+    <h2 class="section-title">Your crew is scattered<br>across five apps</h2>
+    <p class="section-desc">Bets get forgotten. Debts go unsettled. Nobody knows who's actually in for poker.</p>
+  </div>
+  <div class="problem-grid">
+    <div class="problem-item reveal reveal-d1">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div class="problem-item-name">GroupMe / Texts</div>
+      <div class="problem-item-desc">Coordinating across threads nobody checks</div>
+    </div>
+    <div class="problem-item reveal reveal-d2">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="problem-item-name">Venmo</div>
+      <div class="problem-item-desc">Chasing payments with no context</div>
+    </div>
+    <div class="problem-item reveal reveal-d3">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <div class="problem-item-name">Notes App</div>
+      <div class="problem-item-desc">Tracking debts like it's 2004</div>
+    </div>
+    <div class="problem-item reveal reveal-d4">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M12 18V2l7 4-7 4"/><circle cx="8" cy="21" r="2"/></svg>
+      <div class="problem-item-name">Golf Apps</div>
+      <div class="problem-item-desc">No crew context or side bets</div>
+    </div>
+    <div class="problem-item reveal reveal-d1">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+      <div class="problem-item-name">Spreadsheets</div>
+      <div class="problem-item-desc">Poker logs nobody updates</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="features-head reveal">
+      <div class="section-tag">The Solution</div>
+      <h2 class="section-title">Everything your crew does.<br>One app.</h2>
+      <p class="section-desc">Three core modules that handle what your group actually cares about.</p>
+    </div>
+    <div class="features-grid">
+      <div class="f-row reveal" data-color="gold">
+        <div class="f-row-bignum" aria-hidden="true">01</div>
+        <div class="f-row-num" aria-hidden="true">01</div>
+        <div class="f-card">
+          <div class="f-card-top amber"></div>
+          <span class="f-card-tag">settle up, always</span>
+          <div class="f-card-title">Bet Tracker</div>
+          <p class="f-card-desc">Challenge any crew member. Both sides confirm terms and outcomes. No more disputed debts.</p>
+          <ul class="f-card-list">
+            <li>Running settlement ledger</li>
+            <li>Lifetime win/loss records</li>
+            <li>Head-to-head history</li>
+            <li>Crew leaderboard</li>
+          </ul>
+        </div>
+        <div class="f-photo breathe">
+          <img src="bet.png" alt="Friends placing a bet" class="f-card-img" loading="lazy">
+        </div>
+      </div>
+      <div class="f-row reverse reveal" data-color="purple">
+        <div class="f-row-bignum" aria-hidden="true">02</div>
+        <div class="f-row-num" aria-hidden="true">02</div>
+        <div class="f-card">
+          <div class="f-card-top purple"></div>
+          <span class="f-card-tag">Thursday nights, sorted</span>
+          <div class="f-card-title">Poker Nights</div>
+          <p class="f-card-desc">Create games, manage RSVPs, track chips live, and post results that flow into settlements.</p>
+          <ul class="f-card-list">
+            <li>RSVP with auto waitlist</li>
+            <li>Live chip tracker</li>
+            <li>Results feed to ledger</li>
+            <li>Season stats per player</li>
+          </ul>
+        </div>
+        <div class="f-photo breathe breathe-slow">
+          <img src="poker.png" alt="Poker night with the crew" class="f-card-img" loading="lazy">
+        </div>
+      </div>
+      <div class="f-row reveal" data-color="blue">
+        <div class="f-row-bignum" aria-hidden="true">03</div>
+        <div class="f-row-num" aria-hidden="true">03</div>
+        <div class="f-card">
+          <div class="f-card-top blue"></div>
+          <span class="f-card-tag">skins, automatic</span>
+          <div class="f-card-title">Golf Module</div>
+          <p class="f-card-desc">Set up tee times, create side bets, score live, and auto-settle skins when the round ends.</p>
+          <ul class="f-card-list">
+            <li>Tee time coordination</li>
+            <li>Skins &amp; side bet setup</li>
+            <li>One-hand live scorecard</li>
+            <li>Auto handicap tracking</li>
+          </ul>
+        </div>
+        <div class="f-photo breathe breathe-slower">
+          <img src="golf.png" alt="Golf round with the crew" class="f-card-img" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="more reveal">
+      <div class="more-head">
+        <h3 class="section-title" style="font-size:clamp(32px,4vw,48px)">And much more</h3>
+        <p class="section-desc" style="margin:0 auto">Every way your crew likes to compete. All in one place.</p>
+      </div>
+      <div class="more-grid">
+        <div class="more-tile">
+          <span class="more-tile-badge">Coming Soon</span>
+          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v4H4z"/><path d="M4 14h16v6H4z"/><path d="M12 8v6"/></svg>
+          <div class="more-tile-title">Fantasy Football</div>
+          <div class="more-tile-desc">League standings, payouts, and side bets all in the crew feed.</div>
+        </div>
+        <div class="more-tile">
+          <span class="more-tile-badge">Coming Soon</span>
+          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+          <div class="more-tile-title">Squares &amp; Pools</div>
+          <div class="more-tile-desc">Super Bowl squares, NCAA brackets, survivor pools, all auto-scored.</div>
+        </div>
+        <div class="more-tile">
+          <span class="more-tile-badge">Coming Soon</span>
+          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          <div class="more-tile-title">Pick'em Leagues</div>
+          <div class="more-tile-desc">Weekly NFL, NBA, or college picks with running leaderboards.</div>
+        </div>
+        <div class="more-tile">
+          <span class="more-tile-badge">Coming Soon</span>
+          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18"/><path d="M18 3v18"/><path d="M6 8h12"/><path d="M6 16h12"/></svg>
+          <div class="more-tile-title">Prop Battles</div>
+          <div class="more-tile-desc">Custom crew props. Anything from "who eats first" to "score before halftime".</div>
+        </div>
+        <div class="more-tile">
+          <span class="more-tile-badge">Coming Soon</span>
+          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <div class="more-tile-title">Tailgate Planning</div>
+          <div class="more-tile-desc">RSVPs, food signups, and who's bringing the beer. Handled.</div>
+        </div>
+        <div class="more-tile">
+          <span class="more-tile-badge">Coming Soon</span>
+          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/><path d="M9 8l2 2 4-4"/></svg>
+          <div class="more-tile-title">Season Awards</div>
+          <div class="more-tile-desc">MVP, biggest loser, longest win streak, tracked automatically.</div>
+        </div>
+        <div class="more-tile">
+          <span class="more-tile-badge">Coming Soon</span>
+          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <div class="more-tile-title">Live Scoreboards</div>
+          <div class="more-tile-desc">Real-time scoring for any crew game or contest.</div>
+        </div>
+        <div class="more-tile">
+          <span class="more-tile-badge">Coming Soon</span>
+          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+          <div class="more-tile-title">Custom Challenges</div>
+          <div class="more-tile-desc">Build any head-to-head or group challenge your crew can dream up.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-head reveal">
+    <div class="section-tag">How It Works</div>
+    <h2 class="section-title">Up and running in 60 seconds</h2>
+    <p class="section-desc">No setup headache. Just your crew, your games, your rules.</p>
+  </div>
+  <div class="how-grid">
+    <div class="how-step reveal">
+      <div class="how-num">01</div>
+      <div class="how-step-title">Create Your Crew</div>
+      <p class="how-step-desc">Start a private group and invite your guys via text or link.</p>
+    </div>
+    <div class="how-step reveal reveal-d1">
+      <div class="how-num">02</div>
+      <div class="how-step-title">Set The Stakes</div>
+      <p class="how-step-desc">Make a bet, schedule poker, or create a golf round.</p>
+    </div>
+    <div class="how-step reveal reveal-d2">
+      <div class="how-num">03</div>
+      <div class="how-step-title">Play &amp; Track</div>
+      <p class="how-step-desc">Live scores, chip counts, and bet outcomes in one feed.</p>
+    </div>
+    <div class="how-step reveal reveal-d3">
+      <div class="how-num">04</div>
+      <div class="how-step-title">Settle Up</div>
+      <p class="how-step-desc">One-tap settlement. Everyone knows who owes who.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats" id="market">
+  <div class="stats-inner">
+    <div class="reveal" data-index="01">
+      <div class="stat-num c-gold mono-num"><span data-target="4280" data-prefix="$">0</span></div>
+      <div class="stat-lbl"><span class="serif">Settled</span>across 12 beta crews this fall, zero Venmo chases.</div>
+    </div>
+    <div class="reveal reveal-d1" data-index="02">
+      <div class="stat-num c-blue mono-num"><span data-target="147">0</span></div>
+      <div class="stat-lbl"><span class="serif">Bets tracked</span>every one confirmed by both sides. No disputes.</div>
+    </div>
+    <div class="reveal reveal-d2" data-index="03">
+      <div class="stat-num c-purple mono-num"><span data-target="38">0</span></div>
+      <div class="stat-lbl"><span class="serif">Poker nights</span>organized, RSVP'd, and tallied before anyone left.</div>
+    </div>
+    <div class="reveal reveal-d3" data-index="04">
+      <div class="stat-num c-green mono-num"><span data-target="12">0</span></div>
+      <div class="stat-lbl"><span class="serif">Golf rounds</span>with live skins tracking and auto-settled payouts.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-inner">
+    <div class="test-head reveal">
+      <div>
+        <div class="test-head-label">The crew says</div>
+        <h2>From the guys who <em>actually run</em> the Sunday night group.</h2>
+      </div>
+      <p class="test-head-kicker">Beta feedback from twelve crews across six states who've been running their friend groups through Stevo since August.</p>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div class="test-card-num">№ 01</div>
+        <p class="test-quote">We used to <em>argue about who owes who</em> every single week. Now it's all right there. Nobody can deny the receipts.</p>
+        <div class="test-who">
+          <div class="test-avatar">MR</div>
+          <div>
+            <div class="test-name">Mike R.</div>
+            <div class="test-role">Sunday Crew · Denver</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card reveal reveal-d1">
+        <div class="test-card-num">№ 02</div>
+        <p class="test-quote">The poker module alone is <em>worth the price of admission</em>. Auto-settling chip counts into the group ledger is a game changer for our Thursday night game.</p>
+        <div class="test-who">
+          <div class="test-avatar">JT</div>
+          <div>
+            <div class="test-name">Jake T.</div>
+            <div class="test-role">Thursday Crew · Austin</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card reveal reveal-d2">
+        <div class="test-card-num">№ 03</div>
+        <p class="test-quote">Finally an app that <em>gets it</em>. The golf skins tracker with auto payouts? We use it every weekend now.</p>
+        <div class="test-who">
+          <div class="test-avatar">DK</div>
+          <div>
+            <div class="test-name">Danny K.</div>
+            <div class="test-role">Saturday Tee · Scottsdale</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="waitlist">
+  <div class="reveal">
+    <div class="section-tag">Early Access</div>
+    <h2 class="section-title" style="font-size:clamp(40px,5vw,64px)">Your crew is waiting</h2>
+    <p class="section-desc">Stevo is launching soon. Get early access and be first in line.</p>
+    <div class="cta-form" id="cta-form">
+      <input type="email" class="hero-input" id="email-2" placeholder="your@email.com" autocomplete="email">
+      <button class="hero-btn" onclick="signup('cta')">Join Waitlist</button>
+    </div>
+    <p class="hero-note" id="cta-note">No spam. Just a heads up when we launch.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-row">
+    <div>
+      <div class="footer-brand">
+        <img src="stevo-logo.png" alt="Stevo">
+        <div class="footer-brand-name">STEVO</div>
+      </div>
+      <p class="footer-tagline">The private crew app for guys who bet, play, and compete.</p>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-head">Product</div>
+        <a href="#features">Features</a>
+        <a href="#how">How It Works</a>
+        <a href="#waitlist">Early Access</a>
+      </div>
+      <div>
+        <div class="footer-col-head">Company</div>
+        <a href="#" data-legal="privacy">Privacy</a>
+        <a href="#" data-legal="terms">Terms</a>
+        <a href="mailto:support@stevoapp.com">Contact</a>
+      </div>
+      <div>
+        <div class="footer-col-head">Social</div>
+        <a href="https://instagram.com/stevoapp" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://tiktok.com/@stevoapp" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://twitter.com/stevoapp" target="_blank" rel="noopener">X / Twitter</a>
+        <a href="https://youtube.com/@stevoapp" target="_blank" rel="noopener">YouTube</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 Stevo App LLC</div>
+    <div class="footer-links">
+      <a href="https://instagram.com/stevoapp" target="_blank" rel="noopener" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg></a>
+      <a href="https://tiktok.com/@stevoapp" target="_blank" rel="noopener" aria-label="TikTok"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1 0-5.78c.3 0 .6.04.88.13v-3.5a6.37 6.37 0 0 0-.88-.07A6.27 6.27 0 0 0 3.23 15.2a6.27 6.27 0 0 0 6.26 6.26 6.27 6.27 0 0 0 6.26-6.26V8.88a8.2 8.2 0 0 0 3.84 1v-3.49z"/></svg></a>
+      <a href="https://twitter.com/stevoapp" target="_blank" rel="noopener" aria-label="X"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://youtube.com/@stevoapp" target="_blank" rel="noopener" aria-label="YouTube"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<!-- LEGAL MODAL -->
+<div class="legal-overlay" id="legal-overlay" role="dialog" aria-modal="true" aria-labelledby="legal-title">
+  <div class="legal-modal">
+    <div class="legal-head">
+      <div class="legal-title" id="legal-title">Legal</div>
+      <button class="legal-close" id="legal-close" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="legal-tabs" role="tablist">
+      <button class="legal-tab active" data-tab="terms" role="tab" aria-selected="true">Terms of Service</button>
+      <button class="legal-tab" data-tab="privacy" role="tab" aria-selected="false">Privacy</button>
+    </div>
+    <div class="legal-body" id="legal-body">
+
+      <div class="legal-panel active" data-panel="terms">
+        <p class="legal-meta"><strong>Stevo App LLC</strong><br>Effective Date: April 12, 2026 &middot; Last Updated: April 12, 2026</p>
+
+        <h3>1. Agreement to Terms</h3>
+        <p>These Terms of Service ("Terms") constitute a legally binding agreement between you and Stevo App LLC ("Company," "we," "us," or "our") governing your access to and use of the Stevo mobile application, website at stevoapp.com, and any related services (collectively, the "Services").</p>
+        <p>By accessing or using our Services, you agree to be bound by these Terms. If you do not agree to these Terms, you must immediately discontinue use of our Services.</p>
+        <p>These Services are intended for personal use only. You must be at least 18 years of age to use the Services.</p>
+
+        <h3>2. Description of Services</h3>
+        <p>Stevo is a private, invite-only mobile application for friend groups to track social bets, organize poker nights, coordinate golf rounds, and manage crew competitions and standings. Stevo is a social tracking tool only. It does not facilitate, process, or hold real-money transactions between users.</p>
+
+        <h3>3. User Accounts</h3>
+        <p>To use the Services, you must create an account. You agree to:</p>
+        <ul>
+          <li>Provide accurate, current, and complete information during registration</li>
+          <li>Maintain and promptly update your account information</li>
+          <li>Keep your account credentials secure and confidential</li>
+          <li>Accept responsibility for all activity that occurs under your account</li>
+          <li>Notify us immediately at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a> of any unauthorized use of your account</li>
+        </ul>
+        <p>We reserve the right to suspend or terminate accounts that violate these Terms or that have been inactive for an extended period.</p>
+
+        <h3>4. Subscriptions and Payments</h3>
+        <h4>4.1 Free and Premium Tiers</h4>
+        <p>Stevo offers a free tier with core features and an optional Premium subscription with advanced features. Premium subscription pricing is displayed within the Services and may be updated with advance notice.</p>
+        <h4>4.2 Billing and Renewal</h4>
+        <p>Premium subscriptions automatically renew at the end of each billing period (monthly or annually, as selected by you) unless cancelled. By subscribing, you authorize us to charge your payment method on a recurring basis. We accept Visa, Mastercard, American Express, Discover, and Apple Pay. All payments are in US dollars.</p>
+        <h4>4.3 Cancellation</h4>
+        <p>You may cancel your subscription at any time through your account settings or through the App Store/Google Play account management interface. Cancellation takes effect at the end of the current billing period. You will retain access to Premium features through the end of the paid period.</p>
+        <h4>4.4 Refunds</h4>
+        <p>Refund requests may be submitted to <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>. Refunds are evaluated on a case-by-case basis. Purchases made through the Apple App Store or Google Play Store are subject to those platforms' refund policies.</p>
+
+        <h3>5. Prohibited Activities</h3>
+        <p>You agree not to use the Services to:</p>
+        <ul>
+          <li>Use the Services to advertise or offer to sell goods and services</li>
+          <li>Sell, transfer, or assign your profile or account to another party</li>
+          <li>Use the platform to facilitate real-money gambling or wagering transactions</li>
+          <li>Impersonate another user or submit false bet outcomes</li>
+          <li>Violate any applicable law or regulation</li>
+          <li>Harass, abuse, or harm other users</li>
+          <li>Upload or transmit viruses or malicious code</li>
+          <li>Attempt to gain unauthorized access to any part of the Services</li>
+          <li>Scrape, harvest, or collect data from the Services without authorization</li>
+          <li>Use the Services for any commercial purpose without our written consent</li>
+        </ul>
+
+        <h3>6. User Generated Content</h3>
+        <p>The Services allow users to post content including bet terms, outcomes, poker results, golf scores, and activity feed posts ("User Content"). You retain ownership of your User Content. By posting User Content, you grant Stevo App LLC a non-exclusive, royalty-free license to use, store, display, and distribute such content solely for the purpose of providing the Services.</p>
+        <p>You are solely responsible for your User Content and its accuracy. You represent that you have all rights necessary to post the content and that it does not violate any third-party rights or applicable law.</p>
+
+        <h3>7. Third-Party Services and Links</h3>
+        <p>The Services may link to third-party payment platforms including Venmo, Cash App, and Zelle to facilitate settlement between users. These links are provided as a convenience only. Stevo App LLC does not process, hold, or control any funds transferred through these third-party services. Your use of any third-party service is governed by that service's own terms and privacy policy. We are not responsible for the content, privacy practices, or availability of any third-party services.</p>
+
+        <h3>8. SMS Communications</h3>
+        <p>By creating an account, you consent to receive SMS text messages from Stevo for account alerts and authentication purposes (program name: Stevo). Message and data rates may apply. You may opt out at any time by replying STOP to any SMS message. For help, reply HELP or contact us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>.</p>
+
+        <h3>9. Intellectual Property</h3>
+        <p>The Services and their original content, features, and functionality are and will remain the exclusive property of Stevo App LLC. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of Stevo App LLC.</p>
+
+        <h3>10. Disclaimer of Warranties</h3>
+        <p>THE SERVICES ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.</p>
+
+        <h3>11. Limitation of Liability</h3>
+        <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, STEVO APP LLC SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING FROM YOUR USE OF THE SERVICES.</p>
+        <p>OUR TOTAL LIABILITY TO YOU FOR ANY CLAIM ARISING FROM THESE TERMS OR YOUR USE OF THE SERVICES SHALL NOT EXCEED THE AMOUNT YOU PAID TO US IN THE SIX (6) MONTHS PRECEDING THE CLAIM.</p>
+        <p>ANY CLAIM ARISING FROM THESE TERMS OR YOUR USE OF THE SERVICES MUST BE BROUGHT WITHIN ONE (1) YEAR OF THE DATE THE CAUSE OF ACTION AROSE.</p>
+
+        <h3>12. Dispute Resolution</h3>
+        <p>Before initiating any formal legal proceeding, you agree to first attempt to resolve any dispute informally by contacting us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>. We will make good-faith efforts to resolve the dispute within thirty (30) days.</p>
+        <p>If informal resolution fails, disputes shall be resolved by binding arbitration in Douglas County, Colorado, United States. Arbitration is mandatory. If a dispute proceeds in court rather than arbitration, it shall take place in Douglas County, Colorado.</p>
+        <p>Stevo App LLC agrees to pay arbitration fees if deemed excessive by the arbitrator.</p>
+
+        <h3>13. Governing Law</h3>
+        <p>These Terms shall be governed by and construed in accordance with the laws of the State of Colorado, without regard to its conflict of law provisions.</p>
+
+        <h3>14. Updates to These Terms</h3>
+        <p>We reserve the right to update these Terms at any time. We will notify you of material changes at least seven (7) days before the update takes effect. The following changes may take effect immediately upon notification: new functionality, security updates, bug fixes, and court orders.</p>
+        <p>Your continued use of the Services after the effective date of any updates constitutes acceptance of the revised Terms.</p>
+
+        <h3>15. Contact Information</h3>
+        <p>For questions about these Terms, please contact us at:</p>
+        <div class="legal-contact">
+          <strong>Stevo App LLC</strong><br>
+          PO Box TBD<br>
+          Parker, CO 80134<br>
+          Email: <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>
+        </div>
+        <p class="legal-note">Note: Mailing address will be finalized before public launch.</p>
+        <p class="legal-note" style="margin-top:20px">Stevo App LLC &middot; stevoapp.com &middot; support@stevoapp.com</p>
+      </div>
+
+      <div class="legal-panel" data-panel="privacy">
+        <p class="legal-meta"><strong>Privacy Policy</strong><br>Last updated April 12, 2026</p>
+
+        <p>This Privacy Notice for Stevo App LLC ("we," "us," or "our") describes how and why we might access, collect, store, use, and/or share ("process") your personal information when you use our services ("Services"), including when you:</p>
+        <ul>
+          <li>Visit our website at <a href="https://www.stevoapp.com" target="_blank" rel="noopener">https://www.stevoapp.com</a> or any website of ours that links to this Privacy Notice</li>
+          <li>Download and use our mobile application (Stevo) or any other application of ours that links to this Privacy Notice</li>
+          <li>Use Stevo. Stevo is a private mobile app for friend groups to track social bets, organize poker nights, coordinate golf rounds, and manage crew competitions and standings.</li>
+          <li>Engage with us in other related ways, including any marketing or events</li>
+        </ul>
+        <p><strong>Questions or concerns?</strong> Reading this Privacy Notice will help you understand your privacy rights and choices. We are responsible for making decisions about how your personal information is processed. If you do not agree with our policies and practices, please do not use our Services. If you still have any questions or concerns, please contact us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>.</p>
+
+        <h3>Summary of Key Points</h3>
+        <p><em>This summary provides key points from our Privacy Notice. You can find more details on each topic in the sections below.</em></p>
+        <p><strong>What personal information do we process?</strong> When you visit, use, or navigate our Services, we may process personal information depending on how you interact with us and the Services, the choices you make, and the products and features you use.</p>
+        <p><strong>Do we process any sensitive personal information?</strong> We do not process sensitive personal information.</p>
+        <p><strong>Do we collect any information from third parties?</strong> We do not collect any information from third parties.</p>
+        <p><strong>How do we process your information?</strong> We process your information to provide, improve, and administer our Services, communicate with you, for security and fraud prevention, and to comply with law. We may also process your information for other purposes with your consent. We process your information only when we have a valid legal reason to do so.</p>
+        <p><strong>In what situations and with which parties do we share personal information?</strong> We may share information in specific situations and with specific third parties.</p>
+        <p><strong>How do we keep your information safe?</strong> We have adequate organizational and technical processes and procedures in place to protect your personal information. However, no electronic transmission over the internet or information storage technology can be guaranteed to be 100% secure.</p>
+        <p><strong>What are your rights?</strong> Depending on where you are located geographically, the applicable privacy law may mean you have certain rights regarding your personal information.</p>
+        <p><strong>How do you exercise your rights?</strong> The easiest way to exercise your rights is by submitting a <a href="https://app.termly.io/dsar/d722846a-8206-4cba-a278-64733653caae" target="_blank" rel="noopener">data subject access request</a>, or by contacting us. We will consider and act upon any request in accordance with applicable data protection laws.</p>
+
+        <h3>Table of Contents</h3>
+        <ol class="legal-toc">
+          <li><a href="#pp-1" data-scrollto="pp-1">What Information Do We Collect?</a></li>
+          <li><a href="#pp-2" data-scrollto="pp-2">How Do We Process Your Information?</a></li>
+          <li><a href="#pp-3" data-scrollto="pp-3">When and With Whom Do We Share Your Personal Information?</a></li>
+          <li><a href="#pp-4" data-scrollto="pp-4">How Long Do We Keep Your Information?</a></li>
+          <li><a href="#pp-5" data-scrollto="pp-5">How Do We Keep Your Information Safe?</a></li>
+          <li><a href="#pp-6" data-scrollto="pp-6">Do We Collect Information From Minors?</a></li>
+          <li><a href="#pp-7" data-scrollto="pp-7">What Are Your Privacy Rights?</a></li>
+          <li><a href="#pp-8" data-scrollto="pp-8">Controls for Do-Not-Track Features</a></li>
+          <li><a href="#pp-9" data-scrollto="pp-9">Do United States Residents Have Specific Privacy Rights?</a></li>
+          <li><a href="#pp-10" data-scrollto="pp-10">Do We Make Updates to This Notice?</a></li>
+          <li><a href="#pp-11" data-scrollto="pp-11">How Can You Contact Us About This Notice?</a></li>
+          <li><a href="#pp-12" data-scrollto="pp-12">How Can You Review, Update, or Delete the Data We Collect From You?</a></li>
+        </ol>
+
+        <h3 id="pp-1">1. What Information Do We Collect?</h3>
+        <h4>Personal information you disclose to us</h4>
+        <p><em><strong>In Short:</strong> We collect personal information that you provide to us.</em></p>
+        <p>We collect personal information that you voluntarily provide to us when you register on the Services, express an interest in obtaining information about us or our products and Services, when you participate in activities on the Services, or otherwise when you contact us.</p>
+        <p><strong>Personal Information Provided by You.</strong> The personal information that we collect depends on the context of your interactions with us and the Services, the choices you make, and the products and features you use. The personal information we collect may include the following:</p>
+        <ul>
+          <li>names</li>
+          <li>phone numbers</li>
+          <li>contact preferences</li>
+          <li>usernames</li>
+        </ul>
+        <p><strong>Sensitive Information.</strong> We do not process sensitive information.</p>
+        <p><strong>Application Data.</strong> If you use our application(s), we also may collect the following information if you choose to provide us with access or permission:</p>
+        <ul>
+          <li><em>Mobile Device Access.</em> We may request access or permission to certain features from your mobile device, including your mobile device's contacts, storage, SMS messages, and other features. If you wish to change our access or permissions, you may do so in your device's settings.</li>
+          <li><em>Mobile Device Data.</em> We automatically collect device information (such as your mobile device ID, model, and manufacturer), operating system, version information and system configuration information, device and application identification numbers, browser type and version, hardware model, Internet service provider and/or mobile carrier, and Internet Protocol (IP) address (or proxy server). If you are using our application(s), we may also collect information about the phone network associated with your mobile device, your mobile device's operating system or platform, the type of mobile device you use, your mobile device's unique device ID, and information about the features of our application(s) you accessed.</li>
+          <li><em>Push Notifications.</em> We may request to send you push notifications regarding your account or certain features of the application(s). If you wish to opt out from receiving these types of communications, you may turn them off in your device's settings.</li>
+        </ul>
+        <p>This information is primarily needed to maintain the security and operation of our application(s), for troubleshooting, and for our internal analytics and reporting purposes.</p>
+        <p>All personal information that you provide to us must be true, complete, and accurate, and you must notify us of any changes to such personal information.</p>
+
+        <h4>Information automatically collected</h4>
+        <p><em><strong>In Short:</strong> Some information, such as your Internet Protocol (IP) address and/or browser and device characteristics, is collected automatically when you visit our Services.</em></p>
+        <p>We automatically collect certain information when you visit, use, or navigate the Services. This information does not reveal your specific identity (like your name or contact information) but may include device and usage information, such as your IP address, browser and device characteristics, operating system, language preferences, referring URLs, device name, country, location, information about how and when you use our Services, and other technical information. This information is primarily needed to maintain the security and operation of our Services, and for our internal analytics and reporting purposes.</p>
+        <p>The information we collect includes:</p>
+        <ul>
+          <li><em>Log and Usage Data.</em> Log and usage data is service-related, diagnostic, usage, and performance information our servers automatically collect when you access or use our Services and which we record in log files. Depending on how you interact with us, this log data may include your IP address, device information, browser type, and settings and information about your activity in the Services (such as the date/time stamps associated with your usage, pages and files viewed, searches, and other actions you take such as which features you use), device event information (such as system activity, error reports (sometimes called "crash dumps"), and hardware settings).</li>
+          <li><em>Device Data.</em> We collect device data such as information about your computer, phone, tablet, or other device you use to access the Services. Depending on the device used, this device data may include information such as your IP address (or proxy server), device and application identification numbers, location, browser type, hardware model, Internet service provider and/or mobile carrier, operating system, and system configuration information.</li>
+        </ul>
+
+        <h3 id="pp-2">2. How Do We Process Your Information?</h3>
+        <p><em><strong>In Short:</strong> We process your information to provide, improve, and administer our Services, communicate with you, for security and fraud prevention, and to comply with law. We may also process your information for other purposes with your consent.</em></p>
+        <p><strong>We process your personal information for a variety of reasons, depending on how you interact with our Services, including:</strong></p>
+        <ul>
+          <li><strong>To facilitate account creation and authentication and otherwise manage user accounts.</strong> We may process your information so you can create and log in to your account, as well as keep your account in working order.</li>
+          <li><strong>To deliver and facilitate delivery of services to the user.</strong> We may process your information to provide you with the requested service.</li>
+          <li><strong>To respond to user inquiries/offer support to users.</strong> We may process your information to respond to your inquiries and solve any potential issues you might have with the requested service.</li>
+          <li><strong>To send administrative information to you.</strong> We may process your information to send you details about our products and services, changes to our terms and policies, and other similar information.</li>
+          <li><strong>To enable user-to-user communications.</strong> We may process your information if you choose to use any of our offerings that allow for communication with another user.</li>
+          <li><strong>To request feedback.</strong> We may process your information when necessary to request feedback and to contact you about your use of our Services.</li>
+          <li><strong>To protect our Services.</strong> We may process your information as part of our efforts to keep our Services safe and secure, including fraud monitoring and prevention.</li>
+          <li><strong>To evaluate and improve our Services, products, marketing, and your experience.</strong> We may process your information when we believe it is necessary to identify usage trends, determine the effectiveness of our promotional campaigns, and to evaluate and improve our Services, products, marketing, and your experience.</li>
+          <li><strong>To identify usage trends.</strong> We may process information about how you use our Services to better understand how they are being used so we can improve them.</li>
+          <li><strong>To comply with our legal obligations.</strong> We may process your information to comply with our legal obligations, respond to legal requests, and exercise, establish, or defend our legal rights.</li>
+        </ul>
+
+        <h3 id="pp-3">3. When and With Whom Do We Share Your Personal Information?</h3>
+        <p><em><strong>In Short:</strong> We may share information in specific situations described in this section and/or with the following third parties.</em></p>
+        <p><strong>Vendors, Consultants, and Other Third-Party Service Providers.</strong> We may share your data with third-party vendors, service providers, contractors, or agents ("third parties") who perform services for us or on our behalf and require access to such information to do that work.</p>
+        <p>The third parties we may share personal information with are as follows:</p>
+        <ul>
+          <li><strong>Cloud Computing Services:</strong> Supabase</li>
+          <li><strong>Communicate and Chat with Users:</strong> Expo</li>
+          <li><strong>Functionality and Infrastructure Optimization:</strong> Expo</li>
+          <li><strong>User Account Registration and Authentication:</strong> Supabase</li>
+          <li><strong>Website Hosting:</strong> Netlify</li>
+          <li><strong>Website Testing:</strong> TestFlight</li>
+        </ul>
+        <p>We also may need to share your personal information in the following situations:</p>
+        <ul>
+          <li><strong>Business Transfers.</strong> We may share or transfer your information in connection with, or during negotiations of, any merger, sale of company assets, financing, or acquisition of all or a portion of our business to another company.</li>
+          <li><strong>Other Users.</strong> When you share personal information (for example, by posting comments, contributions, or other content to the Services) or otherwise interact with public areas of the Services, such personal information may be viewed by all users and may be publicly made available outside the Services in perpetuity. Similarly, other users will be able to view descriptions of your activity, communicate with you within our Services, and view your profile.</li>
+        </ul>
+
+        <h3 id="pp-4">4. How Long Do We Keep Your Information?</h3>
+        <p><em><strong>In Short:</strong> We keep your information for as long as necessary to fulfill the purposes outlined in this Privacy Notice unless otherwise required by law.</em></p>
+        <p>We will only keep your personal information for as long as it is necessary for the purposes set out in this Privacy Notice, unless a longer retention period is required or permitted by law (such as tax, accounting, or other legal requirements). No purpose in this notice will require us keeping your personal information for longer than the period of time in which users have an account with us.</p>
+        <p>When we have no ongoing legitimate business need to process your personal information, we will either delete or anonymize such information, or, if this is not possible (for example, because your personal information has been stored in backup archives), then we will securely store your personal information and isolate it from any further processing until deletion is possible.</p>
+
+        <h3 id="pp-5">5. How Do We Keep Your Information Safe?</h3>
+        <p><em><strong>In Short:</strong> We aim to protect your personal information through a system of organizational and technical security measures.</em></p>
+        <p>We have implemented appropriate and reasonable technical and organizational security measures designed to protect the security of any personal information we process. However, despite our safeguards and efforts to secure your information, no electronic transmission over the Internet or information storage technology can be guaranteed to be 100% secure, so we cannot promise or guarantee that hackers, cybercriminals, or other unauthorized third parties will not be able to defeat our security and improperly collect, access, steal, or modify your information. Although we will do our best to protect your personal information, transmission of personal information to and from our Services is at your own risk. You should only access the Services within a secure environment.</p>
+
+        <h3 id="pp-6">6. Do We Collect Information From Minors?</h3>
+        <p><em><strong>In Short:</strong> We do not knowingly collect data from or market to children under 18 years of age.</em></p>
+        <p>We do not knowingly collect, solicit data from, or market to children under 18 years of age, nor do we knowingly sell such personal information. By using the Services, you represent that you are at least 18 or that you are the parent or guardian of such a minor and consent to such minor dependent's use of the Services. If we learn that personal information from users less than 18 years of age has been collected, we will deactivate the account and take reasonable measures to promptly delete such data from our records. If you become aware of any data we may have collected from children under age 18, please contact us at <a href="mailto:steve@stevoapp.com">steve@stevoapp.com</a>.</p>
+
+        <h3 id="pp-7">7. What Are Your Privacy Rights?</h3>
+        <p><em><strong>In Short:</strong> You may review, change, or terminate your account at any time, depending on your country, province, or state of residence.</em></p>
+        <p><strong><u>Withdrawing your consent:</u></strong> If we are relying on your consent to process your personal information, which may be express and/or implied consent depending on the applicable law, you have the right to withdraw your consent at any time. You can withdraw your consent at any time by contacting us by using the contact details provided in the "How Can You Contact Us About This Notice?" section below.</p>
+        <p>However, please note that this will not affect the lawfulness of the processing before its withdrawal nor, when applicable law allows, will it affect the processing of your personal information conducted in reliance on lawful processing grounds other than consent.</p>
+        <h4>Account Information</h4>
+        <p>If you would at any time like to review or change the information in your account or terminate your account, you can:</p>
+        <ul>
+          <li>Log in to your account settings and update your user account.</li>
+          <li>Contact us using the contact information provided.</li>
+        </ul>
+        <p>Upon your request to terminate your account, we will deactivate or delete your account and information from our active databases. However, we may retain some information in our files to prevent fraud, troubleshoot problems, assist with any investigations, enforce our legal terms and/or comply with applicable legal requirements.</p>
+        <p>If you have questions or comments about your privacy rights, you may email us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>.</p>
+
+        <h3 id="pp-8">8. Controls for Do-Not-Track Features</h3>
+        <p>Most web browsers and some mobile operating systems and mobile applications include a Do-Not-Track ("DNT") feature or setting you can activate to signal your privacy preference not to have data about your online browsing activities monitored and collected. At this stage, no uniform technology standard for recognizing and implementing DNT signals has been finalized. As such, we do not currently respond to DNT browser signals or any other mechanism that automatically communicates your choice not to be tracked online. If a standard for online tracking is adopted that we must follow in the future, we will inform you about that practice in a revised version of this Privacy Notice.</p>
+        <p>California law requires us to let you know how we respond to web browser DNT signals. Because there currently is not an industry or legal standard for recognizing or honoring DNT signals, we do not respond to them at this time.</p>
+
+        <h3 id="pp-9">9. Do United States Residents Have Specific Privacy Rights?</h3>
+        <p><em><strong>In Short:</strong> If you are a resident of California, Colorado, Connecticut, Delaware, Florida, Indiana, Iowa, Kentucky, Maryland, Minnesota, Montana, Nebraska, New Hampshire, New Jersey, Oregon, Rhode Island, Tennessee, Texas, Utah, or Virginia, you may have the right to request access to and receive details about the personal information we maintain about you and how we have processed it, correct inaccuracies, get a copy of, or delete your personal information. You may also have the right to withdraw your consent to our processing of your personal information. These rights may be limited in some circumstances by applicable law.</em></p>
+
+        <h4>Categories of Personal Information We Collect</h4>
+        <p>The table below shows the categories of personal information we have collected in the past twelve (12) months.</p>
+        <table>
+          <thead>
+            <tr><th>Category</th><th>Examples</th><th>Collected</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>A. Identifiers</td><td>Contact details, such as real name, alias, postal address, telephone or mobile contact number, unique personal identifier, online identifier, Internet Protocol address, email address, and account name</td><td class="legal-yes">YES</td></tr>
+            <tr><td>B. Personal information as defined in the California Customer Records statute</td><td>Name, contact information, education, employment, employment history, and financial information</td><td class="legal-yes">YES</td></tr>
+            <tr><td>C. Protected classification characteristics under state or federal law</td><td>Gender, age, date of birth, race and ethnicity, national origin, marital status, and other demographic data</td><td class="legal-no">NO</td></tr>
+            <tr><td>D. Commercial information</td><td>Transaction information, purchase history, financial details, and payment information</td><td class="legal-no">NO</td></tr>
+            <tr><td>E. Biometric information</td><td>Fingerprints and voiceprints</td><td class="legal-no">NO</td></tr>
+            <tr><td>F. Internet or other similar network activity</td><td>Browsing history, search history, online behavior, interest data, and interactions with our and other websites, applications, systems, and advertisements</td><td class="legal-no">NO</td></tr>
+            <tr><td>G. Geolocation data</td><td>Device location</td><td class="legal-no">NO</td></tr>
+            <tr><td>H. Audio, electronic, sensory, or similar information</td><td>Images and audio, video or call recordings created in connection with our business activities</td><td class="legal-no">NO</td></tr>
+            <tr><td>I. Professional or employment-related information</td><td>Business contact details in order to provide you our Services at a business level or job title, work history, and professional qualifications if you apply for a job with us</td><td class="legal-no">NO</td></tr>
+            <tr><td>J. Education information</td><td>Student records and directory information</td><td class="legal-no">NO</td></tr>
+            <tr><td>K. Inferences drawn from collected personal information</td><td>Inferences drawn from any of the collected personal information listed above to create a profile or summary about, for example, an individual's preferences and characteristics</td><td class="legal-no">NO</td></tr>
+            <tr><td>L. Sensitive personal information</td><td>n/a</td><td class="legal-no">NO</td></tr>
+          </tbody>
+        </table>
+        <p>We may also collect other personal information outside of these categories through instances where you interact with us in person, online, or by phone or mail in the context of:</p>
+        <ul>
+          <li>Receiving help through our customer support channels;</li>
+          <li>Participation in customer surveys or contests; and</li>
+          <li>Facilitation in the delivery of our Services and to respond to your inquiries.</li>
+        </ul>
+        <p>We will use and retain the collected personal information as needed to provide the Services or for:</p>
+        <ul>
+          <li>Category A – As long as the user has an account with us</li>
+          <li>Category B – As long as the user has an account with us</li>
+        </ul>
+
+        <h4>Sources of Personal Information</h4>
+        <p>Learn more about the sources of personal information we collect in "What Information Do We Collect?" above.</p>
+
+        <h4>How We Use and Share Personal Information</h4>
+        <p>Learn more about how we use your personal information in "How Do We Process Your Information?" above.</p>
+
+        <h4>Will your information be shared with anyone else?</h4>
+        <p>We may disclose your personal information with our service providers pursuant to a written contract between us and each service provider. Learn more about how we disclose personal information in the "When and With Whom Do We Share Your Personal Information?" section above.</p>
+        <p>We may use your personal information for our own business purposes, such as for undertaking internal research for technological development and demonstration. This is not considered to be "selling" of your personal information.</p>
+        <p>We have not sold or shared any personal information to third parties for a business or commercial purpose in the preceding twelve (12) months. We have disclosed the following categories of personal information to third parties for a business or commercial purpose in the preceding twelve (12) months:</p>
+        <p>The categories of third parties to whom we disclosed personal information for a business or commercial purpose can be found under "When and With Whom Do We Share Your Personal Information?" above.</p>
+
+        <h4>Your Rights</h4>
+        <p>You have rights under certain US state data protection laws. However, these rights are not absolute, and in certain cases, we may decline your request as permitted by law. These rights include:</p>
+        <ul>
+          <li><strong>Right to know</strong> whether or not we are processing your personal data</li>
+          <li><strong>Right to access</strong> your personal data</li>
+          <li><strong>Right to correct</strong> inaccuracies in your personal data</li>
+          <li><strong>Right to request</strong> the deletion of your personal data</li>
+          <li><strong>Right to obtain a copy</strong> of the personal data you previously shared with us</li>
+          <li><strong>Right to non-discrimination</strong> for exercising your rights</li>
+          <li><strong>Right to opt out</strong> of the processing of your personal data if it is used for targeted advertising (or sharing as defined under California's privacy law), the sale of personal data, or profiling in furtherance of decisions that produce legal or similarly significant effects ("profiling")</li>
+        </ul>
+        <p>Depending upon the state where you live, you may also have the following rights:</p>
+        <ul>
+          <li>Right to access the categories of personal data being processed (as permitted by applicable law, including the privacy law in Minnesota)</li>
+          <li>Right to obtain a list of the categories of third parties to which we have disclosed personal data (as permitted by applicable law, including the privacy law in California, Delaware, and Maryland)</li>
+          <li>Right to obtain a list of specific third parties to which we have disclosed personal data (as permitted by applicable law, including the privacy law in Minnesota and Oregon)</li>
+          <li>Right to obtain a list of third parties to which we have sold personal data (as permitted by applicable law, including the privacy law in Connecticut)</li>
+          <li>Right to review, understand, question, and depending on where you live, correct how personal data has been profiled (as permitted by applicable law, including the privacy law in Connecticut and Minnesota)</li>
+          <li>Right to limit use and disclosure of sensitive personal data (as permitted by applicable law, including the privacy law in California)</li>
+          <li>Right to opt out of the collection of sensitive data and personal data collected through the operation of a voice or facial recognition feature (as permitted by applicable law, including the privacy law in Florida)</li>
+        </ul>
+
+        <h4>How to Exercise Your Rights</h4>
+        <p>To exercise these rights, you can contact us by submitting a <a href="https://app.termly.io/dsar/d722846a-8206-4cba-a278-64733653caae" target="_blank" rel="noopener">data subject access request</a>, by emailing us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>, by visiting <a href="http://www.stevoapp.com/contact" target="_blank" rel="noopener">http://www.stevoapp.com/contact</a>, or by referring to the contact details at the bottom of this document.</p>
+        <p>Under certain US state data protection laws, you can designate an authorized agent to make a request on your behalf. We may deny a request from an authorized agent that does not submit proof that they have been validly authorized to act on your behalf in accordance with applicable laws.</p>
+
+        <h4>Request Verification</h4>
+        <p>Upon receiving your request, we will need to verify your identity to determine you are the same person about whom we have the information in our system. We will only use personal information provided in your request to verify your identity or authority to make the request. However, if we cannot verify your identity from the information already maintained by us, we may request that you provide additional information for the purposes of verifying your identity and for security or fraud-prevention purposes.</p>
+        <p>If you submit the request through an authorized agent, we may need to collect additional information to verify your identity before processing your request and the agent will need to provide a written and signed permission from you to submit such request on your behalf.</p>
+
+        <h4>Appeals</h4>
+        <p>Under certain US state data protection laws, if we decline to take action regarding your request, you may appeal our decision by emailing us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>. We will inform you in writing of any action taken or not taken in response to the appeal, including a written explanation of the reasons for the decisions. If your appeal is denied, you may submit a complaint to your state attorney general.</p>
+
+        <h4>California "Shine The Light" Law</h4>
+        <p>California Civil Code Section 1798.83, also known as the "Shine The Light" law, permits our users who are California residents to request and obtain from us, once a year and free of charge, information about categories of personal information (if any) we disclosed to third parties for direct marketing purposes and the names and addresses of all third parties with which we shared personal information in the immediately preceding calendar year. If you are a California resident and would like to make such a request, please submit your request in writing to us by using the contact details in the "How Can You Contact Us About This Notice?" section below.</p>
+
+        <h3 id="pp-10">10. Do We Make Updates to This Notice?</h3>
+        <p><em><strong>In Short:</strong> Yes, we will update this notice as necessary to stay compliant with relevant laws.</em></p>
+        <p>We may update this Privacy Notice from time to time. The updated version will be indicated by an updated "Revised" date at the top of this Privacy Notice. If we make material changes to this Privacy Notice, we may notify you either by prominently posting a notice of such changes or by directly sending you a notification. We encourage you to review this Privacy Notice frequently to be informed of how we are protecting your information.</p>
+
+        <h3 id="pp-11">11. How Can You Contact Us About This Notice?</h3>
+        <p>If you have questions or comments about this notice, you may contact our Data Protection Officer (DPO) by email at <a href="mailto:steve@stevoapp.com">steve@stevoapp.com</a>, by phone at 720-217-7996, or contact us by post at:</p>
+        <div class="legal-contact">
+          <strong>Stevo App LLC</strong><br>
+          Data Protection Officer<br>
+          PO Box TBD<br>
+          Parker, CO 80134<br>
+          United States
+        </div>
+
+        <h3 id="pp-12">12. How Can You Review, Update, or Delete the Data We Collect From You?</h3>
+        <p>Based on the applicable laws of your country or state of residence in the US, you may have the right to request access to the personal information we collect from you, details about how we have processed it, correct inaccuracies, or delete your personal information. You may also have the right to withdraw your consent to our processing of your personal information. These rights may be limited in some circumstances by applicable law. To request to review, update, or delete your personal information, please fill out and submit a <a href="https://app.termly.io/dsar/d722846a-8206-4cba-a278-64733653caae" target="_blank" rel="noopener">data subject access request</a>.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// Respect reduced motion
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Scroll progress bar
+(function initScrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  const navEl = document.querySelector('nav');
+  if (!bar) return;
+  let ticking = false;
+  function update() {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (scrolled / max) * 100 : 0;
+    bar.style.width = pct + '%';
+    // Condense the nav once the hero starts scrolling away
+    if (navEl) navEl.classList.toggle('scrolled', scrolled > 24);
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+})();
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Parallax: elements with data-speed move as page scrolls
+if (!reducedMotion) {
+  const parallaxEls = document.querySelectorAll('.parallax');
+  let ticking = false;
+  function updateParallax() {
+    const y = window.scrollY;
+    parallaxEls.forEach(el => {
+      const speed = parseFloat(el.dataset.speed || '0.2');
+      el.style.transform = `translateY(${y * speed * -1}px)`;
+    });
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }, { passive: true });
+}
+
+// Hero carousel (deck-style)
+(function initCarousel() {
+  const stack = document.getElementById('carousel');
+  if (!stack) return;
+  const slides = Array.from(stack.querySelectorAll('.hero-carousel-slide'));
+  const dots = document.querySelectorAll('.hero-carousel-dot');
+  const total = slides.length;
+  let current = 0;
+
+  function showSlide(i) {
+    current = (i + total) % total;
+    slides.forEach((s, idx) => {
+      // Offset from current (wraps around)
+      const offset = (idx - current + total) % total;
+      s.classList.remove('depth-0', 'depth-1', 'depth-2', 'depth-hidden');
+      if (offset === 0) s.classList.add('depth-0');
+      else if (offset === 1) s.classList.add('depth-1');
+      else if (offset === 2) s.classList.add('depth-2');
+      else s.classList.add('depth-hidden');
+    });
+    dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+  }
+
+  // Click stack to advance
+  stack.addEventListener('click', () => showSlide(current + 1));
+
+  // Keyboard: Enter/Space advances, arrows navigate
+  stack.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showSlide(current + 1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); showSlide(current + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); showSlide(current - 1); }
+  });
+
+  // Dots jump directly
+  dots.forEach((dot, idx) => {
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showSlide(idx);
+      restartAuto();
+    });
+  });
+
+  // Auto-advance the deck on a gentle loop, pausing on hover/focus so the
+  // user is never fighting the animation while they explore.
+  let autoTimer = null;
+  const AUTO_MS = 4500;
+  function startAuto() {
+    if (reducedMotion || autoTimer) return;
+    autoTimer = setInterval(() => showSlide(current + 1), AUTO_MS);
+  }
+  function stopAuto() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+  function restartAuto() { stopAuto(); startAuto(); }
+
+  ['mouseenter', 'focusin'].forEach(ev => stack.addEventListener(ev, stopAuto));
+  ['mouseleave', 'focusout'].forEach(ev => stack.addEventListener(ev, startAuto));
+  // Pause when the tab is hidden so we don't churn in the background
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? stopAuto() : startAuto();
+  });
+  startAuto();
+
+  // Restart the loop after any manual interaction so it feels intentional
+  stack.addEventListener('click', restartAuto);
+  stack.addEventListener('keydown', restartAuto);
+
+  // Subtle 3D tilt toward the pointer for a sense of depth
+  if (!reducedMotion) {
+    const MAX_TILT = 7;
+    stack.addEventListener('pointermove', (e) => {
+      const r = stack.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      stack.classList.add('tilting');
+      stack.style.setProperty('--tiltY', (px * MAX_TILT * 2).toFixed(2) + 'deg');
+      stack.style.setProperty('--tiltX', (-py * MAX_TILT * 2).toFixed(2) + 'deg');
+    });
+    stack.addEventListener('pointerleave', () => {
+      stack.classList.remove('tilting');
+      stack.style.setProperty('--tiltY', '0deg');
+      stack.style.setProperty('--tiltX', '0deg');
+    });
+  }
+})();
+
+// Stat counter (animates count-up when element enters viewport)
+const statObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = +el.dataset.target;
+    const suffix = el.dataset.suffix || '';
+    const prefix = el.dataset.prefix || '';
+    const useComma = target >= 1000;
+    let cur = 0;
+    const steps = 50;
+    const step = target / steps;
+    const format = (n) => {
+      const rounded = Math.floor(n);
+      const str = useComma ? rounded.toLocaleString('en-US') : String(rounded);
+      return prefix + str + suffix;
+    };
+    el.textContent = format(0);
+    const timer = setInterval(() => {
+      cur += step;
+      if (cur >= target) { cur = target; clearInterval(timer); }
+      el.textContent = format(cur);
+    }, 28);
+    statObs.unobserve(el);
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('[data-target]').forEach(el => statObs.observe(el));
+
+// Signup
+async function signup(loc) {
+  const id = loc === 'hero' ? 'email-1' : 'email-2';
+  const input = document.getElementById(id);
+  const email = input.value.trim();
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    input.style.borderColor = 'var(--red)';
+    setTimeout(() => input.style.borderColor = 'var(--border)', 2000);
+    return;
+  }
+
+  const btn = input.nextElementSibling;
+  const originalLabel = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = 'Joining…'; }
+
+  try {
+    const res = await fetch('/.netlify/functions/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    if (!res.ok) throw new Error('Request failed');
+
+    bumpWaitlistCount();
+
+    if (loc === 'hero') {
+      document.getElementById('hero-form').style.display = 'none';
+      document.getElementById('hero-note').style.display = 'none';
+      document.getElementById('hero-success').style.display = 'block';
+    } else {
+      document.getElementById('cta-form').innerHTML =
+        '<div style="color:var(--accent);font-weight:600;font-size:14px;padding:14px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;width:100%">You\'re on the list.</div>';
+      document.getElementById('cta-note').style.display = 'none';
+    }
+  } catch (err) {
+    input.style.borderColor = 'var(--red)';
+    setTimeout(() => input.style.borderColor = 'var(--border)', 2500);
+    const note = document.getElementById(loc === 'hero' ? 'hero-note' : 'cta-note');
+    if (note) {
+      const prev = note.textContent;
+      note.textContent = 'Something went wrong. Please try again.';
+      note.style.color = 'var(--red)';
+      setTimeout(() => { note.textContent = prev; note.style.color = ''; }, 4000);
+    }
+    if (btn) { btn.disabled = false; btn.textContent = originalLabel; }
+  }
+}
+
+document.querySelectorAll('.hero-input').forEach(input => {
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') signup(input.id === 'email-1' ? 'hero' : 'cta');
+  });
+});
+
+// Waitlist count
+async function loadWaitlistCount() {
+  const el = document.getElementById('waitlist-count');
+  if (!el) return;
+  try {
+    const res = await fetch('/.netlify/functions/count');
+    if (!res.ok) return;
+    const { total } = await res.json();
+    if (typeof total === 'number') el.textContent = total.toLocaleString();
+  } catch {}
+}
+function bumpWaitlistCount() {
+  const el = document.getElementById('waitlist-count');
+  if (!el) return;
+  const n = parseInt(el.textContent.replace(/[^0-9]/g, ''), 10);
+  if (!isNaN(n)) el.textContent = (n + 1).toLocaleString();
+}
+loadWaitlistCount();
+
+// Legal modal
+const legalOverlay = document.getElementById('legal-overlay');
+const legalBody = document.getElementById('legal-body');
+const legalTitle = document.getElementById('legal-title');
+
+function openLegal(tab) {
+  setLegalTab(tab || 'terms');
+  legalOverlay.classList.add('open');
+  document.body.classList.add('legal-open');
+  legalBody.scrollTop = 0;
+}
+function closeLegal() {
+  legalOverlay.classList.remove('open');
+  document.body.classList.remove('legal-open');
+}
+function setLegalTab(tab) {
+  document.querySelectorAll('.legal-tab').forEach(b => {
+    const on = b.dataset.tab === tab;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  document.querySelectorAll('.legal-panel').forEach(p => {
+    p.classList.toggle('active', p.dataset.panel === tab);
+  });
+  legalTitle.textContent = tab === 'terms' ? 'Terms of Service' : 'Privacy';
+  legalBody.scrollTop = 0;
+}
+
+document.querySelectorAll('[data-legal]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    openLegal(a.dataset.legal);
+  });
+});
+document.getElementById('legal-close').addEventListener('click', closeLegal);
+legalOverlay.addEventListener('click', e => {
+  if (e.target === legalOverlay) closeLegal();
+});
+document.querySelectorAll('.legal-tab').forEach(b => {
+  b.addEventListener('click', () => setLegalTab(b.dataset.tab));
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && legalOverlay.classList.contains('open')) closeLegal();
+});
+
+legalBody.addEventListener('click', e => {
+  const link = e.target.closest('[data-scrollto]');
+  if (!link) return;
+  e.preventDefault();
+  const target = document.getElementById(link.dataset.scrollto);
+  if (!target) return;
+  const offset = target.offsetTop - legalBody.offsetTop - 8;
+  legalBody.scrollTo({ top: offset, behavior: 'smooth' });
+});
+</script>
+
+</body>
+</html>

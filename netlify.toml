@@ -1,0 +1,5 @@
+# stevoapp.com - PUBLIC website mirror. Auto-updated from the private app
+# repo web/ folder by the fix bot on Steve's Mac. Do not edit here.
+[build]
+  publish = "."
+  command = ""
