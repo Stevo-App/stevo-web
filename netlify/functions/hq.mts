@@ -234,7 +234,7 @@ async function testPlan(): Promise<string> {
     const ids = letter === "N" ? newIds : ids0;
     const body = ids.map(cardHtml).join("");
     if (!body) continue;
-    sections += `<section class="session${flag ? " session-" + flag : ""}"><header class="shead"><span class="sletter">${letter}</span><div><h2>${esc(name)}</h2><p class="smeta">${esc(meta)}</p></div><span class="scount"></span></header><p class="sblurb">${esc(blurb)}</p><ul class="cards">${body}</ul></section>`;
+    sections += `<section class="session collapsed${flag ? " session-" + flag : ""}" data-s="${letter}"><header class="shead" role="button" tabindex="0" aria-expanded="false"><span class="sletter">${letter}</span><div><h2>${esc(name)}</h2><p class="smeta">${esc(meta)}</p></div><span class="scount"></span><span class="chev">&#9662;</span></header><div class="sbody"><p class="sblurb">${esc(blurb)}</p><ul class="cards">${body}</ul></div></section>`;
   }
 
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Stevo Test Sessions</title>
@@ -247,7 +247,7 @@ h1{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:700;font-size:cl
 .sub{color:var(--muted);margin:6px 0 14px}.progress{display:flex;align-items:center;gap:12px}
 .bar{flex:1;height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;display:flex}.bar i{display:block;height:100%;width:0;background:var(--done)}.bar b{display:block;height:100%;width:0;background:var(--accent)}
 .ptext{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);white-space:nowrap}
-.session{margin:26px 0}.shead{display:flex;align-items:center;gap:14px}
+.session{margin:14px 0}.shead{display:flex;align-items:center;gap:14px;cursor:pointer;padding:6px 8px;margin:0 -8px;border-radius:12px}.shead:hover{background:var(--surface)}.chev{color:var(--muted);font-size:15px;transition:transform .15s;margin-left:6px}.session.collapsed .chev{transform:rotate(-90deg)}.session.collapsed .sbody{display:none}.sbody{margin-top:4px}
 .sletter{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:700;font-size:26px;background:var(--accent);color:var(--accent-ink);width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none}
 .session-blocked .sletter,.session-deferred .sletter{background:var(--surface2);color:var(--muted)}
 .shead h2{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:600;font-size:24px;letter-spacing:.4px;margin:0;text-transform:uppercase}
@@ -271,7 +271,7 @@ h1{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:700;font-size:cl
 a{color:var(--accent)}
 </style></head><body><div class="wrap">
 <header class="top"><h1>Stevo Test Sessions</h1>
-<p class="sub">Rendered live from the tracker. Checkmarks are private to this device (&ldquo;I ran it&rdquo;); closing a card on the tracker is the shared verify &mdash; green rows show what either tester closed. <a href="/hq">&larr; back to HQ</a></p>
+<p class="sub">Rendered live from the tracker. Checkmarks are private to this device (&ldquo;I ran it&rdquo;); closing a card on the tracker is the shared verify &mdash; green rows show what either tester closed. Tap a section to expand it. <a href="/hq">&larr; back to HQ</a></p>
 <div class="progress"><div class="bar"><i id="vbar"></i><b id="pbar"></b></div><span class="ptext" id="ptext"></span></div></header>
 ${sections}
 <p class="foot">Anything that fails: don&rsquo;t close the card &mdash; write what you saw in its feedback box (or tell Claude) and the bots take it from there.</p>
@@ -298,6 +298,22 @@ ${sections}
     });
   }
   boxes.forEach(function(b){if(state[b.dataset.id])b.checked=true;b.addEventListener('change',function(){state[b.dataset.id]=b.checked?1:0;save();refresh();});});
+  var OKEY='stevo-test-open-v1';var openSet={};
+  try{openSet=JSON.parse(localStorage.getItem(OKEY)||'{}')||{};}catch(e){openSet={};}
+  document.querySelectorAll('.session').forEach(function(sec){
+    var k=sec.dataset.s;
+    if(openSet[k]){sec.classList.remove('collapsed');}
+    var h=sec.querySelector('.shead');
+    function toggle(){
+      sec.classList.toggle('collapsed');
+      var open=!sec.classList.contains('collapsed');
+      h.setAttribute('aria-expanded',open?'true':'false');
+      openSet[k]=open?1:0;
+      try{localStorage.setItem(OKEY,JSON.stringify(openSet));}catch(e){}
+    }
+    h.addEventListener('click',toggle);
+    h.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+  });
   refresh();
 })();
 </script></body></html>`;
