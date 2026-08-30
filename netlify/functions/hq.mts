@@ -226,7 +226,7 @@ async function testPlan(): Promise<string> {
     if (c.status === "closed") {
       return `<li class="card verified"><div class="cardrow"><span class="vmark">&#10003;</span><span class="sev sev-${sev}">${esc(c.severity)}</span><span class="ctitle">${esc(c.title)}</span></div><p class="vlabel">Verified &amp; closed on the tracker</p></li>`;
     }
-    return `<li class="card"><label class="cardrow"><input type="checkbox" data-id="${short}"><span class="sev sev-${sev}">${esc(c.severity)}</span><span class="ctitle">${esc(c.title)}</span></label><details><summary>How to test</summary>${note}<p class="howto">${esc((c.how_to_test || "").trim())}</p><p class="cid">tracker card ${short}</p></details></li>`;
+    return `<li class="card"><label class="cardrow"><input type="checkbox" data-id="${short}"><span class="sev sev-${sev}">${esc(c.severity)}</span><span class="ctitle">${esc(c.title)}</span></label><details><summary>How to test</summary>${note}<p class="howto">${esc((c.how_to_test || "").trim())}</p><p class="cid">tracker card ${short}</p></details><button class="closebtn" data-close="${short}">&#10003; Passed &mdash; close on tracker</button></li>`;
   };
 
   let sections = "";
@@ -268,6 +268,8 @@ h1{font-family:'Barlow Condensed',Impact,sans-serif;font-weight:700;font-size:cl
 .note{font-size:13.5px;color:var(--med);margin:8px 0 0;font-style:italic}
 .cid{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);margin:4px 0 2px}
 .foot{color:var(--muted);font-size:13.5px;border-top:1px solid var(--line);margin-top:34px;padding-top:14px}
+.closebtn{display:none;margin:8px 0 2px 30px;background:var(--low);color:var(--low-ink);border:none;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Atkinson Hyperlegible',system-ui,sans-serif}
+.card.done .closebtn{display:inline-block}.closebtn:disabled{opacity:.6}
 a{color:var(--accent)}
 </style></head><body><div class="wrap">
 <header class="top"><h1>Stevo Test Sessions</h1>
@@ -298,6 +300,22 @@ ${sections}
     });
   }
   boxes.forEach(function(b){if(state[b.dataset.id])b.checked=true;b.addEventListener('change',function(){state[b.dataset.id]=b.checked?1:0;save();refresh();});});
+  var PASS=localStorage.getItem('stevo-hq-pass')||'';
+  document.querySelectorAll('.closebtn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      if(!confirm('Close this card on the tracker? This is the shared, official verify.'))return;
+      btn.disabled=true;btn.textContent='Closing…';
+      fetch('/api/close',{method:'POST',headers:{'x-dash-pass':PASS,'content-type':'application/json'},body:JSON.stringify({id:btn.dataset.close})})
+        .then(function(r){return r.json().catch(function(){return{};}).then(function(j){if(!r.ok)throw new Error(j.error||r.status);});})
+        .then(function(){
+          var card=btn.closest('.card');
+          card.classList.remove('done');card.classList.add('verified');
+          var cb=card.querySelector('input');if(cb){cb.checked=false;cb.disabled=true;}
+          btn.textContent='Closed ✓';verified++;refresh();
+        })
+        .catch(function(e){btn.disabled=false;btn.textContent='Close failed — try again ('+e.message+')';});
+    });
+  });
   var OKEY='stevo-test-open-v1';var openSet={};
   try{openSet=JSON.parse(localStorage.getItem(OKEY)||'{}')||{};}catch(e){openSet={};}
   document.querySelectorAll('.session').forEach(function(sec){
@@ -327,6 +345,22 @@ export default async (req: Request) => {
     const DASH = Netlify.env.get("DASH_PASSWORD");
     if (!DASH) return new Response("DASH_PASSWORD not set in Netlify env", { status: 500 });
     if (pass !== DASH) return new Response("unauthorized", { status: 401 });
+    if (url.pathname === "/api/close" && req.method === "POST") {
+      const KEY = Netlify.env.get("TRACKER_SERVICE_KEY");
+      if (!KEY) return new Response(JSON.stringify({ error: "TRACKER_SERVICE_KEY not set in Netlify env" }), { status: 500 });
+      let short = "";
+      try { short = String((await req.json()).id || "").slice(0, 8); } catch { /* noop */ }
+      if (!/^[0-9a-f]{8}$/.test(short)) return new Response(JSON.stringify({ error: "bad id" }), { status: 400 });
+      const wh = { apikey: KEY, Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" };
+      const rows = await (await fetch(`${SUPA}/rest/v1/bugs?select=id,notes,status&status=eq.in-review`, { headers: wh })).json();
+      const card = rows.find((c: any) => c.id.startsWith(short));
+      if (!card) return new Response(JSON.stringify({ error: "card not found in review" }), { status: 404 });
+      const ts = new Date().toISOString().slice(0, 16).replace("T", " ") + " UTC";
+      const patch = { status: "closed", notes: (card.notes || "").trimEnd() + `\n\n[${ts}] CLOSED from the password-gated test plan after device testing.` };
+      const r = await fetch(`${SUPA}/rest/v1/bugs?id=eq.${card.id}`, { method: "PATCH", headers: wh, body: JSON.stringify(patch) });
+      if (!r.ok) return new Response(JSON.stringify({ error: "tracker " + r.status }), { status: 502 });
+      return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { "content-type": "application/json" } });
+    }
     try {
       const body = url.pathname === "/api/test-plan" ? await testPlan() : await dashboard();
       return new Response(body, { status: 200, headers: html });
@@ -338,4 +372,4 @@ export default async (req: Request) => {
   return new Response(shell("/api/hq", "Stevo HQ"), { status: 200, headers: html });
 };
 
-export const config = { path: ["/hq", "/api/hq", "/test-plan", "/api/test-plan"] };
+export const config = { path: ["/hq", "/api/hq", "/test-plan", "/api/test-plan", "/api/close"] };
