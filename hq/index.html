@@ -1,0 +1,50 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>Stevo HQ</title><style>
+body{margin:0;background:#0B0B0F;color:#F2F2F5;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.g{background:#131318;border:1px solid #24242C;border-radius:14px;padding:28px;width:min(320px,90vw);text-align:center}
+h1{font-size:22px;margin:0 0 4px;letter-spacing:1px}h1 span{color:#7C4DFF}
+p{color:#8D8D9C;font-size:13px;margin:0 0 16px}
+input{width:100%;box-sizing:border-box;background:#0B0B0F;border:1px solid #24242C;border-radius:8px;color:#F2F2F5;padding:10px;font-size:15px;margin-bottom:10px}
+button{width:100%;background:#7C4DFF;color:#12061F;border:none;border-radius:8px;padding:10px;font-size:15px;font-weight:700;cursor:pointer}
+.err{color:#FF5C6B;font-size:12px;min-height:16px;margin-top:8px}</style></head><body>
+<div class="g"><h1>STEVO <span>HQ</span></h1><p>Enter the shared password</p>
+<input id="pw" type="password" autocomplete="current-password"><button id="go">Enter</button><div class="err" id="err"></div></div>
+<script>
+// The gate for /api/hq. Same contract as the version that has been live since
+// 2026-08: password remembered in localStorage, sent on the x-dash-pass header,
+// and the function 401s on anything wrong. Versioned here so it stops living
+// only inside a Netlify deploy.
+var KEY = 'stevo-hq-pass';
+var PASS = localStorage.getItem(KEY) || '';
+var err = document.getElementById('err');
+function load(typed) {
+  if (!PASS) return;
+  err.textContent = '';
+  fetch('/api/hq', { headers: { 'x-dash-pass': PASS } })
+    .then(function (r) {
+      if (r.status === 401) {
+        // Clear a bad saved password so a stale one cannot lock you out on every visit.
+        localStorage.removeItem(KEY);
+        PASS = '';
+        throw new Error('bad');
+      }
+      if (!r.ok) throw new Error('down');
+      return r.text();
+    })
+    .then(function (h) { document.open(); document.write(h); document.close(); })
+    .catch(function (e) {
+      if (e && e.message === 'bad') err.textContent = typed ? 'Wrong password' : '';
+      else err.textContent = 'HQ is not answering — try again in a minute';
+    });
+}
+document.getElementById('go').onclick = function () {
+  PASS = document.getElementById('pw').value;
+  localStorage.setItem(KEY, PASS);
+  load(true);
+};
+document.getElementById('pw').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') document.getElementById('go').click();
+});
+load(false);
+</script></body></html>
