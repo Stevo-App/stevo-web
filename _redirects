@@ -1,0 +1,13 @@
+# stevoapp.com redirect + shadowing rules.
+#
+# /hq.html is the LOCAL copy of the dashboard that scripts/regen-dashboard.py
+# commits so either machine can read the board offline. It is a fully rendered
+# page with no password on it, and it lives under web/ — which is this site's
+# publish directory. Once the site builds from this repo (rather than the old
+# drag-and-drop mirror that happened to omit the file), it would otherwise be
+# served publicly at stevoapp.com/hq.html.
+#
+# The trailing ! forces this rule to win even though the file exists, so the
+# only way to read the board on the public internet stays the password gate at
+# /hq -> /api/hq. Do not remove this without also moving hq.html out of web/.
+/hq.html   /hq   301!
