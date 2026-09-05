@@ -16,12 +16,15 @@ button{width:100%;background:#7C4DFF;color:#12061F;border:none;border-radius:8px
 // and the function 401s on anything wrong. Versioned here so it stops living
 // only inside a Netlify deploy.
 var KEY = 'stevo-hq-pass';
+// /test-plan redirects here as /?page=test-plan; pass it through to the pipe.
+var PAGE = new URLSearchParams(location.search).get('page');
+var API = '/api/hq' + (PAGE ? '?page=' + encodeURIComponent(PAGE) : '');
 var PASS = localStorage.getItem(KEY) || '';
 var err = document.getElementById('err');
 function load(typed) {
   if (!PASS) return;
   err.textContent = '';
-  fetch('/api/hq', { headers: { 'x-dash-pass': PASS } })
+  fetch(API, { headers: { 'x-dash-pass': PASS } })
     .then(function (r) {
       if (r.status === 401) {
         // Clear a bad saved password so a stale one cannot lock you out on every visit.

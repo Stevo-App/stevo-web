@@ -11,3 +11,9 @@
 # only way to read the board on the public internet stays the password gate at
 # /hq -> /api/hq. Do not remove this without also moving hq.html out of web/.
 /hq.html   /hq   301!
+
+# The device-test plan lists card titles, so it left the public site with the
+# board (the fix bot's mirror excludes test-plan.html). Old bookmarks land on
+# the gated copy instead of a 404.
+/test-plan.html   https://hq.stevoapp.com/test-plan   302
+/test-plan        https://hq.stevoapp.com/test-plan   302

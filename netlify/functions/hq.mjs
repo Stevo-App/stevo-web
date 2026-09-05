@@ -48,9 +48,13 @@ export default async (req) => {
     });
   }
 
+  // Row 1 is the dashboard; row 2 is the device-test plan (regen-test-plan.py
+  // writes it every cycle). Same password, same pipe -- the plan lists card
+  // titles, which is why it left the public site with the board.
+  const rowId = new URL(request.url).searchParams.get('page') === 'test-plan' ? 2 : 1;
   let page = '';
   try {
-    const r = await fetch(`${url}/rest/v1/stevo_hq_state?id=eq.1&select=data`, {
+    const r = await fetch(`${url}/rest/v1/stevo_hq_state?id=eq.${rowId}&select=data`, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
     });
     if (!r.ok) throw new Error(`tracker ${r.status}`);
