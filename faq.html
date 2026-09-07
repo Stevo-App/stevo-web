@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stevo | FAQ</title>
+<meta name="description" content="How Stevo works: settling up, odds, lines and bets, crews, Face Off tabs, poker nights and seasons, notifications, app lock, and your account.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Chakra+Petch:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A10;
+    --surface: #111118;
+    --surface2: #1A1A22;
+    --border: #28283A;
+    --accent: #2563EB;
+    --accent-hover: #1D4ED8;
+    --blue-ice: #60A5FA;
+    --purple: #8B5CF6;
+    --gold: #FBBF24;
+    --text: #E2E8F0;
+    --text2: #94A3B8;
+    --text3: #475569;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Chakra Petch', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Ambient gradient mesh background (same as the landing page) */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(ellipse 800px 600px at 15% 20%, rgba(37,99,235,0.08), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 85% 40%, rgba(139,92,246,0.07), transparent 60%),
+      radial-gradient(ellipse 600px 500px at 50% 90%, rgba(251,191,36,0.05), transparent 60%);
+    pointer-events: none;
+  }
+
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ── NAV (copied from index.html) ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(11,17,32,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: padding 0.3s ease, background 0.3s ease,
+                box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  nav.scrolled {
+    padding: 10px 40px;
+    background: rgba(11,17,32,0.95);
+    border-bottom-color: rgba(255,255,255,0.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-wordmark {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 3px;
+    color: var(--text);
+  }
+  .nav-right {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .nav-right a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-right a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent);
+    color: #fff !important;
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent-hover); }
+
+  /* ── PAGE ── */
+  .section-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  .faq {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 120px 40px 64px;
+  }
+
+  .toc {
+    margin: 32px 0 8px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .toc-head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+  .toc ol {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+  }
+  .toc a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .toc a:hover { color: var(--blue-ice); }
+
+  .faq section {
+    padding-top: 48px;
+    scroll-margin-top: 80px;
+  }
+  .faq h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    letter-spacing: 1.5px;
+    line-height: 1;
+    color: var(--text);
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .faq h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 24px;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    overflow-wrap: anywhere;
+  }
+  .faq p {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+  }
+  .faq p strong { color: var(--text); font-weight: 600; }
+  .faq ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 10px;
+  }
+  .faq ul li {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 6px;
+    overflow-wrap: anywhere;
+  }
+  .faq ul li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 11px;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .faq a { color: var(--accent); text-decoration: none; }
+  .faq a:hover { text-decoration: underline; }
+  .faq .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .faq .top {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .faq .top:hover { color: var(--text2); }
+
+  .contact {
+    margin-top: 48px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .contact-head {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .contact p { margin-bottom: 0; }
+
+  /* ── FOOTER (copied from index.html) ── */
+  footer {
+    border-top: 1px solid var(--border);
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-brand-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--text);
+  }
+  .footer-tagline {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 6px;
+    max-width: 220px;
+  }
+  .footer-cols {
+    display: flex;
+    gap: 56px;
+  }
+  .footer-col-head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+  .footer-cols a {
+    display: block;
+    color: var(--text3);
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+  .footer-cols a:hover { color: var(--text2); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-copy { font-size: 12px; color: var(--text3); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    nav.scrolled { padding: 10px 20px; }
+    .nav-right { gap: 16px; }
+    .faq { padding: 96px 20px 48px; }
+    .toc ol { grid-template-columns: 1fr; }
+    footer { padding-left: 20px; padding-right: 20px; }
+    .footer-row { flex-direction: column; gap: 28px; }
+    .footer-cols { gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; }
+  }
+  @media (max-width: 480px) {
+    .footer-cols { flex-direction: column; gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-left">
+    <div class="nav-wordmark">STEVO</div>
+  </a>
+  <div class="nav-right">
+    <a href="/">Home</a>
+    <a href="mailto:support@stevoapp.com" class="nav-cta">Contact support</a>
+  </div>
+</nav>
+
+<main class="faq" id="top">
+  <div class="section-tag">Help &amp; support</div>
+  <h1 class="section-title">Frequently asked questions</h1>
+  <p class="section-desc">Short answers to how Stevo works, taken straight from what the app does. Stevo keeps score and records who owes whom; it never holds, moves, or processes money.</p>
+
+  <div class="toc">
+    <div class="toc-head">On this page</div>
+    <ol>
+      <li><a href="#settling">Settling up</a></li>
+      <li><a href="#odds">Odds</a></li>
+      <li><a href="#lines">Lines and bets</a></li>
+      <li><a href="#crews">Crews</a></li>
+      <li><a href="#faceoff">Face Off</a></li>
+      <li><a href="#poker">Poker nights and seasons</a></li>
+      <li><a href="#notifications">Notifications and app lock</a></li>
+      <li><a href="#account">Account, privacy and deletion</a></li>
+      <li><a href="#golf">Golf</a></li>
+      <li><a href="#contact">Still stuck?</a></li>
+    </ol>
+  </div>
+
+  <section id="settling">
+    <h2>Settling up</h2>
+
+    <h3>How does settling work?</h3>
+    <p>The Settle tab totals every bet you have with each friend into one running balance. <strong>I owe</strong> and <strong>Owed to me</strong> show who is ahead with each person; several bets with the same friend net into a single amount instead of being settled one at a time.</p>
+
+    <h3>How do I pay someone?</h3>
+    <p>Tap <strong>Pay</strong> next to their name and pick how you will send it:</p>
+    <ul>
+      <li><strong>Venmo</strong> or <strong>Cash App</strong>: opens that app addressed to your friend.</li>
+      <li><strong>Zelle</strong>: Stevo shows their Zelle contact details so you can send it manually.</li>
+      <li><strong>Cash</strong>: hand it over in person; Stevo just records it.</li>
+    </ul>
+    <p>Stevo does not move money. You send it through the app or in cash, then come back and confirm. If your friend has not saved a Venmo, Cash App, or Zelle handle, the only option is cash. You can add your own handles under Profile &gt; Payment methods.</p>
+
+    <h3>What does "Yes, I sent it" do?</h3>
+    <p>After you pay, Stevo asks "Did you send $X to [name] via [method]?" (or "in cash?"). Tapping <strong>Yes, I sent it</strong> records that you have paid. The other person then sees a <strong>Confirm received</strong> button; once they tap it the balance clears for both of you.</p>
+
+    <h3>Someone paid me outside the app. How do I clear it?</h3>
+    <p>If they never tapped Pay in Stevo, their card on your Settle tab shows "Already paid you outside the app?" with a <strong>Mark as settled</strong> button. Only mark it once you actually have the money: it clears the balance for both of you.</p>
+
+    <h3>What if they say they paid and I did not get it?</h3>
+    <p>Tap <strong>Dispute</strong> instead of Confirm received. Today that tells you to sort it out with the other person directly; an in-app dispute flow is coming. Nothing is cleared until you confirm.</p>
+
+    <h3>Can I remind someone who owes me?</h3>
+    <p>Yes. <strong>Nudge</strong> sends them a payment reminder notification.</p>
+    <a class="top" href="#top">Back to top</a>
+  </section>
+
+  <section id="odds">
+    <h2>Odds</h2>
+
+    <h3>Which odds formats does Stevo show?</h3>
+    <p>Three, and you pick under Profile &gt; Odds format. It applies to the Lines board and your bet slip.</p>
+    <ul>
+      <li><strong>American</strong>: <span class="num">-110</span> and <span class="num">+140</span></li>
+      <li><strong>Decimal</strong>: <span class="num">1.91</span> and <span class="num">2.40</span></li>
+      <li><strong>Fractional</strong>: <span class="num">10/11</span> and <span class="num">7/5</span></li>
+    </ul>
+
+    <h3>How do I read American odds?</h3>
+    <p>A minus number is how much you risk to win $100: <span class="num">-110</span> means bet $110 to win $100. A plus number is what you win on $100: <span class="num">+140</span> means bet $100 to win $140.</p>
+
+    <h3>What are no-vig (fair) odds?</h3>
+    <p>Sportsbook prices include the book's margin (the "vig" or "juice"), which is why both sides of a game are often <span class="num">-110</span>. Friends betting each other do not owe a book anything, so Stevo strips the margin out and shows the fair line: <span class="num">-110 / -110</span> becomes <span class="num">+100 / +100</span>, and <span class="num">-150 / +130</span> becomes <span class="num">-138 / +138</span>. Bets made from the board settle at the fair line. This only applies to moneylines, spreads, and totals pulled from sportsbooks; custom bets and Face Off bets use the odds you set yourselves.</p>
+
+    <h3>What is the difference between Vegas odds and even money on my bets?</h3>
+    <p>Tap the small "i" on any bet to see this. <strong>Vegas odds</strong> bets pay out based on sportsbook odds: you take the opposite side, so your risk and win amounts differ. <strong>Even money</strong> bets are straight up: the winner takes the wagered amount and no sportsbook odds apply.</p>
+
+    <h3>How do odds work on a custom bet?</h3>
+    <p>You choose a multiplier. <span class="num">1x</span> is even money and both sides put up the same. At <span class="num">3x</span>, your $10 says it happens and they put up $30. The slip shows what the winner takes before you send it.</p>
+    <a class="top" href="#top">Back to top</a>
+  </section>
+
+  <section id="lines">
+    <h2>Lines and bets</h2>
+
+    <h3>How do I read the Lines board?</h3>
+    <p>Spread and moneyline (ML) pick a side; over/under (O/U) picks the total. The number next to each is the odds. Toggle <strong>LIVE</strong> to see games already underway. Picking more than one line builds a parlay, and Stevo blocks or swaps picks that cannot both happen on the same game. A parlay leg marked "(ALL)" means every pick in it has to hit.</p>
+
+    <h3>What is a custom bet?</h3>
+    <p>A bet on anything, on your own terms, not tied to a real game. You write the claim as a statement (one of you says it happens, the other says it does not), set the stake, pick the odds multiplier, choose a settled-by date, set who can see it, and pick your opponent.</p>
+
+    <h3>What are open bets?</h3>
+    <p>Challenges someone in your crew posted that nobody has taken yet. They show in a strip on the Lines tab; tap one to accept it.</p>
+
+    <h3>What do Pending, Active, and Settled mean?</h3>
+    <ul>
+      <li><strong>Pending</strong> is waiting on someone to accept or decline. Pending bets expire automatically if the other person does not accept in time, and a bet on a real game is cancelled if the game starts before it is accepted.</li>
+      <li><strong>Active</strong> bets on a real game settle themselves the moment the game goes final, off the final score. No manual step.</li>
+      <li><strong>Settled</strong> bets have a result and move to the Settle tab if money is owed.</li>
+    </ul>
+
+    <h3>How does a custom bet get settled?</h3>
+    <p>Once it is over, each of you declares your own result (won, lost, or push). If the two declarations match, the bet settles. If you disagree, the bet is flagged as disputed and both of you are notified so you can sort it out.</p>
+
+    <h3>Who can see my bets?</h3>
+    <p>Every bet has a visibility setting. <strong>Private</strong> (the default) means only you and your opponent see it. <strong>Shared</strong> means it also appears in the feed of any crew you both belong to. Bets made from a crew's open-bets strip are visible to that crew until someone takes them.</p>
+    <a class="top" href="#top">Back to top</a>
+  </section>
+
+  <section id="crews">
+    <h2>Crews</h2>
+
+    <h3>What is a crew?</h3>
+    <p>A shared group for challenges and the activity feed. Everyone in a crew can see and accept each other's shared bets, get invited to its poker nights, and start a Face Off with each other.</p>
+
+    <h3>How do I create one?</h3>
+    <p>Tap <strong>Create crew</strong>, give it a name, choose Public or Private, and optionally pick friends to invite right away. Stevo generates the crew's invite code for you.</p>
+
+    <h3>How does the invite code work?</h3>
+    <p>Every crew has a 6-character code made of letters and numbers (the easily confused I, O, 0 and 1 are never used, so a code read out loud still works). Share the code or the invite link; the link opens the app on <span class="num">stevoapp.com/crew/join</span> with the code filled in.</p>
+
+    <h3>How do I join a crew?</h3>
+    <p>Tap <strong>Join a crew</strong> and enter the 6-character code from your crew admin. If you are already in that crew the app tells you.</p>
+
+    <h3>What is the difference between a public and a private crew?</h3>
+    <p>In a <strong>public</strong> crew anyone with the invite code joins instantly and any member can send invites. In a <strong>private</strong> crew only the owner and admins can send invites, and pending invites are not shown to other members. Admin approval of new members is marked as coming soon in the app. Owners and admins can switch a crew between public and private from the members screen.</p>
+
+    <h3>How do I leave a crew?</h3>
+    <p>Open the crew's members list and tap <strong>Leave Crew</strong>. You stop seeing that crew's feed and bets, and you can rejoin later with an invite. Owners and admins can remove members; everyone else can only leave. The owner cannot leave without first transferring ownership, so the crew is never left with nobody in charge.</p>
+    <a class="top" href="#top">Back to top</a>
+  </section>
+
+  <section id="faceoff">
+    <h2>Face Off</h2>
+
+    <h3>What is a Face Off tab?</h3>
+    <p>A running tab of quick bets between you and one friend, built for a bar or a couch: "this player hits a home run next at bat, 5 to 1, $10". Open a tab, tap <strong>+ Add Bet</strong> for each one, and both phones stay in sync live. The header shows who is up and by how much.</p>
+
+    <h3>What is the settle threshold?</h3>
+    <p>Optional. Set a dollar amount when you open the tab and you get a soft reminder to settle once the running tab crosses it. Leave it blank for none.</p>
+
+    <h3>How does a tab get settled?</h3>
+    <p>Tap <strong>Settle Tab</strong>. Stevo nets every bet on the tab into one amount and posts it to the Settle tab as a single bet, where you pay or get paid like anything else. If your friend settles first, the app tells you and nothing is recorded twice.</p>
+
+    <h3>What is a Face Off lobby?</h3>
+    <p>Pick 2 to 4 friends instead of one and you broadcast a single bet to all of them. By default the first friend to accept locks it in and the rest are closed out; you can raise how many can accept so more than one person takes it. Each acceptance becomes its own tab between you and that friend.</p>
+
+    <h3>Why can't I start a new Face Off?</h3>
+    <p>One Face Off runs per crew at a time. If one is already going, the app offers to rejoin it (or, if you are the host, to close it out and start a new one). A Face Off nobody has scored in for six hours is treated as finished and offers Close Out instead of Resume.</p>
+    <a class="top" href="#top">Back to top</a>
+  </section>
+
+  <section id="poker">
+    <h2>Poker nights and seasons</h2>
+
+    <h3>Cash game or tournament?</h3>
+    <p>A <strong>cash game</strong> is a night on the calendar: RSVP, play, and settle the stakes yourselves after. Stevo never counts chips in a cash game; settle at the table and log it after. A <strong>tournament</strong> has a fixed buy-in, a live blind clock, optional rebuys and add-ons, and payouts split by finish order once players are eliminated. Live, Scheduled, and Finished at the top of the poker hub track every game you are hosting or in.</p>
+
+    <h3>How do RSVPs and the waitlist work?</h3>
+    <p><strong>I'm in</strong> holds a seat, <strong>Maybe</strong> does not, and <strong>Out</strong> clears yours. The host can cap the table; once it is full, new "I'm in" RSVPs join a waitlist and, if a seat opens up, whoever has been waiting longest is moved to "I'm in" automatically.</p>
+
+    <h3>Buy-ins, rebuys, and add-ons</h3>
+    <ul>
+      <li>The host sets the <strong>buy-in</strong> and starting stack when creating the tournament.</li>
+      <li>If the host allows <strong>rebuys</strong>, a busted player can buy back in for the rebuy amount, up to the per-player limit, through the last rebuy level. The clock moves through blind levels automatically.</li>
+      <li>An <strong>add-on</strong> is a one-time extra chip purchase during the add-on break for players still in the game. It is not a re-entry: a busted player cannot add on.</li>
+      <li>The <strong>prize structure</strong> amounts set the split; the final pot is divided in those proportions, so they do not need to match how many people play.</li>
+      <li>Ending early with players still in? The host can <strong>chop</strong>, splitting what is left by chip count or custom dollar amounts.</li>
+      <li>Guests who are not on Stevo can play, but they cannot be paid through Stevo; settle their cash in person.</li>
+    </ul>
+
+    <h3>What is a season?</h3>
+    <p>A season pools points across every tournament your crew plays, not just one game. Finish high and you climb the crew-wide standings. <strong>Overall</strong> totals everything so far; <strong>By month</strong> breaks it down game by game. Only crew admins can edit season settings.</p>
+
+    <h3>How are season points calculated?</h3>
+    <p>The host picks one of two modes. <strong>Field size</strong>: points equal field size minus finish place plus 1, so a win in a bigger game is worth more. <strong>Fixed table</strong>: explicit points per place (for example 1500, 1250, 1000, 750). Season ties are broken by best single-tournament finish.</p>
+
+    <h3>What is the participation floor?</h3>
+    <p>The least anyone earns just for playing, whatever their finish. With a fixed table, finishes past the end of the table get the floor instead of nothing (1 means showing up counts; 0 means finishes only). In field-size mode last place already scores 1, so set the floor above 1 to guarantee more than that.</p>
+
+    <h3>Season buy-ins and prizes</h3>
+    <p>By default there is no season entry fee: each tournament collects its own buy-in. A host can add an <strong>upfront</strong> season entry fee on top; who has paid it is recorded on the season roster, every tournament still collects its own buy-in, and Stevo does not hold or pay out the fee. A host can also set a season-points prize, paid off the top of the season pool to the top finishers by season points and separate from each tournament's own payout.</p>
+
+    <h3>What is the monthly prize?</h3>
+    <p>A record-only leaderboard prize. Stevo shows who won each month on points and what they are owed; the crew hands the money over in the room like everything else. If players tie on points for a month, they share the rank and the prize for the ranks they occupy is split evenly.</p>
+
+    <h3>Does Stevo ever hold the money?</h3>
+    <p>No. Buy-ins, rebuys, prizes, and season fees are all recorded by Stevo and paid between people. Stevo keeps score; it never holds, pools, or pays out money.</p>
+    <a class="top" href="#top">Back to top</a>
+  </section>
+
+  <section id="notifications">
+    <h2>Notifications and app lock</h2>
+
+    <h3>How do I control notifications?</h3>
+    <p>Profile &gt; Notifications has a master <strong>Push notifications</strong> switch plus four groups you can turn on or off together or one type at a time: <strong>Betting</strong> (challenges, accepted, declined, cancelled, settled, won, lost, disputes, reminders), <strong>Social</strong> (crew invites, new crew members, friend requests, mentions), <strong>Games &amp; Events</strong> (game results, events scheduled, updated, reminders), and <strong>Payments</strong> (received, reminders, confirmed). <strong>Send test push</strong> checks delivery on your device.</p>
+
+    <h3>I turned notifications on but nothing arrives</h3>
+    <p>Make sure notifications are allowed for Stevo in iOS Settings, then use Send test push. The Notification center in your Profile keeps a list of everything you have been sent, so nothing is lost if you missed the banner.</p>
+
+    <h3>What is app lock?</h3>
+    <p>Profile &gt; Security &gt; <strong>Require Face ID to open</strong>. When it is on, Stevo asks for Face ID (with your device passcode as a fallback) every time the app starts cold, and again if it has been in the background for 10 minutes or more. Short detours like answering a text do not lock it. Unlocking never signs you out.</p>
+
+    <h3>Why was I not asked for Face ID?</h3>
+    <p>New accounts start with app lock off; turn it on under Profile &gt; Security. <strong>Face ID login</strong> is a separate switch that lets you sign in without typing your password; set it up from the "Enable Face ID?" prompt right after you sign in with your password.</p>
+    <a class="top" href="#top">Back to top</a>
+  </section>
+
+  <section id="account">
+    <h2>Account, privacy and deletion</h2>
+
+    <h3>What information does Stevo collect?</h3>
+    <p>Your phone number for authentication, your display name, username, and optional avatar, plus the bet and game data you create in the app. Any Venmo, Cash App, or Zelle handles you add under Payment methods are shown to friends you settle with so they can pay you. Your data is used only to provide and improve Stevo and is never sold. It is stored securely with Supabase, and sign-in tokens live in your device's secure enclave.</p>
+
+    <h3>How do I change my profile, password, or phone number?</h3>
+    <p>Profile &gt; Edit profile for your name, username, and avatar; Profile &gt; Change password; and Profile &gt; Edit profile to change your phone number (you confirm the new number with a code).</p>
+
+    <h3>How do I delete my account?</h3>
+    <p>Email <a href="mailto:support@stevoapp.com">support@stevoapp.com</a> from the address or phone you use with Stevo and ask for your account and its data to be deleted. The full Terms of Service and Privacy Policy are under Profile &gt; About.</p>
+
+    <h3>Is Stevo gambling?</h3>
+    <p>Stevo is a scorekeeper for friendly bets and games among friends. It does not facilitate real gambling and does not process payments; bet tracking is for entertainment purposes only.</p>
+    <a class="top" href="#top">Back to top</a>
+  </section>
+
+  <section id="golf">
+    <h2>Golf</h2>
+    <p>Golf rounds are coming in a later release. The current app is focused on lines, custom bets, Face Off, poker nights, and crews.</p>
+    <a class="top" href="#top">Back to top</a>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <div class="contact-head">Still stuck?</div>
+      <p>Email <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>, or use Profile &gt; Help &amp; support &gt; Send feedback in the app, which fills in your app version and device for us.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <div>
+      <div class="footer-brand">
+        <div class="footer-brand-name">STEVO</div>
+      </div>
+      <p class="footer-tagline">The private crew app for guys who bet, play, and compete.</p>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-head">Product</div>
+        <a href="/#features">Features</a>
+        <a href="/#how">How It Works</a>
+        <a href="/faq">FAQ</a>
+      </div>
+      <div>
+        <div class="footer-col-head">Company</div>
+        <a href="/">Privacy</a>
+        <a href="/">Terms</a>
+        <a href="mailto:support@stevoapp.com">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 Stevo App LLC</div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+</script>
+</body>
+</html>

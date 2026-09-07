@@ -17,3 +17,10 @@
 # the gated copy instead of a 404.
 /test-plan.html   https://hq.stevoapp.com/test-plan   302
 /test-plan        https://hq.stevoapp.com/test-plan   302
+
+# The FAQ the app links from Profile > Help & support (lib/supportLinks.ts
+# FAQ_URL = https://stevoapp.com/faq). The file is web/faq.html; these serve
+# the extensionless URL and its trailing-slash form as a 200, not a redirect,
+# so the address the app opens is the one the person sees (card #368).
+/faq    /faq.html   200
+/faq/   /faq.html   200
