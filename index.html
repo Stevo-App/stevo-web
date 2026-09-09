@@ -750,6 +750,11 @@
     .nav-right .nav-hide-xs { display: none; }
     .footer-cols { flex-direction: column; gap: 20px; }
     .phone-slide { width: 232px; }
+    /* The 4th slide is invisible (opacity 0) but still occupies layout, and at
+       375px its 104px offset pushed the document 13px wider than the viewport --
+       a horizontal scrollbar on the phone caused by a card nobody can see. Pull
+       it in; nothing changes visually because it is transparent either way. */
+    .phone-slide.depth-hidden { transform: translate(72px,50px) scale(0.82); }
     .phone-deck { height: 500px; }
   }
   @media (prefers-reduced-motion: reduce) {
