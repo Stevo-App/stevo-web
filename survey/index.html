@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Stevo — Help Choose the Look</title>
+<link rel="icon" href="/survey/stevo-logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#09182F; --panel:#10233D; --panel2:#152D4D; --line:#24456F;
+    --text:#F3F0E8; --muted:#9FB3D0; --gold:#D9AD50; --blue:#3568B0; --red:#E2564A;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.55}
+  h1,h2,h3,.brand{font-family:'Chakra Petch',sans-serif}
+  .wrap{max-width:1200px;margin:0 auto;padding:22px 18px 80px}
+  header{display:flex;align-items:center;gap:12px;padding:6px 0 24px}
+  header img{width:40px;height:40px;border-radius:10px}
+  .brand{font-size:21px;font-weight:700;letter-spacing:.06em}
+
+  .hero{text-align:center;max-width:700px;margin:0 auto 28px}
+  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.15;margin-bottom:14px}
+  .hero h1 span{color:var(--gold)}
+  .hero p{color:var(--muted);font-size:16px}
+  .steps{display:flex;gap:16px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+  .step{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+  .step b{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--gold);color:#20180a;font-size:13px}
+
+  /* theme switch */
+  .themebar{position:sticky;top:0;z-index:40;display:flex;justify-content:center;
+            padding:10px 0;background:var(--bg);box-shadow:0 8px 18px -10px rgba(4,11,22,.95)}
+  .switch{display:inline-flex;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:4px}
+  .switch button{background:none;border:0;color:var(--muted);font:inherit;font-size:14px;font-weight:600;
+                 padding:8px 22px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.15s}
+  .switch button[aria-pressed="true"]{background:var(--gold);color:#20180a}
+  .themehint{color:var(--muted);font-size:12.5px;text-align:center;margin:10px auto 22px;max-width:460px}
+
+  /* design grid */
+  .designs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-bottom:52px}
+  .design{display:flex;flex-direction:column}
+  .design .cap{display:flex;align-items:center;gap:9px;margin-bottom:3px}
+  .chip{display:inline-flex;align-items:center;justify-content:center;width:29px;height:29px;border-radius:8px;
+        font-family:'Chakra Petch',sans-serif;font-size:15px;font-weight:700;background:rgba(217,173,80,.16);
+        color:var(--gold);border:1px solid rgba(217,173,80,.45);flex:0 0 auto}
+  .design .cap h3{font-size:16.5px;font-weight:600}
+  .design .sub{color:var(--muted);font-size:12.5px;margin-bottom:11px;min-height:34px}
+  .shot{aspect-ratio:1/1.95;display:flex;align-items:center;justify-content:center;background:var(--panel);
+        border:1px solid var(--line);border-radius:16px;padding:12px;cursor:zoom-in;transition:border-color .15s}
+  .shot:hover{border-color:var(--gold)}
+  .shot img{max-width:100%;max-height:100%;object-fit:contain;border-radius:9px;display:block}
+  .zoomhint{text-align:center;color:var(--muted);font-size:13px;margin:-34px 0 40px}
+
+  /* lightbox */
+  /* align-items:center would clip the top when content overflows — margin:auto centers safely */
+  .lb{position:fixed;inset:0;z-index:100;background:rgba(4,11,22,.94);display:none;
+      align-items:flex-start;justify-content:center;padding:20px;overflow:auto;overscroll-behavior:contain}
+  .lb.open{display:flex}
+  .lb-inner{max-width:1000px;width:100%;text-align:center;margin:auto}
+  .lb h3{font-size:19px;margin-bottom:4px}
+  .lb .sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .lb-pair{display:flex;gap:18px;justify-content:center;align-items:flex-start;flex-wrap:wrap}
+  .lb-pair figure{flex:1 1 300px;max-width:380px}
+  .lb-pair img{width:100%;border-radius:12px;display:block}
+  .lb-pair figcaption{color:var(--muted);font-size:12px;letter-spacing:.08em;margin-top:8px}
+  .lb-close{position:fixed;top:14px;right:16px;background:var(--panel2);border:1px solid var(--line);color:var(--text);
+            width:42px;height:42px;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+
+  /* form */
+  form{max-width:760px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:34px 30px}
+  @media(max-width:560px){form{padding:26px 17px}}
+  form h2{font-size:24px;margin-bottom:6px}
+  .formsub{color:var(--muted);font-size:14.5px;margin-bottom:28px}
+  .q{margin-bottom:26px}
+  .qlabel{display:block;font-weight:600;font-size:15.5px;margin-bottom:10px}
+  .req{color:var(--gold)}
+  .opt{color:var(--muted);font-weight:400;font-size:13px}
+  .letters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  @media(max-width:520px){.letters{grid-template-columns:repeat(2,1fr)}}
+  .letters label{position:relative}
+  .letters input{position:absolute;opacity:0;pointer-events:none}
+  .letters span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:100%;
+                padding:10px 6px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);
+                cursor:pointer;text-align:center;transition:.15s}
+  .letters span b{font-family:'Chakra Petch',sans-serif;font-size:17px}
+  .letters span i{font-style:normal;font-size:11.5px;color:var(--muted);line-height:1.3}
+  .letters span:hover{border-color:#3a628f}
+  .letters input:checked+span{border-color:var(--gold);background:rgba(217,173,80,.13)}
+  .letters input:checked+span b,.letters input:checked+span i{color:var(--gold)}
+  .letters input:focus-visible+span{outline:2px solid var(--gold);outline-offset:2px}
+  .choices{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  @media(max-width:560px){.choices{grid-template-columns:1fr}}
+  .choice input{position:absolute;opacity:0;pointer-events:none}
+  .choice span{display:flex;align-items:center;justify-content:center;padding:13px 10px;border:1px solid var(--line);
+               border-radius:12px;background:var(--panel2);cursor:pointer;font-size:14.5px;font-weight:500;transition:.15s}
+  .choice span:hover{border-color:#3a628f}
+  .choice input:checked+span{border-color:var(--gold);background:rgba(217,173,80,.13);color:var(--gold)}
+  .choice input:focus-visible+span{outline:2px solid var(--gold);outline-offset:2px}
+  textarea,input[type=text],select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:12px;
+                                   color:var(--text);padding:12px 14px;font:inherit;font-size:14.5px}
+  textarea{min-height:88px;resize:vertical}
+  textarea:focus,input[type=text]:focus,select:focus{outline:none;border-color:var(--gold)}
+  select{appearance:none;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239FB3D0' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+  button[type=submit]{width:100%;padding:16px;border:0;border-radius:14px;background:var(--gold);color:#20180a;
+                      font-family:'Chakra Petch',sans-serif;font-size:17px;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:.15s}
+  button[type=submit]:hover{filter:brightness(1.07);transform:translateY(-1px)}
+  button[type=submit]:disabled{opacity:.6;cursor:default;transform:none}
+  #form-error{display:none;background:rgba(226,86,74,.13);border:1px solid var(--red);color:#ffb3ac;
+              border-radius:12px;padding:12px 14px;font-size:14px;margin-bottom:14px}
+  .fineprint{text-align:center;color:var(--muted);font-size:12.5px;margin-top:16px}
+  footer{text-align:center;color:#6b83a6;font-size:12.5px;margin-top:56px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img src="/survey/stevo-logo.png" alt="Stevo logo">
+    <div class="brand">STEVO</div>
+  </header>
+
+  <section class="hero">
+    <h1>Help choose the look of <span>Stevo</span></h1>
+    <p>Stevo is the app for tracking friendly bets with your crew. Here are eight looks for the home screen — same screen every time, just styled differently. Take a look, then answer six quick questions. About 3 minutes.</p>
+    <div class="steps">
+      <div class="step"><b>1</b> Compare the eight looks</div>
+      <div class="step"><b>2</b> Try light and dark</div>
+      <div class="step"><b>3</b> Answer below</div>
+    </div>
+  </section>
+
+  <div class="themebar">
+    <div class="switch" role="group" aria-label="Preview theme">
+      <button type="button" id="btn-light" aria-pressed="false">☀︎ Light</button>
+      <button type="button" id="btn-dark" aria-pressed="true">☾ Dark</button>
+    </div>
+  </div>
+  <p class="themehint">Every design comes in both. Flip back and forth before you answer question 4.</p>
+
+  <section class="designs" id="designs"></section>
+  <p class="zoomhint">Tap any screen above to see it bigger, in both themes.</p>
+
+  <form id="survey-form">
+    <h2>Which would you choose?</h2>
+    <p class="formsub">Go with your gut — there are no right answers.</p>
+
+    <div id="form-error"></div>
+    <div style="position:absolute;left:-9999px" aria-hidden="true">
+      <label>Leave this empty <input type="text" name="bot-field" tabindex="-1" autocomplete="off"></label>
+    </div>
+
+    <div class="q">
+      <span class="qlabel">1. Favorite overall design <span class="req">*</span></span>
+      <div class="letters" data-letters="favorite"></div>
+    </div>
+
+    <div class="q">
+      <span class="qlabel">2. Runner-up <span class="req">*</span></span>
+      <div class="letters" data-letters="runner_up"></div>
+    </div>
+
+    <div class="q">
+      <span class="qlabel">3. Easiest to read and understand <span class="req">*</span></span>
+      <div class="letters" data-letters="easiest"></div>
+    </div>
+
+    <div class="q">
+      <span class="qlabel">4. Preferred theme <span class="req">*</span></span>
+      <div class="choices">
+        <label class="choice"><input type="radio" name="theme" value="Light" required><span>Light</span></label>
+        <label class="choice"><input type="radio" name="theme" value="Dark"><span>Dark</span></label>
+        <label class="choice"><input type="radio" name="theme" value="Follow my phone setting"><span>Follow my phone</span></label>
+      </div>
+    </div>
+
+    <div class="q">
+      <label class="qlabel" for="would_keep">5. What would you keep? <span class="opt">(optional)</span></label>
+      <textarea id="would_keep" name="would_keep" placeholder="Anything that stood out as a keeper — artwork, layout, colors, a specific tile…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="qlabel" for="would_change">6. What would you change or find confusing? <span class="opt">(optional)</span></label>
+      <textarea id="would_change" name="would_change" placeholder="Anything unclear, cluttered, missing, or that you'd do differently…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="qlabel" for="age_range">Age range <span class="opt">(optional — helps us see if taste varies by generation)</span></label>
+      <select id="age_range" name="age_range">
+        <option value="">Prefer not to say</option>
+        <option>Under 25</option>
+        <option>25–34</option>
+        <option>35–44</option>
+        <option>45–54</option>
+        <option>55–64</option>
+        <option>65+</option>
+      </select>
+    </div>
+
+    <div class="q">
+      <label class="qlabel" for="respondent">Your name <span class="opt">(optional)</span></label>
+      <input type="text" id="respondent" name="respondent" placeholder="So we know who to thank">
+    </div>
+
+    <button type="submit" id="submit-btn">Submit my picks</button>
+    <p class="fineprint">One submission per person, please. Thanks for helping shape the app.</p>
+  </form>
+
+  <footer>Stevo App LLC · <a href="https://stevoapp.com" style="color:#6b83a6">stevoapp.com</a></footer>
+</div>
+
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged design">
+  <button class="lb-close" id="lb-close" aria-label="Close">×</button>
+  <div class="lb-inner">
+    <h3 id="lb-title"></h3>
+    <div class="sub" id="lb-sub"></div>
+    <div class="lb-pair">
+      <figure><img id="lb-light" alt="Light theme"><figcaption>LIGHT</figcaption></figure>
+      <figure><img id="lb-dark" alt="Dark theme"><figcaption>DARK</figcaption></figure>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var SB_URL = 'https://sztatmknjyzzyzngvpff.supabase.co/rest/v1/stevo_design_review_responses';
+  var SB_KEY = 'sb_publishable_GvPXZ8AVgix3aZ2UDS0YRQ_ktlLvMtB';
+
+  var DESIGNS = [
+    {k:'a', L:'A', name:'Detailed illustrations', sub:'Rich, photo-real artwork on every shortcut'},
+    {k:'b', L:'B', name:'Club illustrations',     sub:'Hand-drawn, vintage sports-club artwork'},
+    {k:'c', L:'C', name:'Outline symbols',        sub:'Simple line icons with room to breathe'},
+    {k:'d', L:'D', name:'Color gradients',        sub:'Line icons on soft color-graded tiles'},
+    {k:'e', L:'E', name:'Coordinated blue tiles', sub:'Line icons on matching blue tiles'},
+    {k:'f', L:'F', name:'Sportsbook layout',      sub:'Denser, closer to a sportsbook app'},
+    {k:'g', L:'G', name:'Compact theme pair',     sub:'Tighter spacing, theme switch built in'},
+    {k:'h', L:'H', name:'Bold two-color symbols', sub:'Chunky two-tone icons in navy and gold'}
+  ];
+  var theme = 'dark';
+
+  function img(d, t){ return '/survey/designs/' + d.k + '-' + t + '.jpg'; }
+
+  // ---- build the design grid ----
+  var grid = document.getElementById('designs');
+  grid.innerHTML = DESIGNS.map(function(d, i){
+    return '<div class="design">' +
+      '<div class="cap"><span class="chip">' + d.L + '</span><h3>' + d.name + '</h3></div>' +
+      '<div class="sub">' + d.sub + '</div>' +
+      '<div class="shot" data-k="' + d.k + '" role="button" tabindex="0" aria-label="Enlarge ' + d.name + '">' +
+        '<img src="' + img(d, theme) + '" alt="' + d.name + ' home screen" ' +
+             (i < 2 ? '' : 'loading="lazy"') + '>' +
+      '</div></div>';
+  }).join('');
+
+  // ---- build the A–H answer buttons ----
+  document.querySelectorAll('[data-letters]').forEach(function(box){
+    var field = box.dataset.letters;
+    box.innerHTML = DESIGNS.map(function(d){
+      return '<label><input type="radio" name="' + field + '" value="' + d.L + ' — ' + d.name + '" required>' +
+        '<span><b>' + d.L + '</b><i>' + d.name + '</i></span></label>';
+    }).join('');
+  });
+
+  // ---- theme switch ----
+  var bL = document.getElementById('btn-light'), bD = document.getElementById('btn-dark');
+  function setTheme(t){
+    theme = t;
+    bL.setAttribute('aria-pressed', t === 'light');
+    bD.setAttribute('aria-pressed', t === 'dark');
+    DESIGNS.forEach(function(d){
+      var el = grid.querySelector('.shot[data-k="' + d.k + '"] img');
+      if (el) el.src = img(d, t);
+    });
+  }
+  bL.addEventListener('click', function(){ setTheme('light'); });
+  bD.addEventListener('click', function(){ setTheme('dark'); });
+
+  // preload the other theme once the page is idle, so flipping is instant
+  window.addEventListener('load', function(){
+    setTimeout(function(){
+      DESIGNS.forEach(function(d){
+        ['light','dark'].forEach(function(t){ new Image().src = img(d, t); });
+      });
+    }, 1200);
+  });
+
+  // ---- lightbox ----
+  var lb = document.getElementById('lightbox');
+  function openLb(k){
+    var d = DESIGNS.filter(function(x){ return x.k === k; })[0];
+    if (!d) return;
+    document.getElementById('lb-title').textContent = d.L + ' — ' + d.name;
+    document.getElementById('lb-sub').textContent = d.sub;
+    document.getElementById('lb-light').src = img(d, 'light');
+    document.getElementById('lb-dark').src = img(d, 'dark');
+    lb.classList.add('open');
+    lb.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+  grid.addEventListener('click', function(e){
+    var s = e.target.closest('.shot'); if (s) openLb(s.dataset.k);
+  });
+  grid.addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var s = e.target.closest('.shot'); if (s){ e.preventDefault(); openLb(s.dataset.k); }
+  });
+  document.getElementById('lb-close').addEventListener('click', closeLb);
+  lb.addEventListener('click', function(e){ if (e.target === lb || e.target.classList.contains('lb-inner')) closeLb(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLb(); });
+
+  // ---- submit ----
+  var form = document.getElementById('survey-form');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (form.elements['bot-field'].value) return; // honeypot
+    var btn = document.getElementById('submit-btn');
+    var err = document.getElementById('form-error');
+    err.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    var fd = new FormData(form);
+    var val = function(k){ var v = fd.get(k); return v && String(v).trim() ? String(v).trim() : null; };
+    var payload = {
+      favorite:     val('favorite'),
+      runner_up:    val('runner_up'),
+      easiest:      val('easiest'),
+      theme:        val('theme'),
+      would_keep:   val('would_keep'),
+      would_change: val('would_change'),
+      age_range:    val('age_range'),
+      respondent:   val('respondent'),
+      user_agent:   navigator.userAgent.slice(0, 300)
+    };
+    fetch(SB_URL, {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      window.location.href = '/survey/thanks.html';
+    }).catch(function(){
+      err.textContent = 'Something went wrong sending that. Check your connection and try again.';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Submit my picks';
+    });
+  });
+})();
+</script>
+</body>
+</html>

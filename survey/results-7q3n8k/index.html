@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Stevo Design Survey — Live Results</title>
+<link rel="icon" href="/survey/stevo-logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#09182F; --panel:#10233D; --panel2:#152D4D; --line:#24456F;
+    --text:#F3F0E8; --muted:#9FB3D0; --gold:#D9AD50; --blue:#3568B0; --green:#2FD575;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;line-height:1.5}
+  h1,h2,.brand{font-family:'Chakra Petch',sans-serif}
+  .wrap{max-width:880px;margin:0 auto;padding:22px 18px 80px}
+  header{display:flex;align-items:center;gap:12px;padding:4px 0 20px;flex-wrap:wrap}
+  header img{width:38px;height:38px;border-radius:9px}
+  .brand{font-size:19px;font-weight:700;letter-spacing:.06em}
+  .brand small{color:var(--muted);font-weight:500;font-size:12px;display:block;letter-spacing:.02em}
+  .toolbar{display:flex;align-items:center;gap:11px;margin-left:auto}
+  .stamp{color:var(--muted);font-size:12px;text-align:right}
+  #refresh{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;
+           padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
+  #refresh:hover{border-color:var(--gold);color:var(--gold)}
+  .bignums{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+  .bignum{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+  .bignum .n{font-size:32px;font-weight:800;font-family:'Chakra Petch',sans-serif}
+  .bignum .l{color:var(--muted);font-size:12.5px}
+  .bignum .n.green{color:var(--green)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+  .card h2{font-size:14.5px;letter-spacing:.03em;border-bottom:2px solid var(--gold);padding-bottom:8px;margin-bottom:14px}
+  .card .note{color:var(--muted);font-size:12px;margin:-8px 0 12px}
+  .bar-row{display:grid;grid-template-columns:minmax(96px,190px) 1fr 30px;gap:10px;align-items:center;margin-bottom:7px;font-size:13px}
+  .bar-row .lbl{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar-row .lbl b{color:var(--text);font-family:'Chakra Petch',sans-serif}
+  .track{background:var(--panel2);border-radius:6px;height:20px;overflow:hidden}
+  .fill{height:100%;border-radius:6px;transition:width .5s}
+  .cnt{font-weight:700;text-align:right}
+  .kv{display:flex;justify-content:space-between;gap:16px;font-size:13.5px;padding:6px 0;border-bottom:1px solid var(--panel2)}
+  .kv:last-child{border-bottom:0}
+  .rank{display:flex;justify-content:space-between;gap:16px;font-size:13.5px;padding:6px 0;border-bottom:1px solid var(--panel2)}
+  .rank:last-child{border-bottom:0}
+  .rank.top{color:var(--gold);font-weight:700}
+  .consensus p{font-size:13.5px;margin-bottom:11px;color:#C9D6E8}
+  .consensus p b{color:var(--text)}
+  .asof{color:var(--muted);font-size:12px;margin-top:12px;border-top:1px solid var(--panel2);padding-top:10px}
+  details{margin-top:6px}
+  summary{cursor:pointer;color:var(--muted);font-size:13px;padding:6px 0}
+  summary:hover{color:var(--gold)}
+  .quote{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--panel2);font-size:13.5px}
+  .quote:last-child{border-bottom:0}
+  .tag{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+       border-radius:6px;font-size:12px;font-weight:700;font-family:'Chakra Petch',sans-serif;
+       background:rgba(217,173,80,.16);color:var(--gold);border:1px solid rgba(217,173,80,.4)}
+  #status{color:var(--muted);font-size:13px;padding:36px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="/survey/stevo-logo.png" alt="Stevo logo">
+    <div class="brand">STEVO<small>Design survey · live results</small></div>
+    <div class="toolbar">
+      <div class="stamp" id="stamp">loading…</div>
+      <button id="refresh">Refresh</button>
+    </div>
+  </header>
+
+  <div id="status">Loading results…</div>
+
+  <div id="content" style="display:none">
+    <div class="bignums">
+      <div class="bignum"><div class="n" id="n-total">–</div><div class="l">total responses</div></div>
+      <div class="bignum"><div class="n green" id="n-fresh">–</div><div class="l">in last 24 hours</div></div>
+    </div>
+
+    <div class="card">
+      <h2>RANKING</h2>
+      <div class="note">Favorite counts 2 points, runner-up 1 — with eight options a first-place count alone splits too thin to read.</div>
+      <div id="ranking"></div>
+    </div>
+
+    <div class="card"><h2>FAVORITE OVERALL</h2><div id="bars-fav"></div></div>
+    <div class="card"><h2>RUNNER-UP</h2><div id="bars-run"></div></div>
+    <div class="card"><h2>EASIEST TO READ AND UNDERSTAND</h2><div id="bars-easy"></div></div>
+    <div class="card"><h2>PREFERRED THEME</h2><div id="theme"></div></div>
+    <div class="card"><h2>AGE RANGE</h2><div id="age"></div></div>
+
+    <div class="card">
+      <h2>WHAT PEOPLE WROTE</h2>
+      <div class="consensus" id="consensus"></div>
+      <details>
+        <summary id="keep-sum">Show what people would keep</summary>
+        <div id="q-keep"></div>
+      </details>
+      <details>
+        <summary id="change-sum">Show what people would change</summary>
+        <div id="q-change"></div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var RPC  = 'https://sztatmknjyzzyzngvpff.supabase.co/rest/v1/rpc/stevo_design_review_results';
+  var ANON = 'sb_publishable_GvPXZ8AVgix3aZ2UDS0YRQ_ktlLvMtB';
+  var KEY  = 'drv_3e8a71c5b9d2f406';
+
+  var L = ['A','B','C','D','E','F','G','H'];
+  var NAME = {A:'Detailed illustrations', B:'Club illustrations', C:'Outline symbols', D:'Color gradients',
+              E:'Coordinated blue tiles', F:'Sportsbook layout', G:'Compact theme pair', H:'Bold two-color symbols'};
+
+  function esc(s){ var d=document.createElement('div'); d.textContent = s==null?'':String(s); return d.innerHTML; }
+  function letter(v){ return (v||'').charAt(0); }
+
+  function tally(rows, field){
+    var t={}; L.forEach(function(k){ t[k]=0; });
+    rows.forEach(function(r){ var k=letter(r[field]); if(k in t) t[k]++; });
+    return t;
+  }
+
+  function bars(el, rows, field, color){
+    var t = tally(rows, field);
+    var max = Math.max.apply(null, L.map(function(k){ return t[k]; }).concat([1]));
+    el.innerHTML = L.map(function(k){
+      var lead = t[k] > 0 && t[k] === max;
+      return '<div class="bar-row"><div class="lbl"><b>'+k+'</b> '+esc(NAME[k])+'</div>'+
+        '<div class="track"><div class="fill" style="width:'+(t[k]/max*100)+'%;background:'+color+'"></div></div>'+
+        '<div class="cnt" style="color:'+(lead?color:'inherit')+'">'+t[k]+'</div></div>';
+    }).join('');
+  }
+
+  function counts(el, rows, field){
+    var m={};
+    rows.forEach(function(r){ if(r[field]) m[r[field]] = (m[r[field]]||0)+1; });
+    var e = Object.keys(m).map(function(k){ return [k,m[k]]; }).sort(function(a,b){ return b[1]-a[1]; });
+    el.innerHTML = e.length
+      ? e.map(function(x){ return '<div class="kv"><span>'+esc(x[0])+'</span><b>'+x[1]+'</b></div>'; }).join('')
+      : '<div class="kv"><span style="color:var(--muted)">No answers yet</span></div>';
+  }
+
+  function ranking(el, rows){
+    var p={}; L.forEach(function(k){ p[k]=0; });
+    rows.forEach(function(r){
+      var f=letter(r.favorite), u=letter(r.runner_up);
+      if(f in p) p[f]+=2; if(u in p) p[u]+=1;
+    });
+    var rank = L.map(function(k){ return [k,p[k]]; }).sort(function(a,b){ return b[1]-a[1]; });
+    el.innerHTML = rank.map(function(x,i){
+      var top = i===0 && x[1]>0;
+      return '<div class="rank'+(top?' top':'')+'"><span>'+(i+1)+'. <b>'+x[0]+'</b> '+esc(NAME[x[0]])+'</span><b>'+x[1]+'</b></div>';
+    }).join('');
+  }
+
+  // Written answers, pooled and unattributed — the badge shows which design that
+  // person voted favorite, so you can read a camp's reasoning without names.
+  function quotes(el, sumEl, rows, field, label){
+    var items = rows.filter(function(r){ return r[field] && String(r[field]).trim(); })
+      .sort(function(a,b){ return (letter(a.favorite)||'Z').localeCompare(letter(b.favorite)||'Z'); });
+    sumEl.textContent = 'Show ' + label + ' (' + items.length + ')';
+    el.innerHTML = items.length
+      ? items.map(function(r){
+          return '<div class="quote"><span class="tag" title="Their favorite design">'+(letter(r.favorite)||'–')+'</span>'+
+            '<span>“'+esc(String(r[field]).trim())+'”</span></div>';
+        }).join('')
+      : '<div class="quote"><span style="color:var(--muted)">Nothing written in yet</span></div>';
+  }
+
+  function consensus(el, rows){
+    if (!rows.length){
+      el.innerHTML = '<p style="color:var(--muted)">No responses yet. Once a handful come in, ask Claude to write the read on them and this section gets filled in.</p>';
+      return;
+    }
+    el.innerHTML = '<p style="color:var(--muted)">'+rows.length+' response'+(rows.length===1?'':'s')+' so far. ' +
+      'The numbers above update on their own; the written read on them is not automatic — ' +
+      'ask Claude to "refresh the consensus" and it gets written in here.</p>';
+  }
+
+  function render(rows){
+    var now = Date.now();
+    var fresh = rows.filter(function(r){ return now - new Date(r.created_at).getTime() < 864e5; });
+    document.getElementById('n-total').textContent = rows.length;
+    document.getElementById('n-fresh').textContent = '+' + fresh.length;
+    ranking(document.getElementById('ranking'), rows);
+    bars(document.getElementById('bars-fav'),  rows, 'favorite',  '#D9AD50');
+    bars(document.getElementById('bars-run'),  rows, 'runner_up', '#3568B0');
+    bars(document.getElementById('bars-easy'), rows, 'easiest',   '#2FD575');
+    counts(document.getElementById('theme'), rows, 'theme');
+    counts(document.getElementById('age'),   rows, 'age_range');
+    consensus(document.getElementById('consensus'), rows);
+    quotes(document.getElementById('q-keep'),   document.getElementById('keep-sum'),   rows, 'would_keep',   'what people would keep');
+    quotes(document.getElementById('q-change'), document.getElementById('change-sum'), rows, 'would_change', 'what people would change');
+    document.getElementById('status').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+    document.getElementById('stamp').textContent = 'updated ' +
+      new Date().toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'});
+  }
+
+  function load(){
+    fetch(RPC, {
+      method:'POST',
+      headers:{ apikey:ANON, Authorization:'Bearer '+ANON, 'Content-Type':'application/json' },
+      body: JSON.stringify({ view_key: KEY })
+    }).then(function(r){
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.json();
+    }).then(render).catch(function(e){
+      var s = document.getElementById('status');
+      s.style.display='block';
+      s.textContent = 'Could not load results ('+e.message+'). Retrying shortly…';
+    });
+  }
+
+  document.getElementById('refresh').addEventListener('click', load);
+  load();
+  setInterval(load, 60000);
+})();
+</script>
+</body>
+</html>
