@@ -4,31 +4,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stevo | The Private Crew App</title>
-<meta name="description" content="Stevo is the private crew app for guys. Social bets, poker nights, golf, and more, all in one place for your crew.">
+<meta name="description" content="Stevo records the bets, Face Off tabs and poker nights your crew already runs, and keeps one balance per person. It never holds, moves, or pays out money.">
+<meta name="theme-color" content="#09182F">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;700&family=Chakra+Petch:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  /* Navy & Warm Gold — the tokens are constants/theme.ts in the app repo, so the
+     site and the app are the same palette. Gold is the primary action and the
+     active state; blue carries identity and structure. */
   :root {
-    --bg: #0A0A10;
-    --surface: #111118;
-    --surface2: #1A1A22;
-    --border: #28283A;
-    --accent: #2563EB;
-    --accent-hover: #1D4ED8;
-    --red: #EF4444;
-    --red-deep: #B91C1C;
-    --blue: #3B82F6;
-    --blue-ice: #60A5FA;
-    --purple: #8B5CF6;
-    --gold: #FBBF24;
-    --gold-deep: #D97706;
-    --green: #22C55E;
-    --green-deep: #16A34A;
-    --cream: #FEF3C7;
-    --text: #E2E8F0;
-    --text2: #94A3B8;
-    --text3: #475569;
-    --text4: #1E293B;
+    --ink900: #050F20;
+    --bg: #09182F;
+    --surface1: #0F2440;
+    --surface2: #152D4D;
+    --surface3: #1B3A5F;
+    --surface4: #2A5183;
+    --border1: #1A3352;
+    --border2: #23446B;
+    --border3: #203D60;
+    --blue500: #3568B0;
+    --blue300: #2E5480;
+    --gold500: #D9AD50;
+    --gold300: #E7C77E;
+    --gold-ink: #20180A;
+    --text: #F3F0E8;
+    --muted: #93A9C4;
+    --soft: #C9D9EC;
+    --faint: #6C88AC;
+    --down: #FF7B7B;
+    --up: #6FD3A0;
+    --gold-bg: rgba(217,173,80,0.30);
+    --blue-bg: rgba(53,104,176,0.16);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,170 +44,40 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Chakra Petch', sans-serif;
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     position: relative;
     overflow-x: hidden;
   }
 
-  /* Ambient gradient mesh background (very subtle colored lights) */
+  /* Ambient wash: gold above, blue below, the same two families as the app */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     z-index: -2;
     background:
-      radial-gradient(ellipse 800px 600px at 15% 20%, rgba(37,99,235,0.08), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 85% 40%, rgba(139,92,246,0.07), transparent 60%),
-      radial-gradient(ellipse 600px 500px at 50% 90%, rgba(251,191,36,0.05), transparent 60%);
+      radial-gradient(ellipse 900px 600px at 20% 0%, rgba(217,173,80,0.10), transparent 62%),
+      radial-gradient(ellipse 800px 600px at 85% 35%, rgba(53,104,176,0.14), transparent 62%),
+      radial-gradient(ellipse 700px 500px at 50% 100%, rgba(217,173,80,0.06), transparent 60%);
     pointer-events: none;
   }
 
-  /* Film grain overlay (very subtle) */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.025;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--gold500);
+    outline-offset: 2px;
   }
 
-  /* Scroll progress bar (fills as user scrolls) */
   .scroll-progress {
     position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    width: 0%;
-    background: linear-gradient(90deg, var(--blue-ice), var(--accent), var(--purple));
-    z-index: 9999;
-    transition: width 0.1s linear;
-    box-shadow: 0 0 12px rgba(37,99,235,0.6);
+    top: 0; left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--gold500);
+    z-index: 200;
   }
 
-  /* Custom scrollbar (webkit) */
-  ::-webkit-scrollbar { width: 10px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb {
-    background: var(--surface2);
-    border-radius: 10px;
-    border: 2px solid var(--bg);
-  }
-  ::-webkit-scrollbar-thumb:hover { background: var(--border); }
-
-  /* Editorial serif font for pull quotes and magazine-style moments */
-  .serif {
-    font-family: 'Playfair Display', Georgia, serif;
-  }
-
-  /* ── SCROLL REVEAL ── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-d1 { transition-delay: 0.08s; }
-  .reveal-d2 { transition-delay: 0.16s; }
-  .reveal-d3 { transition-delay: 0.24s; }
-  .reveal-d4 { transition-delay: 0.32s; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
-    .parallax { transform: none !important; }
-    .breathe { animation: none !important; }
-  }
-
-  /* ── TYPOGRAPHY HELPERS ── */
-  .script {
-    font-family: 'Caveat', cursive;
-    font-weight: 700;
-    font-style: normal;
-    letter-spacing: 0;
-  }
-  .ts-thin {
-    font-weight: 300;
-  }
-  .mono-num {
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.02em;
-  }
-
-  /* ── SIGNATURE WATERMARK (decorative suit symbols at section edges) ── */
-  .watermark {
-    position: absolute;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(120px, 18vw, 260px);
-    line-height: 1;
-    color: var(--surface2);
-    pointer-events: none;
-    user-select: none;
-    opacity: 0.6;
-    z-index: 0;
-  }
-  .watermark-digit {
-    font-size: clamp(180px, 22vw, 340px);
-    color: transparent;
-    -webkit-text-stroke: 2px var(--surface2);
-    text-stroke: 2px var(--surface2);
-    font-weight: 400;
-  }
-
-  /* ── BREATHING / FLOATING ANIMATIONS (slow, natural) ── */
-  @keyframes breathe {
-    0%, 100% { transform: translateY(0) rotate(var(--baseRot, 0deg)); }
-    50% { transform: translateY(-10px) rotate(calc(var(--baseRot, 0deg) + 0.3deg)); }
-  }
-  .breathe {
-    animation: breathe 7s ease-in-out infinite;
-  }
-  .breathe-slow { animation-duration: 9s; }
-  .breathe-slower { animation-duration: 11s; }
-
-  /* ── LETTER REVEAL ── */
-  .letter-reveal {
-    display: inline-block;
-  }
-  .letter-reveal .char {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: charReveal 0.7s cubic-bezier(.2,.8,.2,1) forwards;
-  }
-  @keyframes charReveal {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── EDITORIAL UNDERLINE (swipes in on hover/reveal) ── */
-  .swipe-underline {
-    position: relative;
-    display: inline-block;
-  }
-  .swipe-underline::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
-    border-radius: 2px;
-  }
-  .swipe-underline.gold::after { background: var(--gold); }
-  .swipe-underline.red::after { background: var(--red); }
-  .swipe-underline.green::after { background: var(--green); }
-  .swipe-underline.visible::after,
-  .swipe-underline:hover::after {
-    transform: scaleX(1);
-  }
-
-  /* ── NAV ── */
+  /* ── NAV (shared with faq.html) ── */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -209,44 +86,38 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(11,17,32,0.85);
+    background: rgba(9,24,47,0.85);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(255,255,255,0.04);
     transition: padding 0.3s ease, background 0.3s ease,
                 box-shadow 0.3s ease, border-color 0.3s ease;
   }
-  /* Condenses and lifts off the page once the user starts scrolling */
   nav.scrolled {
     padding: 10px 40px;
-    background: rgba(11,17,32,0.95);
-    border-bottom-color: rgba(255,255,255,0.08);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+    background: rgba(9,24,47,0.95);
+    border-bottom-color: var(--border1);
+    box-shadow: 0 8px 30px rgba(3,10,22,0.55);
   }
-
   .nav-left {
     display: flex;
     align-items: center;
     gap: 10px;
     text-decoration: none;
   }
-  .nav-left img {
-    width: 32px; height: 32px;
-    border-radius: 6px;
-  }
+  .nav-mark { display: block; }
   .nav-wordmark {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 24px;
-    letter-spacing: 3px;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 1.1px;
     color: var(--text);
   }
-
   .nav-right {
     display: flex;
     gap: 28px;
     align-items: center;
   }
   .nav-right a {
-    color: var(--text2);
+    color: var(--muted);
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
@@ -254,1019 +125,433 @@
   }
   .nav-right a:hover { color: var(--text); }
   .nav-cta {
-    background: var(--accent);
-    color: #fff !important;
+    background: var(--gold500);
+    color: var(--gold-ink) !important;
     padding: 9px 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-weight: 700;
     font-size: 13px;
-    transition: background 0.2s;
-  }
-  .nav-cta:hover { background: var(--accent-hover); }
-
-  /* Focus */
-  a:focus-visible, button:focus-visible, input:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 140px 40px 100px;
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: 60px;
-    align-items: center;
-    position: relative;
-    overflow: visible;
-  }
-  /* Oversized decorative 'S' behind the carousel */
-  .hero-decor {
-    position: absolute;
-    top: 20%;
-    right: 4%;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(260px, 30vw, 460px);
-    line-height: 0.8;
-    letter-spacing: -0.04em;
-    color: transparent;
-    -webkit-text-stroke: 2px var(--surface2);
-    text-stroke: 2px var(--surface2);
-    pointer-events: none;
-    user-select: none;
-    z-index: 0;
-    will-change: transform;
-  }
-  .hero-col-left, .hero-col-right { position: relative; z-index: 2; }
-
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(37,99,235,0.08);
-    border: 1px solid rgba(37,99,235,0.25);
-    border-radius: 6px;
-    padding: 5px 12px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 28px;
-  }
-  .hero-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: badgePulse 2.2s ease-in-out infinite;
-  }
-  @keyframes badgePulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.7); }
-  }
-
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    line-height: 0.82;
-    letter-spacing: 0;
-    margin-bottom: 28px;
-    margin-top: 4px;
-  }
-  .hero-title > span {
-    display: block;
-    opacity: 0;
-    transform: translateY(40px);
-    animation: titleIn 0.9s cubic-bezier(.2,.8,.2,1) forwards;
-  }
-  .hero-title .line-1 {
-    font-size: clamp(36px, 4vw, 56px);
-    color: var(--text2);
-    font-weight: 300;
-    letter-spacing: 4px;
-    animation-delay: 0.1s;
-  }
-  .hero-title .line-2 {
-    font-size: clamp(78px, 10vw, 144px);
-    color: var(--text);
-    letter-spacing: -1px;
-    margin-top: 8px;
-    animation-delay: 0.2s;
-  }
-  .hero-title .line-3 {
-    font-size: clamp(78px, 10vw, 144px);
-    background: linear-gradient(135deg, var(--blue-ice) 0%, var(--accent) 50%, var(--purple) 100%);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    animation: titleIn 0.9s cubic-bezier(.2,.8,.2,1) 0.3s forwards, gradShift 8s ease-in-out infinite;
-    letter-spacing: -1px;
-    margin-top: -6px;
-  }
-  .hero-title .line-4 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-style: italic;
-    font-weight: 700;
-    font-size: clamp(24px, 3vw, 38px);
-    color: var(--gold);
-    margin-top: 10px;
-    animation-delay: 0.5s;
-    letter-spacing: 0;
-    text-transform: none;
-  }
-  @keyframes titleIn {
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes gradShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  .hero-sub {
-    font-size: 17px;
-    color: var(--text2);
-    line-height: 1.65;
-    margin-bottom: 36px;
-    max-width: 460px;
-  }
-  .hero-sub em {
-    font-style: normal;
-    color: var(--text);
-    font-weight: 500;
-    background: linear-gradient(120deg, transparent 40%, rgba(37,99,235,0.18) 40%, rgba(37,99,235,0.18) 90%, transparent 90%);
-    padding: 0 2px;
-  }
-
-  .hero-form {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .hero-input {
-    flex: 1;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 16px;
-    color: var(--text);
-    font-family: 'Chakra Petch', sans-serif;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .hero-input:focus { border-color: var(--accent); }
-  .hero-input::placeholder { color: var(--text3); }
-
-  .hero-btn {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 14px 24px;
-    font-family: 'Chakra Petch', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
     white-space: nowrap;
     transition: background 0.2s;
   }
-  .hero-btn:hover { background: var(--accent-hover); }
+  .nav-cta:hover { background: var(--gold300); }
 
-  .hero-note {
-    font-size: 12px;
-    color: var(--text3);
-  }
-
-  .hero-success {
-    display: none;
-    background: rgba(245,158,11,0.08);
-    border: 1px solid rgba(245,158,11,0.2);
-    border-radius: 8px;
-    padding: 14px 16px;
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 14px;
-  }
-
-  .hero-proof {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  .hero-proof-avatars {
-    display: flex;
-  }
-  .hero-proof-avatars span {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    border: 2px solid var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    color: #000;
-    margin-left: -6px;
-  }
-  .hero-proof-avatars span:first-child { margin-left: 0; }
-  .hero-proof-text {
-    font-size: 13px;
-    color: var(--text2);
-  }
-  .hero-proof-text strong { color: var(--text); }
-
-  .hero-socials {
-    display: flex;
-    gap: 8px;
-    margin-top: 28px;
-  }
-  .hero-socials a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px; height: 36px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text3);
-    text-decoration: none;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .hero-socials a:hover {
-    color: var(--text2);
-    border-color: var(--text3);
-  }
-
-  /* Hero screenshot carousel (deck-style) */
-  .hero-carousel {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 24px;
-    perspective: 1400px;
-  }
-  .hero-carousel-stack {
-    position: relative;
-    width: 300px;
-    aspect-ratio: 9 / 19.5;
-    cursor: pointer;
-    user-select: none;
-    /* Extra space for the peeking cards behind */
-    padding-right: 50px;
-    padding-bottom: 30px;
-    transform-style: preserve-3d;
-    /* JS feeds live tilt into these vars; eases back to rest on leave */
-    transform: rotateX(var(--tiltX, 0deg)) rotateY(var(--tiltY, 0deg));
-    transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
-  }
-  .hero-carousel-stack.tilting {
-    transition: transform 0.08s linear;
-  }
-  .hero-carousel-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 300px;
-    aspect-ratio: 9 / 19.5;
-    background: #000;
-    border-radius: 36px;
-    overflow: hidden;
-    border: 2px solid var(--border);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-    transition: transform 0.5s cubic-bezier(.4,0,.2,1),
-                opacity 0.4s ease,
-                box-shadow 0.3s ease;
-    transform-origin: center center;
-  }
-  .hero-carousel-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  /* Depth-0 = front (active) */
-  .hero-carousel-slide.depth-0 {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-    z-index: 5;
-  }
-  /* Depth-1 = peeking one card back */
-  .hero-carousel-slide.depth-1 {
-    transform: translate(22px, 14px) scale(0.95);
-    opacity: 0.85;
-    z-index: 4;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  }
-  /* Depth-2 = peeking two cards back */
-  .hero-carousel-slide.depth-2 {
-    transform: translate(40px, 26px) scale(0.9);
-    opacity: 0.6;
-    z-index: 3;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.35);
-  }
-  /* Everything further back is hidden */
-  .hero-carousel-slide.depth-hidden {
-    transform: translate(40px, 26px) scale(0.88);
-    opacity: 0;
-    z-index: 1;
-    pointer-events: none;
-  }
-  /* Hover lifts the top card slightly and pushes the deck apart */
-  .hero-carousel-stack:hover .hero-carousel-slide.depth-0 {
-    transform: translate(-4px, -4px) scale(1.02);
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-  }
-  .hero-carousel-stack:hover .hero-carousel-slide.depth-1 {
-    transform: translate(28px, 18px) scale(0.95);
-  }
-  .hero-carousel-stack:hover .hero-carousel-slide.depth-2 {
-    transform: translate(48px, 32px) scale(0.9);
-  }
-  .hero-carousel-hint {
-    position: absolute;
-    bottom: 44px;
-    left: calc(50% - 25px);
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.65);
-    backdrop-filter: blur(8px);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 6px 12px;
-    border-radius: 20px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-    white-space: nowrap;
-  }
-  .hero-carousel-stack:hover .hero-carousel-hint {
-    opacity: 1;
-  }
-  .hero-carousel-dots {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-  }
-  .hero-carousel-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--border);
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-  }
-  .hero-carousel-dot.active {
-    background: var(--accent);
-    transform: scale(1.3);
-  }
-  .hero-carousel-dot:hover {
-    background: var(--text3);
-  }
-  .hero-carousel-dot.active:hover {
-    background: var(--accent);
-  }
-
-  /* ── SECTION SHARED ── */
+  /* ── SHARED SECTION TYPE ── */
   .section-tag {
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--gold500);
     margin-bottom: 12px;
   }
   .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(36px, 4.5vw, 56px);
-    line-height: 1;
-    letter-spacing: 1px;
+    font-size: clamp(32px, 4.2vw, 52px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
     margin-bottom: 16px;
   }
   .section-desc {
-    color: var(--text2);
+    color: var(--muted);
     font-size: 15px;
     line-height: 1.7;
-    max-width: 480px;
+    max-width: 560px;
   }
 
-  /* ── PROBLEM ── */
-  .problem {
+  /* ── HERO ── */
+  .hero {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 100px 40px;
-  }
-  .problem-grid {
+    padding: 148px 40px 72px;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-    margin-top: 40px;
-  }
-  .problem-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-  }
-  .problem-item svg { margin-bottom: 12px; }
-  .problem-item-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-  .problem-item-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
-
-  /* ── FEATURES ── */
-  .features {
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-  }
-  .features-inner {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 100px 40px;
-  }
-  .features-head {
-    text-align: center;
-    margin-bottom: 56px;
-  }
-  .features-head .section-desc { margin: 0 auto; }
-
-  .features-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 120px;
-    padding-top: 0;
-    position: relative;
-  }
-  /* Vertical spine connecting the feature rows */
-  .features-grid::before {
-    content: '';
-    position: absolute;
-    top: 40px;
-    bottom: 40px;
-    left: 50%;
-    width: 2px;
-    background: linear-gradient(180deg,
-      transparent 0%,
-      var(--border) 8%,
-      var(--border) 92%,
-      transparent 100%);
-    transform: translateX(-1px);
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  /* Each row holds the box and the picture as siblings */
-  .f-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-    gap: 48px;
+    grid-template-columns: 1fr 380px;
+    gap: 56px;
     align-items: center;
-    position: relative;
   }
-  /* Row number marker centered on the spine */
-  .f-row-num {
-    position: absolute;
-    left: 50%;
-    top: -38px;
-    transform: translateX(-50%);
-    width: 68px;
-    height: 68px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 2px solid var(--border);
+  .hero-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: var(--soft);
+    background: var(--blue300);
+    border-radius: 999px;
+    padding: 5px 12px;
+    margin-bottom: 20px;
+  }
+  .hero-title {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+  }
+  .hero-title .accent { color: var(--gold500); }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.75;
+    max-width: 520px;
+    margin-bottom: 28px;
+  }
+  .hero-sub strong { color: var(--text); font-weight: 600; }
+
+  .hero-btn {
+    display: inline-block;
+    background: var(--gold500);
+    color: var(--gold-ink);
+    border-radius: 12px;
+    padding: 13px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(255,176,32,0.26);
+    transition: background 0.2s;
+  }
+  .hero-btn:hover { background: var(--gold300); }
+  .hero-note { font-size: 12px; color: var(--faint); margin-top: 12px; max-width: 440px; }
+  .hero-socials { display: flex; gap: 14px; margin-top: 28px; }
+  .hero-socials a {
+    width: 34px; height: 34px;
+    border-radius: 999px;
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .hero-socials a:hover { color: var(--gold500); border-color: var(--gold500); }
+
+  /* ── PHONE CAROUSEL ── */
+  .phone-deck {
+    position: relative;
+    height: 620px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    letter-spacing: 0;
-    color: var(--text3);
-    z-index: 3;
-    transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
   }
-  .f-row:hover .f-row-num {
-    transform: translateX(-50%) scale(1.08);
-  }
-  .f-row[data-color="gold"]:hover .f-row-num { border-color: var(--gold); color: var(--gold); }
-  .f-row[data-color="purple"]:hover .f-row-num { border-color: var(--purple); color: var(--purple); }
-  .f-row[data-color="blue"]:hover .f-row-num { border-color: var(--blue); color: var(--blue); }
-
-  /* Giant outlined numeral as decorative watermark next to each feature row */
-  .f-row-bignum {
+  .phone-slide {
     position: absolute;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(160px, 22vw, 320px);
-    line-height: 0.8;
-    color: transparent;
-    -webkit-text-stroke: 2px var(--surface2);
-    text-stroke: 2px var(--surface2);
-    pointer-events: none;
-    user-select: none;
-    z-index: 0;
-    opacity: 0.9;
+    width: 268px;
+    transition: transform 0.6s cubic-bezier(0.2,0.8,0.2,1), opacity 0.6s ease;
   }
-  .f-row:not(.reverse) .f-row-bignum { left: -40px; top: -60px; }
-  .f-row.reverse .f-row-bignum { right: -40px; top: -60px; }
-
-  /* Even rows reverse: image on left, box on right */
-  .f-row.reverse {
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  }
-  .f-row.reverse .f-card { order: 2; }
-  .f-row.reverse .f-photo { order: 1; }
-
-  .f-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 44px 40px;
-    transition: border-color 0.3s ease, transform 0.3s ease;
-    min-width: 0;
-    position: relative;
-    z-index: 2;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
-  }
-  .f-row:hover .f-card { border-color: var(--text3); transform: translateY(-3px); }
-  .f-row[data-color="gold"]:hover .f-card { border-color: rgba(251,191,36,0.35); }
-  .f-row[data-color="purple"]:hover .f-card { border-color: rgba(139,92,246,0.35); }
-  .f-row[data-color="blue"]:hover .f-card { border-color: rgba(59,130,246,0.35); }
-
-  /* Photo frame (wrapper) sits OUTSIDE the box with tape/sticker detail */
-  .f-photo {
-    position: relative;
-    display: block;
-    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
-  }
-  .f-row:nth-of-type(1) .f-photo { --baseRot: 4deg; transform: rotate(4deg); }
-  .f-row:nth-of-type(2) .f-photo { --baseRot: -5deg; transform: rotate(-5deg); }
-  .f-row:nth-of-type(3) .f-photo { --baseRot: 3deg; transform: rotate(3deg); }
-  .f-row:hover .f-photo {
-    transform: rotate(0deg) scale(1.02);
-    animation: none;
-  }
-  /* Washi tape at top of photo (handmade/scrapbook feel) */
-  .f-photo::before {
-    content: '';
-    position: absolute;
-    top: -14px;
-    left: 50%;
-    transform: translateX(-50%) rotate(-2deg);
-    width: 110px;
-    height: 26px;
-    background: rgba(251,191,36,0.3);
-    border: 1px solid rgba(251,191,36,0.4);
-    backdrop-filter: blur(2px);
-    z-index: 4;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  .f-row[data-color="purple"] .f-photo::before { background: rgba(139,92,246,0.3); border-color: rgba(139,92,246,0.4); }
-  .f-row[data-color="blue"] .f-photo::before { background: rgba(59,130,246,0.3); border-color: rgba(59,130,246,0.4); }
-
-  .f-card-img {
+  .phone-slide img {
     display: block;
     width: 100%;
-    height: 520px;
-    object-fit: cover;
-    border-radius: 14px;
-    border: 6px solid var(--surface2);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.7);
-    transition: box-shadow 0.3s ease, filter 0.4s ease;
-    filter: saturate(0.92) contrast(1.05);
+    height: auto;
+    border-radius: 26px;
+    border: 1px solid var(--border2);
+    box-shadow: 0 24px 60px rgba(3,10,22,0.65);
   }
-  .f-row:hover .f-card-img {
-    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-    filter: saturate(1) contrast(1.08);
-    animation: none;
-  }
-  /* Subtle grain on photos via layered pseudo */
-  .f-photo::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 14px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23g)'/></svg>");
-    opacity: 0.08;
-    mix-blend-mode: overlay;
-    pointer-events: none;
-  }
-
-  .f-card-top {
-    width: 3px;
-    height: 24px;
-    border-radius: 2px;
-    margin-bottom: 20px;
-    transition: width 0.3s ease, height 0.3s ease;
-  }
-  .f-row:hover .f-card-top { width: 32px; height: 4px; }
-  .f-card-top.amber { background: var(--gold); }
-  .f-card-top.purple { background: var(--purple); }
-  .f-card-top.blue { background: var(--blue); }
-
-  .f-card-tag {
-    font-family: 'Caveat', cursive;
-    font-weight: 700;
-    font-size: 20px;
-    color: var(--text3);
-    margin-bottom: 4px;
-    display: block;
-    transform: rotate(-2deg);
-    transform-origin: left center;
-  }
-  .f-row[data-color="gold"] .f-card-tag { color: var(--gold); }
-  .f-row[data-color="purple"] .f-card-tag { color: var(--purple); }
-  .f-row[data-color="blue"] .f-card-tag { color: var(--blue-ice); }
-
-  .f-card-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
-    letter-spacing: 1.5px;
-    margin-bottom: 14px;
-    line-height: 1;
-    position: relative;
-    display: inline-block;
-  }
-  .f-card-title::after {
-    content: '';
+  .phone-slide.depth-0 { transform: translate(0,0) scale(1); opacity: 1; z-index: 3; }
+  .phone-slide.depth-1 { transform: translate(48px,26px) scale(0.93); opacity: 0.42; z-index: 2; }
+  .phone-slide.depth-2 { transform: translate(86px,50px) scale(0.86); opacity: 0.20; z-index: 1; }
+  .phone-slide.depth-hidden { transform: translate(104px,66px) scale(0.82); opacity: 0; z-index: 0; }
+  .phone-caption {
     position: absolute;
     bottom: -6px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    border-radius: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
-  }
-  .f-row[data-color="gold"] .f-card-title::after { background: var(--gold); }
-  .f-row[data-color="purple"] .f-card-title::after { background: var(--purple); }
-  .f-row[data-color="blue"] .f-card-title::after { background: var(--blue); }
-  .f-row:hover .f-card-title::after { transform: scaleX(1); }
-  .f-card-desc {
-    font-size: 17px;
-    color: var(--text2);
-    line-height: 1.6;
-    margin-bottom: 24px;
-  }
-  .f-card-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .f-card-list li {
-    font-size: 16px;
-    color: var(--text2);
-    padding-left: 20px;
-    position: relative;
-  }
-  .f-card-list li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 9px;
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--text3);
-  }
-
-  /* ── MORE FEATURES ── */
-  .more {
-    margin-top: 100px;
-    padding-top: 56px;
-    border-top: 1px solid var(--border);
-  }
-  .more-head {
+    left: 0; right: 0;
     text-align: center;
-    margin-bottom: 40px;
+    font-size: 12px;
+    color: var(--faint);
   }
-  .more-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+  .phone-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 22px;
   }
-  .more-tile {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px 20px;
-    transition: border-color 0.2s, transform 0.2s;
-    text-align: left;
-    position: relative;
+  .phone-dot {
+    width: 7px; height: 7px;
+    border-radius: 999px;
+    border: none;
+    padding: 0;
+    background: var(--surface4);
+    cursor: pointer;
   }
-  .more-tile:hover {
-    border-color: var(--text3);
-    transform: translateY(-2px);
-  }
-  .more-tile-badge {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: rgba(37,99,235,0.1);
-    border: 1px solid rgba(37,99,235,0.25);
-    padding: 3px 8px;
-    border-radius: 20px;
-  }
-  .more-tile-icon {
-    color: var(--accent);
-    margin-bottom: 14px;
-    display: block;
-  }
-  .more-tile-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
-  .more-tile-desc {
-    font-size: 13px;
-    color: var(--text2);
-    line-height: 1.5;
-  }
+  .phone-dot.active { background: var(--gold500); }
 
-  /* ── HOW IT WORKS ── */
-  .how {
+  /* ── LEDGER STRIP ── */
+  .ledger {
+    border-top: 1px solid var(--border1);
+    border-bottom: 1px solid var(--border1);
+    background: rgba(15,36,64,0.5);
+  }
+  .ledger-inner {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 100px 40px;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
   }
-  .how-head {
-    text-align: center;
-    margin-bottom: 56px;
+  .ledger-item-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
   }
-  .how-head .section-desc { margin: 0 auto; }
+  .ledger-item-desc { font-size: 14px; line-height: 1.65; color: var(--muted); }
 
+  /* ── FEATURES ── */
+  .features { max-width: 1120px; margin: 0 auto; padding: 96px 40px 0; }
+  .features-head { margin-bottom: 56px; }
+  .f-row {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 48px;
+    align-items: center;
+    padding: 48px 0;
+    border-top: 1px solid var(--border1);
+  }
+  .f-row.reverse { grid-template-columns: 300px 1fr; }
+  .f-row.reverse .f-shot { order: -1; }
+  .f-num {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--gold500);
+    margin-bottom: 10px;
+  }
+  .f-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    margin-bottom: 12px;
+  }
+  /* Sits on the title line, at title weight, because it is the part of the
+     claim that keeps the page honest: golf is not in the app. */
+  .f-badge {
+    display: inline-block;
+    vertical-align: 4px;
+    margin-left: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--gold300);
+    background: var(--gold-bg);
+    border: 1px solid var(--gold500);
+    border-radius: 999px;
+    padding: 5px 12px;
+  }
+  .f-desc {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.75;
+    margin-bottom: 18px;
+    max-width: 620px;
+  }
+  .f-desc strong { color: var(--text); font-weight: 600; }
+  .f-list { list-style: none; display: grid; gap: 8px; }
+  .f-list li {
+    position: relative;
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--soft);
+  }
+  .f-list li::before {
+    content: '';
+    position: absolute;
+    left: 3px; top: 9px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold500);
+  }
+  .f-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 22px;
+    border: 1px solid var(--border2);
+    box-shadow: 0 20px 48px rgba(3,10,22,0.6);
+  }
+  /* Stands in for a screenshot that cannot exist: the feature is not built, so
+     there is no screen to capture and none may be faked. Same phone aspect as
+     the real captures, dashed so it never reads as one. */
+  .f-placeholder {
+    aspect-ratio: 600 / 1304;
+    border-radius: 22px;
+    border: 1px dashed var(--border2);
+    background: var(--surface1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 28px 22px;
+    text-align: center;
+    color: var(--faint);
+  }
+  .f-placeholder-title { font-size: 15px; font-weight: 700; color: var(--soft); }
+  .f-placeholder-desc { font-size: 13px; line-height: 1.6; max-width: 220px; }
+
+  /* ── PAIR CARDS ── */
+  .pair {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 24px 40px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .pair-card {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    padding: 26px;
+  }
+  .pair-card-title { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+  .pair-card p { color: var(--muted); font-size: 14px; line-height: 1.7; }
+  .pair-card p strong { color: var(--text); font-weight: 600; }
+
+  /* ── HOW ── */
+  .how { max-width: 1120px; margin: 0 auto; padding: 96px 40px; }
+  .how-head { margin-bottom: 44px; }
   .how-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
   .how-step {
-    text-align: center;
+    background: var(--surface1);
+    border: 1px solid var(--border1);
+    border-radius: 14px;
+    padding: 24px;
   }
   .how-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-  .how-step-title {
-    font-weight: 600;
-    font-size: 15px;
-    margin-bottom: 6px;
-  }
-  .how-step-desc {
-    font-size: 13px;
-    color: var(--text2);
-    line-height: 1.5;
-  }
-
-  /* ── BY THE NUMBERS (bold editorial banner) ── */
-  .stats {
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    position: relative;
-    overflow: hidden;
-  }
-  .stats::before {
-    content: 'BY THE NUMBERS';
-    position: absolute;
-    top: 20px;
-    left: 40px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--text3);
-  }
-  .stats::after {
-    content: 'data from our beta crews';
-    position: absolute;
-    bottom: 20px;
-    right: 40px;
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 13px;
-    color: var(--text3);
-  }
-  .stats-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 80px 40px 100px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    text-align: left;
-  }
-  .stats-inner > div {
-    padding: 28px 24px;
-    border-right: 1px solid var(--border);
-    position: relative;
-  }
-  .stats-inner > div:last-child { border-right: none; }
-  .stats-inner > div::before {
-    content: attr(data-index);
-    position: absolute;
-    top: 28px;
-    right: 24px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: var(--text3);
-  }
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(56px, 6vw, 92px);
-    line-height: 0.95;
-    letter-spacing: -1px;
-  }
-  .stat-num.c-blue { color: var(--blue-ice); }
-  .stat-num.c-gold { color: var(--gold); }
-  .stat-num.c-purple { color: var(--purple); }
-  .stat-num.c-green { color: var(--green); }
-  .stat-lbl {
-    font-size: 13px;
-    color: var(--text2);
-    margin-top: 10px;
-    line-height: 1.45;
-    letter-spacing: 0.3px;
-    max-width: 200px;
-  }
-  .stat-lbl .serif {
-    display: block;
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-
-  /* ── TESTIMONIALS (cream magazine-spread contrast section) ── */
-  .testimonials {
-    background: #F5EFE0;
-    color: #1A1A22;
-    padding: 120px 0;
-    position: relative;
-    overflow: hidden;
-  }
-  .testimonials::before {
-    content: '"';
-    position: absolute;
-    top: -40px;
-    left: -20px;
-    font-family: 'Playfair Display', serif;
-    font-size: 500px;
-    line-height: 0.8;
-    color: #E8DCC0;
-    font-weight: 900;
-    pointer-events: none;
-    user-select: none;
-  }
-  .testimonials-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
-    position: relative;
-    z-index: 1;
-  }
-  .test-head {
-    text-align: left;
-    margin-bottom: 64px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  .test-head-label {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: #8B7355;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: var(--gold500);
     margin-bottom: 14px;
   }
-  .test-head h2 {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: clamp(44px, 5.5vw, 72px);
-    line-height: 1;
-    color: #1A1A22;
-    letter-spacing: -1px;
-    max-width: 700px;
-  }
-  .test-head h2 em {
-    font-style: italic;
-    color: #8B5CF6;
-  }
-  .test-head-kicker {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 17px;
-    color: #8B7355;
-    max-width: 280px;
-    line-height: 1.5;
-    align-self: flex-end;
-  }
-  .test-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-  }
-  .test-card {
-    background: transparent;
-    border: none;
-    border-top: 1px solid #1A1A22;
-    border-radius: 0;
-    padding: 32px 0 0 0;
-    position: relative;
-  }
-  .test-card-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 13px;
-    letter-spacing: 3px;
-    color: #8B7355;
-    margin-bottom: 20px;
-  }
-  .test-quote {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: 22px;
-    color: #1A1A22;
-    line-height: 1.35;
-    margin-bottom: 28px;
-    font-style: normal;
-    letter-spacing: -0.2px;
-  }
-  .test-quote::before {
-    content: none;
-  }
-  .test-quote em {
-    font-style: italic;
-    color: #8B5CF6;
-  }
-  .test-who {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .test-avatar {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 16px;
-    letter-spacing: 1px;
-    color: #F5EFE0;
-    background: #1A1A22;
-    border: 2px solid #1A1A22;
-  }
-  .test-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: #1A1A22;
-    letter-spacing: 0.5px;
-  }
-  .test-role {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 13px;
-    color: #8B7355;
-  }
+  .how-step-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .how-step-desc { font-size: 14px; line-height: 1.65; color: var(--muted); }
 
-  /* ── FINAL CTA ── */
-  .cta-section {
+  /* ── MONEY ── */
+  .money {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 100px 40px;
-    text-align: center;
+    padding: 0 40px 96px;
   }
-  .cta-section .section-desc { margin: 0 auto; }
-  .cta-form {
-    display: flex;
-    gap: 8px;
-    max-width: 440px;
-    margin: 32px auto 12px;
+  .money-inner {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 40px;
+  }
+  .money-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 28px;
+  }
+  .money-item-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .money-item-desc { font-size: 14px; line-height: 1.65; color: var(--muted); }
+  .money-foot {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border3);
+    font-size: 13px;
+    color: var(--faint);
+    line-height: 1.7;
   }
 
-  /* ── FOOTER ── */
+  /* ── LATER ── */
+  .later { max-width: 1120px; margin: 0 auto; padding: 0 40px 96px; }
+  .later-inner {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 48px;
+    align-items: center;
+  }
+  .later-list { display: grid; gap: 12px; margin-top: 24px; }
+  .later-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: var(--surface1);
+    border: 1px solid var(--border1);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .later-item-name { font-size: 16px; font-weight: 700; color: var(--soft); }
+  .later-item-desc { font-size: 13px; color: var(--faint); margin-top: 2px; }
+  .later-pill {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    color: var(--soft);
+    background: var(--blue300);
+    border-radius: 999px;
+    padding: 4px 10px;
+  }
+  .later-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 22px;
+    border: 1px solid var(--border2);
+    box-shadow: 0 20px 48px rgba(3,10,22,0.6);
+  }
+
+  /* ── CREW QUOTES (rendered from the CREW_QUOTES array; absent while empty) ── */
+  .quotes { max-width: 1120px; margin: 0 auto; padding: 0 40px 96px; }
+  .quotes[hidden] { display: none; }
+  .quotes-head { margin-bottom: 32px; }
+  .quotes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .quote-card {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .quote-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--soft);
+  }
+  .quote-who { display: flex; align-items: center; gap: 12px; }
+  .quote-initials {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 999px;
+    background: var(--blue300);
+    color: var(--text);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .quote-name { display: block; font-size: 14px; font-weight: 700; }
+  .quote-crew { display: block; font-size: 12px; color: var(--faint); margin-top: 2px; }
+
+  /* ── CTA ── */
+  .cta-section {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 40px 96px;
+    text-align: center;
+  }
+  .cta-section .section-desc { margin: 0 auto 24px; }
+  .cta-section .hero-note { text-align: center; margin: 16px auto 0; }
+
+  /* ── FOOTER (shared with faq.html) ── */
   footer {
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--border1);
     max-width: 1120px;
     margin: 0 auto;
     padding: 40px;
@@ -1277,347 +562,199 @@
     align-items: flex-start;
     margin-bottom: 32px;
   }
-  .footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .footer-brand img {
-    width: 28px; height: 28px;
-    border-radius: 5px;
-  }
+  .footer-brand { display: flex; align-items: center; gap: 8px; }
   .footer-brand-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 2px;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 1px;
     color: var(--text);
   }
   .footer-tagline {
     font-size: 12px;
-    color: var(--text3);
+    color: var(--faint);
     margin-top: 6px;
-    max-width: 220px;
+    max-width: 260px;
+    line-height: 1.6;
   }
-  .footer-cols {
-    display: flex;
-    gap: 56px;
-  }
+  .footer-cols { display: flex; gap: 56px; }
   .footer-col-head {
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--text2);
+    color: var(--muted);
     margin-bottom: 12px;
   }
   .footer-cols a {
     display: block;
-    color: var(--text3);
+    color: var(--faint);
     text-decoration: none;
     font-size: 13px;
     margin-bottom: 8px;
     transition: color 0.2s;
   }
-  .footer-cols a:hover { color: var(--text2); }
-
+  .footer-cols a:hover { color: var(--muted); }
   .footer-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-top: 20px;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--border1);
   }
-  .footer-copy { font-size: 12px; color: var(--text3); }
-  .footer-links {
-    display: flex;
-    gap: 8px;
-  }
-  .footer-links a {
-    width: 30px; height: 30px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text3);
-    text-decoration: none;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .footer-links a:hover { color: var(--text2); border-color: var(--text3); }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 1024px) {
-    .hero { grid-template-columns: 1fr; gap: 48px; padding-top: 120px; }
-    .hero-carousel { order: -1; }
-    .hero-decor { font-size: clamp(200px, 40vw, 320px); right: -10%; top: -5%; opacity: 0.6; }
-    .problem-grid { grid-template-columns: repeat(3, 1fr); }
-    .features-grid { gap: 90px; }
-    .features-grid::before { display: none; }
-    .f-row-num { display: none; }
-    .f-row-bignum { font-size: clamp(120px, 18vw, 200px); }
-    .f-row { gap: 32px; }
-    .f-card { padding: 28px; }
-    .f-card-title { font-size: 42px; }
-    .f-card-img { height: 380px; }
-    .how-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
-    .stats-inner { grid-template-columns: repeat(2, 1fr); }
-    .stats-inner > div:nth-child(2) { border-right: none; }
-    .test-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-    .test-grid .test-card:last-child { grid-column: 1 / -1; max-width: 480px; margin: 0 auto; }
-    .more-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  @media (max-width: 768px) {
-    nav { padding: 14px 20px; }
-    .nav-right { display: none; }
-    .hero, .problem, .how, .testimonials, .cta-section { padding-left: 20px; padding-right: 20px; }
-    .features-inner, .stats-inner, footer { padding-left: 20px; padding-right: 20px; }
-    .hero { padding-top: 100px; }
-    .hero-decor { display: none; }
-    .hero-aside { display: block; margin-left: 0; margin-top: 4px; font-size: 20px; }
-    .problem-grid { grid-template-columns: 1fr 1fr; }
-    .features-grid { gap: 64px; }
-    .f-row, .f-row.reverse { grid-template-columns: 1fr; gap: 24px; }
-    .f-row.reverse .f-card { order: 0; }
-    .f-row.reverse .f-photo { order: 0; }
-    .f-row-bignum { font-size: 100px; top: -20px; left: -8px !important; right: auto !important; }
-    .f-card { padding: 28px; }
-    .f-card-title { font-size: 36px; }
-    .f-card-desc { font-size: 16px; }
-    .f-card-list li { font-size: 15px; }
-    .f-card-img { height: 260px; }
-    .f-row:nth-of-type(1) .f-photo,
-    .f-row:nth-of-type(2) .f-photo,
-    .f-row:nth-of-type(3) .f-photo { transform: rotate(-2deg); --baseRot: -2deg; }
-    .test-head { flex-direction: column; align-items: flex-start; }
-    .testimonials { padding: 80px 0; }
-    .testimonials::before { font-size: 280px; top: -20px; }
-    .test-grid { grid-template-columns: 1fr; gap: 48px; }
-    .how-grid { grid-template-columns: 1fr 1fr; }
-    .stats-inner { grid-template-columns: 1fr 1fr; padding: 60px 20px 80px; }
-    .stats-inner > div { padding: 20px 12px; }
-    .stats-inner > div:nth-child(even) { border-right: none; }
-    .stats-inner > div:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
-    .stats::before, .stats::after { display: none; }
-    .more-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-    .hero-form, .cta-form { flex-direction: column; }
-    .footer-row { flex-direction: column; gap: 28px; }
-    .footer-cols { gap: 32px; }
-    .footer-bottom { flex-direction: column; gap: 12px; }
-  }
-
-  @media (max-width: 480px) {
-    .problem-grid { grid-template-columns: 1fr; }
-    .how-grid { grid-template-columns: 1fr; }
-    .stats-inner { grid-template-columns: 1fr; }
-    .footer-cols { flex-direction: column; gap: 20px; }
-  }
+  .footer-copy { font-size: 12px; color: var(--faint); }
+  .footer-links { display: flex; gap: 14px; }
+  .footer-links a { color: var(--faint); transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold500); }
 
   /* ── LEGAL MODAL ── */
   .legal-overlay {
-    display: none;
     position: fixed;
     inset: 0;
-    z-index: 200;
-    background: rgba(0,0,0,0.72);
-    backdrop-filter: blur(6px);
+    z-index: 300;
+    background: rgba(3,10,22,0.60);
+    display: none;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
+    padding: 24px;
   }
-  .legal-overlay.open {
-    display: flex;
-    opacity: 1;
-  }
+  .legal-overlay.open { display: flex; }
+  body.legal-open { overflow: hidden; }
   .legal-modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
     border-radius: 16px;
     width: 100%;
-    max-width: 820px;
-    max-height: 90vh;
+    max-width: 780px;
+    max-height: 86vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.55);
   }
   .legal-head {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 22px 28px;
-    border-bottom: 1px solid var(--border);
-  }
-  .legal-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    letter-spacing: 2px;
-    color: var(--text);
-  }
-  .legal-close {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    width: 36px; height: 36px;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    color: var(--text2);
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border3);
   }
-  .legal-close:hover { color: var(--text); border-color: var(--text3); }
-
+  .legal-title { font-size: 17px; font-weight: 700; }
+  .legal-close {
+    background: var(--surface3);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    color: var(--muted);
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .legal-close:hover { color: var(--text); }
   .legal-tabs {
     display: flex;
-    gap: 4px;
-    padding: 12px 28px 0;
-    border-bottom: 1px solid var(--border);
+    gap: 8px;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--border3);
   }
   .legal-tab {
-    background: none;
-    border: none;
-    color: var(--text3);
-    font-family: 'Chakra Petch', sans-serif;
+    background: var(--surface3);
+    border: 1px solid var(--border2);
+    border-radius: 999px;
+    color: var(--muted);
+    font-family: inherit;
     font-size: 13px;
     font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 10px 18px;
+    padding: 7px 16px;
     cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
-    margin-bottom: -1px;
   }
-  .legal-tab:hover { color: var(--text2); }
   .legal-tab.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
+    background: var(--gold500);
+    border-color: var(--gold500);
+    color: var(--gold-ink);
   }
-
   .legal-body {
     overflow-y: auto;
-    padding: 28px 32px 36px;
+    padding: 24px 26px 32px;
     font-size: 14px;
-    line-height: 1.7;
-    color: var(--text2);
+    line-height: 1.75;
+    color: var(--muted);
   }
   .legal-panel { display: none; }
   .legal-panel.active { display: block; }
-
-  .legal-meta {
-    color: var(--text3);
-    font-size: 12px;
-    margin-bottom: 20px;
-  }
-  .legal-meta strong { color: var(--text2); }
-
   .legal-body h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 1.5px;
     color: var(--text);
-    margin-top: 28px;
-    margin-bottom: 10px;
-  }
-  .legal-body h3:first-child { margin-top: 0; }
-  .legal-body h4 {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
-    color: var(--text);
-    margin-top: 16px;
-    margin-bottom: 6px;
-    letter-spacing: 0.5px;
+    margin: 24px 0 8px;
   }
-  .legal-body p { margin-bottom: 12px; }
-  .legal-body ul {
-    list-style: none;
-    padding-left: 0;
+  .legal-body h4 {
+    color: var(--soft);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 16px 0 6px;
+  }
+  .legal-body p { margin-bottom: 10px; }
+  .legal-body ul, .legal-body ol { margin: 0 0 12px 20px; }
+  .legal-body li { margin-bottom: 6px; }
+  .legal-body a { color: var(--gold500); text-decoration: none; }
+  .legal-body a:hover { text-decoration: underline; }
+  .legal-body strong { color: var(--text); font-weight: 600; }
+  .legal-meta { color: var(--faint); font-size: 13px; }
+  .legal-note { color: var(--faint); font-size: 12px; }
+  .legal-contact {
+    background: var(--surface1);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--soft);
     margin-bottom: 12px;
   }
-  .legal-body ul li {
-    padding-left: 18px;
-    position: relative;
-    margin-bottom: 6px;
-  }
-  .legal-body ul li::before {
-    content: '';
-    position: absolute;
-    left: 4px;
-    top: 10px;
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--accent);
-  }
-  .legal-body a { color: var(--accent); text-decoration: none; }
-  .legal-body a:hover { text-decoration: underline; }
-  .legal-contact {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 20px;
-    margin-top: 12px;
-    color: var(--text);
-    font-size: 13px;
-    line-height: 1.7;
-  }
-  .legal-note {
-    color: var(--text3);
-    font-size: 12px;
-    font-style: italic;
-    margin-top: 10px;
-  }
+  .legal-toc li { color: var(--muted); }
 
-  .legal-body table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 14px 0 18px;
-    font-size: 13px;
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 120px; }
+    .phone-deck { height: 560px; }
+    .f-row, .f-row.reverse { grid-template-columns: 1fr; gap: 28px; }
+    .f-row.reverse .f-shot { order: 0; }
+    .f-shot { max-width: 280px; }
+    .ledger-inner { grid-template-columns: 1fr; gap: 22px; }
+    .how-grid { grid-template-columns: 1fr 1fr; }
+    .money-grid { grid-template-columns: 1fr; gap: 22px; }
+    .later-inner { grid-template-columns: 1fr; gap: 32px; }
+    .later-shot { max-width: 240px; }
+    .quotes-grid { grid-template-columns: 1fr; }
   }
-  .legal-body th, .legal-body td {
-    border: 1px solid var(--border);
-    padding: 10px 12px;
-    text-align: left;
-    vertical-align: top;
-    color: var(--text2);
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    nav.scrolled { padding: 10px 20px; }
+    .nav-right { gap: 16px; }
+    .nav-right .nav-hide-sm { display: none; }
+    .nav-cta { padding: 8px 14px; font-size: 12px; }
+    .hero { padding: 108px 20px 56px; }
+    .ledger-inner { padding: 32px 20px; }
+    .features { padding: 72px 20px 0; }
+    .pair { padding: 24px 20px 0; grid-template-columns: 1fr; }
+    .how { padding: 72px 20px; }
+    .how-grid { grid-template-columns: 1fr; }
+    .money { padding: 0 20px 72px; }
+    .money-inner { padding: 26px 22px; }
+    .later { padding: 0 20px 72px; }
+    .quotes { padding: 0 20px 72px; }
+    .cta-section { padding: 0 20px 72px; }
+    footer { padding-left: 20px; padding-right: 20px; }
+    .footer-row { flex-direction: column; gap: 28px; }
+    .footer-cols { gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; }
+    .legal-body { padding: 20px 20px 26px; font-size: 13px; }
   }
-  .legal-body th {
-    background: var(--surface2);
-    color: var(--text);
-    font-weight: 700;
+  @media (max-width: 480px) {
+    .nav-right .nav-hide-xs { display: none; }
+    .footer-cols { flex-direction: column; gap: 20px; }
+    .phone-slide { width: 232px; }
+    .phone-deck { height: 500px; }
   }
-  .legal-body td.legal-yes { color: #22C55E; font-weight: 700; text-align: center; }
-  .legal-body td.legal-no { color: var(--text3); font-weight: 700; text-align: center; }
-
-  .legal-body h3 a, .legal-body em { color: inherit; }
-
-  .legal-toc {
-    list-style: decimal inside;
-    padding: 16px 20px;
-    margin: 8px 0 20px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-  }
-  .legal-toc li {
-    padding: 4px 0;
-    color: var(--text3);
-    font-size: 13px;
-  }
-  .legal-toc li a {
-    color: var(--accent);
-    text-decoration: none;
-  }
-  .legal-toc li a:hover { text-decoration: underline; }
-
-  body.legal-open { overflow: hidden; }
-
-  @media (max-width: 640px) {
-    .legal-head { padding: 18px 20px; }
-    .legal-tabs { padding: 10px 20px 0; }
-    .legal-tab { padding: 10px 12px; font-size: 12px; }
-    .legal-body { padding: 22px 22px 28px; font-size: 13px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .phone-slide { transition: none; }
   }
 </style>
 </head>
@@ -1625,49 +762,49 @@
 
 <div class="scroll-progress" id="scrollProgress"></div>
 
-<nav>
-  <a href="#" class="nav-left">
-    <img src="stevo-logo.png" alt="Stevo">
+<nav id="nav">
+  <a href="#top" class="nav-left" aria-label="Stevo home">
+    <!-- The app's StevoMark (components/StevoMark.tsx), inlined so the site has
+         no logo file to 404 on. -->
+    <svg class="nav-mark" width="30" height="30" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="19" fill="#F3F0E8"/>
+      <g fill="#D9AD50">
+        <path d="M20 1a19 19 0 0 1 9.5 2.55l-3.5 6.06A12 12 0 0 0 20 8z"/>
+        <path d="M36.45 29.5A19 19 0 0 0 36.45 10.5l-6.06 3.5a12 12 0 0 1 0 12z"/>
+        <path d="M20 39a19 19 0 0 1-9.5-2.55l3.5-6.06A12 12 0 0 0 20 32z"/>
+        <path d="M3.55 10.5a19 19 0 0 0 0 19l6.06-3.5a12 12 0 0 1 0-12z"/>
+      </g>
+      <circle cx="20" cy="20" r="12" fill="#3568B0" stroke="#09182F" stroke-width="1.5"/>
+      <text x="20" y="20" text-anchor="middle" dominant-baseline="central"
+            font-family="Geist, sans-serif" font-style="italic" font-weight="800"
+            font-size="16" fill="#FFFFFF">S</text>
+    </svg>
     <div class="nav-wordmark">STEVO</div>
   </a>
   <div class="nav-right">
-    <a href="#features">Features</a>
-    <a href="#how">How It Works</a>
-    <a href="#waitlist" class="nav-cta">Get Early Access</a>
+    <a href="#features" class="nav-hide-xs">Features</a>
+    <a href="#how" class="nav-hide-sm">How it works</a>
+    <a href="https://hq.stevoapp.com/faq">FAQ</a>
+    <a href="#get-stevo" class="nav-cta">App Store soon</a>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-decor parallax" data-speed="0.15" aria-hidden="true">S</div>
-  <div class="hero-col-left">
-    <div class="hero-badge">Coming Soon</div>
+<section class="hero" id="top">
+  <div>
+    <div class="hero-badge">Coming soon</div>
     <h1 class="hero-title">
-      <span class="line-1">THE PRIVATE</span>
-      <span class="line-2">CREW</span>
-      <span class="line-3">APP.</span>
-      <span class="line-4">finally, one place for the guys.</span>
+      The private<br>crew app for<br><span class="accent">friendly bets.</span>
     </h1>
     <p class="hero-sub">
-      Your crew deserves better than <em>GroupMe, Venmo, and a notes app</em>. Stevo brings social bets, poker nights, golf rounds, and settlements into one private place.
+      Your crew already bets on games, runs a Face Off tab at the bar, and plays poker on
+      Thursdays. Stevo records all of it and keeps <strong>one running balance per person</strong>,
+      so nobody has to remember who owes whom. Stevo keeps score; you settle between yourselves.
     </p>
 
-    <div id="hero-wrap">
-      <div class="hero-success" id="hero-success">You're on the list. We'll let you know when Stevo drops.</div>
-      <div class="hero-form" id="hero-form">
-        <input type="email" class="hero-input" id="email-1" placeholder="your@email.com" autocomplete="email">
-        <button class="hero-btn" onclick="signup('hero')">Get Early Access</button>
-      </div>
-      <p class="hero-note" id="hero-note">No spam. Just a heads up when we launch.</p>
-    </div>
-
-    <div class="hero-proof">
-      <div class="hero-proof-avatars">
-        <span style="background:var(--accent)">S</span>
-        <span style="background:var(--blue)">J</span>
-        <span style="background:var(--purple)">D</span>
-      </div>
-      <span class="hero-proof-text"><strong id="waitlist-count">100</strong> guys on the waitlist</span>
+    <div>
+      <a class="hero-btn" href="#get-stevo">How to get Stevo</a>
+      <p class="hero-note">Stevo is in a private beta. It is not on the App Store yet.</p>
     </div>
 
     <div class="hero-socials">
@@ -1678,301 +815,264 @@
     </div>
   </div>
 
-  <div class="hero-carousel hero-col-right">
-    <div class="hero-carousel-stack" id="carousel" role="button" tabindex="0" aria-label="App screenshot, click to see next screen">
-      <div class="hero-carousel-slide depth-0" data-slide="0"><img src="screen-1.png" alt="Stevo app screen 1"></div>
-      <div class="hero-carousel-slide depth-1" data-slide="1"><img src="screen-2.png" alt="Stevo app screen 2" loading="lazy"></div>
-      <div class="hero-carousel-slide depth-2" data-slide="2"><img src="screen-3.png" alt="Stevo app screen 3" loading="lazy"></div>
-      <div class="hero-carousel-slide depth-hidden" data-slide="3"><img src="screen-4.png" alt="Stevo app screen 4" loading="lazy"></div>
-      <div class="hero-carousel-slide depth-hidden" data-slide="4"><img src="screen-5.png" alt="Stevo app screen 5" loading="lazy"></div>
-      <div class="hero-carousel-hint">Tap to flip</div>
+  <div>
+    <div class="phone-deck" id="deck" role="button" tabindex="0" aria-label="App screenshots, activate to see the next screen">
+      <div class="phone-slide depth-0" data-slide="0"><img src="screen-home.png" alt="The Stevo home screen: net standing, Make a bet, and tiles for Bets, Settle, Crews, Face Off, Poker and Golf" width="600" height="1304"></div>
+      <div class="phone-slide depth-1" data-slide="1"><img src="screen-lines.png" alt="The Stevo game lines board with spread, total and moneyline prices for NFL games" width="600" height="1304" loading="lazy"></div>
+      <div class="phone-slide depth-2" data-slide="2"><img src="screen-poker.png" alt="A finished Stevo poker tournament: the podium, the prize split, final standings and who owes whom" width="600" height="1304" loading="lazy"></div>
+      <div class="phone-slide depth-hidden" data-slide="3"><img src="screen-faceoff.png" alt="A Stevo Face Off tab showing a bet with I won and I lost buttons and a both-confirmed result" width="600" height="1304" loading="lazy"></div>
+      <div class="phone-caption" id="deck-caption">Home</div>
     </div>
-    <div class="hero-carousel-dots" role="tablist" aria-label="Screen selector">
-      <button class="hero-carousel-dot active" data-dot="0" aria-label="Screen 1"></button>
-      <button class="hero-carousel-dot" data-dot="1" aria-label="Screen 2"></button>
-      <button class="hero-carousel-dot" data-dot="2" aria-label="Screen 3"></button>
-      <button class="hero-carousel-dot" data-dot="3" aria-label="Screen 4"></button>
-      <button class="hero-carousel-dot" data-dot="4" aria-label="Screen 5"></button>
+    <div class="phone-dots" role="tablist" aria-label="Screen selector">
+      <button class="phone-dot active" data-dot="0" aria-label="Home screen"></button>
+      <button class="phone-dot" data-dot="1" aria-label="Lines board"></button>
+      <button class="phone-dot" data-dot="2" aria-label="Poker results"></button>
+      <button class="phone-dot" data-dot="3" aria-label="Face Off tab"></button>
     </div>
   </div>
 </section>
 
-<!-- PROBLEM -->
-<section class="problem">
-  <div class="reveal">
-    <div class="section-tag">The Problem</div>
-    <h2 class="section-title">Your crew is scattered<br>across five apps</h2>
-    <p class="section-desc">Bets get forgotten. Debts go unsettled. Nobody knows who's actually in for poker.</p>
-  </div>
-  <div class="problem-grid">
-    <div class="problem-item reveal reveal-d1">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      <div class="problem-item-name">GroupMe / Texts</div>
-      <div class="problem-item-desc">Coordinating across threads nobody checks</div>
+<!-- LEDGER STRIP -->
+<section class="ledger">
+  <div class="ledger-inner">
+    <div>
+      <div class="ledger-item-title">One balance per person</div>
+      <div class="ledger-item-desc">Every bet you have with the same friend nets into a single number. No settling one bet at a time.</div>
     </div>
-    <div class="problem-item reveal reveal-d2">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-      <div class="problem-item-name">Venmo</div>
-      <div class="problem-item-desc">Chasing payments with no context</div>
+    <div>
+      <div class="ledger-item-title">Both sides confirm</div>
+      <div class="ledger-item-desc">Game bets settle themselves off the final score. Everything else needs both of you to declare the same result.</div>
     </div>
-    <div class="problem-item reveal reveal-d3">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <div class="problem-item-name">Notes App</div>
-      <div class="problem-item-desc">Tracking debts like it's 2004</div>
-    </div>
-    <div class="problem-item reveal reveal-d4">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><path d="M12 18V2l7 4-7 4"/><circle cx="8" cy="21" r="2"/></svg>
-      <div class="problem-item-name">Golf Apps</div>
-      <div class="problem-item-desc">No crew context or side bets</div>
-    </div>
-    <div class="problem-item reveal reveal-d1">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-      <div class="problem-item-name">Spreadsheets</div>
-      <div class="problem-item-desc">Poker logs nobody updates</div>
+    <div>
+      <div class="ledger-item-title">Stevo never holds the money</div>
+      <div class="ledger-item-desc">It records who owes whom. You pay each other through Venmo, Cash App, Zelle or cash.</div>
     </div>
   </div>
 </section>
 
 <!-- FEATURES -->
 <section class="features" id="features">
-  <div class="features-inner">
-    <div class="features-head reveal">
-      <div class="section-tag">The Solution</div>
-      <h2 class="section-title">Everything your crew does.<br>One app.</h2>
-      <p class="section-desc">Three core modules that handle what your group actually cares about.</p>
-    </div>
-    <div class="features-grid">
-      <div class="f-row reveal" data-color="gold">
-        <div class="f-row-bignum" aria-hidden="true">01</div>
-        <div class="f-row-num" aria-hidden="true">01</div>
-        <div class="f-card">
-          <div class="f-card-top amber"></div>
-          <span class="f-card-tag">settle up, always</span>
-          <div class="f-card-title">Bet Tracker</div>
-          <p class="f-card-desc">Challenge any crew member. Both sides confirm terms and outcomes. No more disputed debts.</p>
-          <ul class="f-card-list">
-            <li>Running settlement ledger</li>
-            <li>Lifetime win/loss records</li>
-            <li>Head-to-head history</li>
-            <li>Crew leaderboard</li>
-          </ul>
-        </div>
-        <div class="f-photo breathe">
-          <img src="bet.png" alt="Friends placing a bet" class="f-card-img" loading="lazy">
-        </div>
-      </div>
-      <div class="f-row reverse reveal" data-color="purple">
-        <div class="f-row-bignum" aria-hidden="true">02</div>
-        <div class="f-row-num" aria-hidden="true">02</div>
-        <div class="f-card">
-          <div class="f-card-top purple"></div>
-          <span class="f-card-tag">Thursday nights, sorted</span>
-          <div class="f-card-title">Poker Nights</div>
-          <p class="f-card-desc">Create games, manage RSVPs, track chips live, and post results that flow into settlements.</p>
-          <ul class="f-card-list">
-            <li>RSVP with auto waitlist</li>
-            <li>Live chip tracker</li>
-            <li>Results feed to ledger</li>
-            <li>Season stats per player</li>
-          </ul>
-        </div>
-        <div class="f-photo breathe breathe-slow">
-          <img src="poker.png" alt="Poker night with the crew" class="f-card-img" loading="lazy">
-        </div>
-      </div>
-      <div class="f-row reveal" data-color="blue">
-        <div class="f-row-bignum" aria-hidden="true">03</div>
-        <div class="f-row-num" aria-hidden="true">03</div>
-        <div class="f-card">
-          <div class="f-card-top blue"></div>
-          <span class="f-card-tag">skins, automatic</span>
-          <div class="f-card-title">Golf Module</div>
-          <p class="f-card-desc">Set up tee times, create side bets, score live, and auto-settle skins when the round ends.</p>
-          <ul class="f-card-list">
-            <li>Tee time coordination</li>
-            <li>Skins &amp; side bet setup</li>
-            <li>One-hand live scorecard</li>
-            <li>Auto handicap tracking</li>
-          </ul>
-        </div>
-        <div class="f-photo breathe breathe-slower">
-          <img src="golf.png" alt="Golf round with the crew" class="f-card-img" loading="lazy">
-        </div>
-      </div>
-    </div>
+  <div class="features-head">
+    <div class="section-tag">What is in the app</div>
+    <h2 class="section-title">Everything your crew<br>already bets on.</h2>
+    <p class="section-desc">Three things carry the app today: the lines board, Face Off tabs, and poker nights. Crews and the Settle tab tie them together. Golf is the one after that, and it is badged coming soon below because it is not in the app yet.</p>
+  </div>
 
-    <div class="more reveal">
-      <div class="more-head">
-        <h3 class="section-title" style="font-size:clamp(32px,4vw,48px)">And much more</h3>
-        <p class="section-desc" style="margin:0 auto">Every way your crew likes to compete. All in one place.</p>
+  <div class="f-row">
+    <div>
+      <div class="f-num">01 — LINES AND BETS</div>
+      <div class="f-title">Real lines, without the book's cut</div>
+      <p class="f-desc">
+        Spreads, totals and moneylines for the games on tonight, refreshed through the day, with
+        a LIVE toggle for games already underway. Friends betting each other do not owe a
+        sportsbook anything, so Stevo strips the margin out and settles at the
+        <strong>fair (no-vig) line</strong>: two sides priced -110 / -110 become +100 / +100.
+        Nothing on the board? Write a custom bet in your own words, set the stake and the odds
+        multiplier, and pick who takes it.
+      </p>
+      <ul class="f-list">
+        <li>American, decimal or fractional odds, your choice</li>
+        <li>Multi-pick parlays, with picks that cannot both happen blocked</li>
+        <li>Bets on real games settle themselves the moment the game goes final</li>
+        <li>Private by default; share one with a crew when you want the audience</li>
+      </ul>
+    </div>
+    <div class="f-shot"><img src="screen-lines.png" alt="Stevo game lines: NFL spreads, totals and moneylines with the fair price above the book price" width="600" height="1304" loading="lazy"></div>
+  </div>
+
+  <div class="f-row reverse">
+    <div class="f-shot"><img src="screen-faceoff.png" alt="A Face Off tab with one bet, the I won and I lost buttons, and a both-confirmed result" width="600" height="1304" loading="lazy"></div>
+    <div>
+      <div class="f-num">02 — FACE OFF</div>
+      <div class="f-title">A running tab for the bar</div>
+      <p class="f-desc">
+        Open a tab with one friend and add quick props all night: "he hits a home run next at
+        bat, 5 to 1, ten bucks". Both phones stay in sync and the header shows who is up.
+        Each of you declares your own result with <strong>I won</strong> or
+        <strong>I lost</strong>, and their answer stays hidden until you have given yours, so
+        you report what you saw rather than reacting to them. Matching answers confirm the bet;
+        a mismatch marks it disputed and the tab will not settle until you sort it out between
+        you. There is no referee and no host override.
+      </p>
+      <ul class="f-list">
+        <li>Optional settle threshold nudges you when the tab gets big</li>
+        <li>The whole tab nets into one bet when you settle it</li>
+        <li>Broadcast a single bet to two to four friends and let them take it</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="f-row">
+    <div>
+      <div class="f-num">03 — POKER NIGHTS AND SEASONS</div>
+      <div class="f-title">From the RSVP to who owes whom</div>
+      <p class="f-desc">
+        Cash nights and tournaments. RSVPs with an automatic waitlist when the table fills, a
+        live blind clock, rebuys, add-ons and an end-of-night chop, and a payout split by finish
+        order. When it is over Stevo turns the buy-ins and the payouts into
+        <strong>who owes whom</strong> and sends them to the Settle tab. Run a season and every
+        tournament feeds one crew-wide standings table.
+      </p>
+      <ul class="f-list">
+        <li>Season points by field size or a fixed points table, with a participation floor</li>
+        <li>Monthly leaderboards are record-only: the crew hands the money over in the room</li>
+        <li>Guests without a Stevo account can play; you settle their cash in person</li>
+      </ul>
+    </div>
+    <div class="f-shot"><img src="screen-poker.png" alt="A finished Stevo tournament: winner podium, prize pool, final standings and two settle-up rows" width="600" height="1304" loading="lazy"></div>
+  </div>
+
+  <div class="f-row reverse">
+    <!-- No screenshot: golf is not built, so there is no golf screen to capture
+         and none may be mocked up. This panel is the honest stand-in. -->
+    <div class="f-shot">
+      <div class="f-placeholder">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+          <line x1="4" y1="22" x2="4" y2="15"/>
+        </svg>
+        <div class="f-placeholder-title">No screenshot yet</div>
+        <div class="f-placeholder-desc">Golf is not built, so there is no golf screen to show. Every other image on this page is a capture of the real app.</div>
       </div>
-      <div class="more-grid">
-        <div class="more-tile">
-          <span class="more-tile-badge">Coming Soon</span>
-          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v4H4z"/><path d="M4 14h16v6H4z"/><path d="M12 8v6"/></svg>
-          <div class="more-tile-title">Fantasy Football</div>
-          <div class="more-tile-desc">League standings, payouts, and side bets all in the crew feed.</div>
-        </div>
-        <div class="more-tile">
-          <span class="more-tile-badge">Coming Soon</span>
-          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-          <div class="more-tile-title">Squares &amp; Pools</div>
-          <div class="more-tile-desc">Super Bowl squares, NCAA brackets, survivor pools, all auto-scored.</div>
-        </div>
-        <div class="more-tile">
-          <span class="more-tile-badge">Coming Soon</span>
-          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
-          <div class="more-tile-title">Pick'em Leagues</div>
-          <div class="more-tile-desc">Weekly NFL, NBA, or college picks with running leaderboards.</div>
-        </div>
-        <div class="more-tile">
-          <span class="more-tile-badge">Coming Soon</span>
-          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18"/><path d="M18 3v18"/><path d="M6 8h12"/><path d="M6 16h12"/></svg>
-          <div class="more-tile-title">Prop Battles</div>
-          <div class="more-tile-desc">Custom crew props. Anything from "who eats first" to "score before halftime".</div>
-        </div>
-        <div class="more-tile">
-          <span class="more-tile-badge">Coming Soon</span>
-          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          <div class="more-tile-title">Tailgate Planning</div>
-          <div class="more-tile-desc">RSVPs, food signups, and who's bringing the beer. Handled.</div>
-        </div>
-        <div class="more-tile">
-          <span class="more-tile-badge">Coming Soon</span>
-          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/><path d="M9 8l2 2 4-4"/></svg>
-          <div class="more-tile-title">Season Awards</div>
-          <div class="more-tile-desc">MVP, biggest loser, longest win streak, tracked automatically.</div>
-        </div>
-        <div class="more-tile">
-          <span class="more-tile-badge">Coming Soon</span>
-          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          <div class="more-tile-title">Live Scoreboards</div>
-          <div class="more-tile-desc">Real-time scoring for any crew game or contest.</div>
-        </div>
-        <div class="more-tile">
-          <span class="more-tile-badge">Coming Soon</span>
-          <svg class="more-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
-          <div class="more-tile-title">Custom Challenges</div>
-          <div class="more-tile-desc">Build any head-to-head or group challenge your crew can dream up.</div>
-        </div>
-      </div>
+    </div>
+    <div>
+      <div class="f-num">04 — GOLF</div>
+      <div class="f-title">Nassau that adds itself up<span class="f-badge">Coming soon</span></div>
+      <p class="f-desc">
+        <strong>Golf is not in the app yet.</strong> It sits in the Games tab with a SOON
+        badge and nothing to tap, and this row is here so you know what is coming rather
+        than to claim it has arrived. What it is being built to do: schedule a round with a
+        course, a tee time and 9 or 18 holes; keep one scorecard the whole group writes on,
+        so whoever is holding a phone on the green can enter anybody's strokes; and run
+        <strong>Nassau</strong> — front nine, back nine and total, priced per bet. When the
+        last player marks themselves finished, the legs settle, ties push, and who owes whom
+        goes to the same Settle tab as everything else in Stevo.
+      </p>
+      <ul class="f-list">
+        <li>One shared card: anyone in the round can enter scores for anyone</li>
+        <li>Nassau legs settle per bet, and a tied leg pushes so nobody pays</li>
+        <li>Skins and closest to the pin queue up behind it, badged SOON in the app</li>
+        <li>Not shipped, not scheduled here: no golf round can be created in Stevo today</li>
+      </ul>
     </div>
   </div>
 </section>
+
+<div class="pair">
+  <div class="pair-card">
+    <div class="pair-card-title">Crews</div>
+    <p>A private group with a <strong>6-character invite code</strong> (no I, O, 0 or 1, so it still works read out loud). Everyone in a crew can see and take each other's shared bets, gets invited to its poker nights, and can start a Face Off. Public crews let anyone with the code join; in a private crew only the owner and admins send invites.</p>
+  </div>
+  <div class="pair-card">
+    <div class="pair-card-title">Settle</div>
+    <p>Every bet with the same person totals into one balance under <strong>I owe</strong> and <strong>Owed to me</strong>. Tap Pay and Stevo opens Venmo or Cash App addressed to your friend, shows their Zelle details, or just records that you handed over cash. You mark it sent, they confirm received, and the balance clears for both of you.</p>
+  </div>
+</div>
 
 <!-- HOW IT WORKS -->
 <section class="how" id="how">
-  <div class="how-head reveal">
-    <div class="section-tag">How It Works</div>
-    <h2 class="section-title">Up and running in 60 seconds</h2>
-    <p class="section-desc">No setup headache. Just your crew, your games, your rules.</p>
+  <div class="how-head">
+    <div class="section-tag">How it works</div>
+    <h2 class="section-title">Four steps, then it runs itself</h2>
+    <p class="section-desc">No setup headache. Your crew, your games, your rules.</p>
   </div>
   <div class="how-grid">
-    <div class="how-step reveal">
+    <div class="how-step">
       <div class="how-num">01</div>
-      <div class="how-step-title">Create Your Crew</div>
-      <p class="how-step-desc">Start a private group and invite your guys via text or link.</p>
+      <div class="how-step-title">Start a crew</div>
+      <p class="how-step-desc">Create a private group and share the 6-character code, or the invite link, with your guys.</p>
     </div>
-    <div class="how-step reveal reveal-d1">
+    <div class="how-step">
       <div class="how-num">02</div>
-      <div class="how-step-title">Set The Stakes</div>
-      <p class="how-step-desc">Make a bet, schedule poker, or create a golf round.</p>
+      <div class="how-step-title">Make the bet</div>
+      <p class="how-step-desc">Take a line off the board, write a custom bet, open a Face Off tab, or schedule a poker night.</p>
     </div>
-    <div class="how-step reveal reveal-d2">
+    <div class="how-step">
       <div class="how-num">03</div>
-      <div class="how-step-title">Play &amp; Track</div>
-      <p class="how-step-desc">Live scores, chip counts, and bet outcomes in one feed.</p>
+      <div class="how-step-title">It settles itself</div>
+      <p class="how-step-desc">Bets on real games settle off the final score. On everything else, both sides declare the result.</p>
     </div>
-    <div class="how-step reveal reveal-d3">
+    <div class="how-step">
       <div class="how-num">04</div>
-      <div class="how-step-title">Settle Up</div>
-      <p class="how-step-desc">One-tap settlement. Everyone knows who owes who.</p>
+      <div class="how-step-title">Square up</div>
+      <p class="how-step-desc">Balances net per person. Pay in the app you already use, then confirm it landed.</p>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<section class="stats" id="market">
-  <div class="stats-inner">
-    <div class="reveal" data-index="01">
-      <div class="stat-num c-gold mono-num"><span data-target="4280" data-prefix="$">0</span></div>
-      <div class="stat-lbl"><span class="serif">Settled</span>across 12 beta crews this fall, zero Venmo chases.</div>
-    </div>
-    <div class="reveal reveal-d1" data-index="02">
-      <div class="stat-num c-blue mono-num"><span data-target="147">0</span></div>
-      <div class="stat-lbl"><span class="serif">Bets tracked</span>every one confirmed by both sides. No disputes.</div>
-    </div>
-    <div class="reveal reveal-d2" data-index="03">
-      <div class="stat-num c-purple mono-num"><span data-target="38">0</span></div>
-      <div class="stat-lbl"><span class="serif">Poker nights</span>organized, RSVP'd, and tallied before anyone left.</div>
-    </div>
-    <div class="reveal reveal-d3" data-index="04">
-      <div class="stat-num c-green mono-num"><span data-target="12">0</span></div>
-      <div class="stat-lbl"><span class="serif">Golf rounds</span>with live skins tracking and auto-settled payouts.</div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section class="testimonials">
-  <div class="testimonials-inner">
-    <div class="test-head reveal">
+<!-- MONEY -->
+<section class="money">
+  <div class="money-inner">
+    <div class="section-tag">The money</div>
+    <h2 class="section-title" style="font-size:clamp(28px,3.4vw,40px)">Stevo never touches it</h2>
+    <p class="section-desc">Stevo is a scorekeeper for friendly bets and games among friends. It is not a sportsbook, a wallet, or a payment processor.</p>
+    <div class="money-grid">
       <div>
-        <div class="test-head-label">The crew says</div>
-        <h2>From the guys who <em>actually run</em> the Sunday night group.</h2>
+        <div class="money-item-title">No wallet, no balances, no house</div>
+        <div class="money-item-desc">There are no deposits and nothing to cash out. Stevo records amounts; it never holds, moves, charges or pays out a cent.</div>
       </div>
-      <p class="test-head-kicker">Beta feedback from twelve crews across six states who've been running their friend groups through Stevo since August.</p>
-    </div>
-    <div class="test-grid">
-      <div class="test-card reveal">
-        <div class="test-card-num">№ 01</div>
-        <p class="test-quote">We used to <em>argue about who owes who</em> every single week. Now it's all right there. Nobody can deny the receipts.</p>
-        <div class="test-who">
-          <div class="test-avatar">MR</div>
-          <div>
-            <div class="test-name">Mike R.</div>
-            <div class="test-role">Sunday Crew · Denver</div>
-          </div>
-        </div>
+      <div>
+        <div class="money-item-title">Settling is a hand-off</div>
+        <div class="money-item-desc">Pay through Venmo, Cash App, Zelle or in cash, between the two of you. Stevo opens the other app and then records that you said you sent it.</div>
       </div>
-      <div class="test-card reveal reveal-d1">
-        <div class="test-card-num">№ 02</div>
-        <p class="test-quote">The poker module alone is <em>worth the price of admission</em>. Auto-settling chip counts into the group ledger is a game changer for our Thursday night game.</p>
-        <div class="test-who">
-          <div class="test-avatar">JT</div>
-          <div>
-            <div class="test-name">Jake T.</div>
-            <div class="test-role">Thursday Crew · Austin</div>
-          </div>
-        </div>
-      </div>
-      <div class="test-card reveal reveal-d2">
-        <div class="test-card-num">№ 03</div>
-        <p class="test-quote">Finally an app that <em>gets it</em>. The golf skins tracker with auto payouts? We use it every weekend now.</p>
-        <div class="test-who">
-          <div class="test-avatar">DK</div>
-          <div>
-            <div class="test-name">Danny K.</div>
-            <div class="test-role">Saturday Tee · Scottsdale</div>
-          </div>
-        </div>
+      <div>
+        <div class="money-item-title">No rake, no vig</div>
+        <div class="money-item-desc">The sportsbook margin is stripped out of every line taken off the board, and Stevo takes no cut of anything.</div>
       </div>
     </div>
+    <p class="money-foot">
+      Stevo is for adults 18 and over. Bet tracking is for entertainment purposes only.
+      More detail is in the <a href="https://hq.stevoapp.com/faq">FAQ</a>, and the full terms are
+      under <a href="#" data-legal="terms">Terms</a>.
+    </p>
   </div>
 </section>
+
+<!-- LATER -->
+<section class="later">
+  <div class="later-inner">
+    <div>
+      <div class="section-tag">Coming later</div>
+      <h2 class="section-title" style="font-size:clamp(28px,3.4vw,40px)">Already in the app,<br>marked coming soon</h2>
+      <p class="section-desc">These sit in the Games tab today with a SOON badge, alongside golf. They are next after launch, not shipped.</p>
+      <div class="later-list">
+        <div class="later-item">
+          <div>
+            <div class="later-item-name">Squares</div>
+            <div class="later-item-desc">Grid boards for any game</div>
+          </div>
+          <span class="later-pill">Soon</span>
+        </div>
+        <div class="later-item">
+          <div>
+            <div class="later-item-name">Pick'em pools</div>
+            <div class="later-item-desc">Weekly slates with the crew</div>
+          </div>
+          <span class="later-pill">Soon</span>
+        </div>
+      </div>
+    </div>
+    <div class="later-shot"><img src="screen-games.png" alt="The Stevo Games tab: Poker is live, with Golf, Squares and Pick'em pools marked SOON" width="600" height="1304" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- CREW QUOTES
+     Deliberately empty markup. The cards are built by initCrewQuotes() from the
+     CREW_QUOTES array at the bottom of this file, and while that array is empty
+     the script deletes this element, so the section cannot reach the published
+     page without a real, permitted quote in it. -->
+<section class="quotes" id="crew-quotes" hidden></section>
 
 <!-- CTA -->
-<section class="cta-section" id="waitlist">
-  <div class="reveal">
-    <div class="section-tag">Early Access</div>
-    <h2 class="section-title" style="font-size:clamp(40px,5vw,64px)">Your crew is waiting</h2>
-    <p class="section-desc">Stevo is launching soon. Get early access and be first in line.</p>
-    <div class="cta-form" id="cta-form">
-      <input type="email" class="hero-input" id="email-2" placeholder="your@email.com" autocomplete="email">
-      <button class="hero-btn" onclick="signup('cta')">Join Waitlist</button>
-    </div>
-    <p class="hero-note" id="cta-note">No spam. Just a heads up when we launch.</p>
-  </div>
+<section class="cta-section" id="get-stevo">
+  <div class="section-tag">Getting Stevo</div>
+  <h2 class="section-title" style="font-size:clamp(34px,4.6vw,56px)">It comes from<br>the App Store</h2>
+  <p class="section-desc">
+    Stevo is in a private beta, and goes to Apple for review after that. There is nothing
+    to download today and no waitlist to join. When it is approved, the App Store is where
+    you get it, and the link will be on this page.
+  </p>
+  <p class="hero-note">Questions in the meantime: <a href="mailto:support@stevoapp.com" style="color:var(--gold500)">support@stevoapp.com</a>.</p>
 </section>
 
 <!-- FOOTER -->
@@ -1980,17 +1080,17 @@
   <div class="footer-row">
     <div>
       <div class="footer-brand">
-        <img src="stevo-logo.png" alt="Stevo">
         <div class="footer-brand-name">STEVO</div>
       </div>
-      <p class="footer-tagline">The private crew app for guys who bet, play, and compete.</p>
+      <p class="footer-tagline">The private crew app for friendly bets. Stevo keeps score; it never holds, moves, or pays out money.</p>
     </div>
     <div class="footer-cols">
       <div>
         <div class="footer-col-head">Product</div>
         <a href="#features">Features</a>
-        <a href="#how">How It Works</a>
-        <a href="#waitlist">Early Access</a>
+        <a href="#how">How it works</a>
+        <a href="https://hq.stevoapp.com/faq">FAQ</a>
+        <a href="#get-stevo">Getting Stevo</a>
       </div>
       <div>
         <div class="footer-col-head">Company</div>
@@ -2034,7 +1134,7 @@
     <div class="legal-body" id="legal-body">
 
       <div class="legal-panel active" data-panel="terms">
-        <p class="legal-meta"><strong>Stevo App LLC</strong><br>Effective Date: April 12, 2026 &middot; Last Updated: April 12, 2026</p>
+        <p class="legal-meta"><strong>Stevo App LLC</strong><br>Effective Date: April 12, 2026 &middot; Last Updated: September 8, 2026</p>
 
         <h3>1. Agreement to Terms</h3>
         <p>These Terms of Service ("Terms") constitute a legally binding agreement between you and Stevo App LLC ("Company," "we," "us," or "our") governing your access to and use of the Stevo mobile application, website at stevoapp.com, and any related services (collectively, the "Services").</p>
@@ -2042,7 +1142,9 @@
         <p>These Services are intended for personal use only. You must be at least 18 years of age to use the Services.</p>
 
         <h3>2. Description of Services</h3>
-        <p>Stevo is a private, invite-only mobile application for friend groups to track social bets, organize poker nights, coordinate golf rounds, and manage crew competitions and standings. Stevo is a social tracking tool only. It does not facilitate, process, or hold real-money transactions between users.</p>
+        <p>Stevo is a private, invite-only mobile application for friend groups to record social bets between themselves, run Face Off tabs, organize poker nights and seasons, and manage crew competitions and standings. Stevo is a record-keeping and scorekeeping tool only.</p>
+        <p><strong>Stevo App LLC does not hold, transfer, charge, or pay out money.</strong> The Services do not operate a wallet, an account balance, or a payment facility of any kind, and Stevo App LLC never acts as a bookmaker or a house, takes a rake or commission, or profits from any amount recorded in the Services. Amounts you enter are a record of what you and the other person have agreed between yourselves; you settle those amounts directly with each other, outside the Services. Bet tracking is for entertainment purposes only.</p>
+        <p>The Services are provided free of charge. There is no subscription, membership tier, or in-app purchase.</p>
 
         <h3>3. User Accounts</h3>
         <p>To use the Services, you must create an account. You agree to:</p>
@@ -2055,22 +1157,13 @@
         </ul>
         <p>We reserve the right to suspend or terminate accounts that violate these Terms or that have been inactive for an extended period.</p>
 
-        <h3>4. Subscriptions and Payments</h3>
-        <h4>4.1 Free and Premium Tiers</h4>
-        <p>Stevo offers a free tier with core features and an optional Premium subscription with advanced features. Premium subscription pricing is displayed within the Services and may be updated with advance notice.</p>
-        <h4>4.2 Billing and Renewal</h4>
-        <p>Premium subscriptions automatically renew at the end of each billing period (monthly or annually, as selected by you) unless cancelled. By subscribing, you authorize us to charge your payment method on a recurring basis. We accept Visa, Mastercard, American Express, Discover, and Apple Pay. All payments are in US dollars.</p>
-        <h4>4.3 Cancellation</h4>
-        <p>You may cancel your subscription at any time through your account settings or through the App Store/Google Play account management interface. Cancellation takes effect at the end of the current billing period. You will retain access to Premium features through the end of the paid period.</p>
-        <h4>4.4 Refunds</h4>
-        <p>Refund requests may be submitted to <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>. Refunds are evaluated on a case-by-case basis. Purchases made through the Apple App Store or Google Play Store are subject to those platforms' refund policies.</p>
-
-        <h3>5. Prohibited Activities</h3>
+        <h3>4. Prohibited Activities</h3>
         <p>You agree not to use the Services to:</p>
         <ul>
-          <li>Use the Services to advertise or offer to sell goods and services</li>
+          <li>Operate a betting business through the Services: acting as a bookmaker or a house, taking a rake, commission, or fee on any amount recorded, or offering odds to the public</li>
+          <li>Record bets with anyone who is under 18, or in any place where a wager between the people involved is unlawful</li>
+          <li>Advertise or offer to sell goods and services</li>
           <li>Sell, transfer, or assign your profile or account to another party</li>
-          <li>Use the platform to facilitate real-money gambling or wagering transactions</li>
           <li>Impersonate another user or submit false bet outcomes</li>
           <li>Violate any applicable law or regulation</li>
           <li>Harass, abuse, or harm other users</li>
@@ -2080,40 +1173,39 @@
           <li>Use the Services for any commercial purpose without our written consent</li>
         </ul>
 
-        <h3>6. User Generated Content</h3>
-        <p>The Services allow users to post content including bet terms, outcomes, poker results, golf scores, and activity feed posts ("User Content"). You retain ownership of your User Content. By posting User Content, you grant Stevo App LLC a non-exclusive, royalty-free license to use, store, display, and distribute such content solely for the purpose of providing the Services.</p>
+        <h3>5. User Generated Content</h3>
+        <p>The Services allow users to post content including bet terms, outcomes, poker results, and activity feed posts ("User Content"). You retain ownership of your User Content. By posting User Content, you grant Stevo App LLC a non-exclusive, royalty-free license to use, store, display, and distribute such content solely for the purpose of providing the Services.</p>
         <p>You are solely responsible for your User Content and its accuracy. You represent that you have all rights necessary to post the content and that it does not violate any third-party rights or applicable law.</p>
 
-        <h3>7. Third-Party Services and Links</h3>
-        <p>The Services may link to third-party payment platforms including Venmo, Cash App, and Zelle to facilitate settlement between users. These links are provided as a convenience only. Stevo App LLC does not process, hold, or control any funds transferred through these third-party services. Your use of any third-party service is governed by that service's own terms and privacy policy. We are not responsible for the content, privacy practices, or availability of any third-party services.</p>
+        <h3>6. Third-Party Services and Links</h3>
+        <p>The Services may link to third-party payment platforms including Venmo, Cash App, and Zelle so that you can settle directly with another person. These links are provided as a convenience only: Stevo opens the other application and records what you tell it. Stevo App LLC does not process, hold, or control any funds transferred through these third-party services and is not a party to any such transfer. Your use of any third-party service is governed by that service's own terms and privacy policy. We are not responsible for the content, privacy practices, or availability of any third-party services.</p>
 
-        <h3>8. SMS Communications</h3>
+        <h3>7. SMS Communications</h3>
         <p>By creating an account, you consent to receive SMS text messages from Stevo for account alerts and authentication purposes (program name: Stevo). Message and data rates may apply. You may opt out at any time by replying STOP to any SMS message. For help, reply HELP or contact us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>.</p>
 
-        <h3>9. Intellectual Property</h3>
+        <h3>8. Intellectual Property</h3>
         <p>The Services and their original content, features, and functionality are and will remain the exclusive property of Stevo App LLC. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of Stevo App LLC.</p>
 
-        <h3>10. Disclaimer of Warranties</h3>
+        <h3>9. Disclaimer of Warranties</h3>
         <p>THE SERVICES ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.</p>
 
-        <h3>11. Limitation of Liability</h3>
+        <h3>10. Limitation of Liability</h3>
         <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, STEVO APP LLC SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING FROM YOUR USE OF THE SERVICES.</p>
-        <p>OUR TOTAL LIABILITY TO YOU FOR ANY CLAIM ARISING FROM THESE TERMS OR YOUR USE OF THE SERVICES SHALL NOT EXCEED THE AMOUNT YOU PAID TO US IN THE SIX (6) MONTHS PRECEDING THE CLAIM.</p>
-        <p>ANY CLAIM ARISING FROM THESE TERMS OR YOUR USE OF THE SERVICES MUST BE BROUGHT WITHIN ONE (1) YEAR OF THE DATE THE CAUSE OF ACTION AROSE.</p>
+        <p>Stevo App LLC is not a party to any bet, wager, loan, or settlement recorded in the Services and is not responsible for whether any person pays another. Disputes about a recorded amount are between the people involved.</p>
 
-        <h3>12. Dispute Resolution</h3>
+        <h3>11. Dispute Resolution</h3>
         <p>Before initiating any formal legal proceeding, you agree to first attempt to resolve any dispute informally by contacting us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>. We will make good-faith efforts to resolve the dispute within thirty (30) days.</p>
         <p>If informal resolution fails, disputes shall be resolved by binding arbitration in Douglas County, Colorado, United States. Arbitration is mandatory. If a dispute proceeds in court rather than arbitration, it shall take place in Douglas County, Colorado.</p>
         <p>Stevo App LLC agrees to pay arbitration fees if deemed excessive by the arbitrator.</p>
 
-        <h3>13. Governing Law</h3>
+        <h3>12. Governing Law</h3>
         <p>These Terms shall be governed by and construed in accordance with the laws of the State of Colorado, without regard to its conflict of law provisions.</p>
 
-        <h3>14. Updates to These Terms</h3>
+        <h3>13. Updates to These Terms</h3>
         <p>We reserve the right to update these Terms at any time. We will notify you of material changes at least seven (7) days before the update takes effect. The following changes may take effect immediately upon notification: new functionality, security updates, bug fixes, and court orders.</p>
         <p>Your continued use of the Services after the effective date of any updates constitutes acceptance of the revised Terms.</p>
 
-        <h3>15. Contact Information</h3>
+        <h3>14. Contact Information</h3>
         <p>For questions about these Terms, please contact us at:</p>
         <div class="legal-contact">
           <strong>Stevo App LLC</strong><br>
@@ -2365,23 +1457,19 @@
 </div>
 
 <script>
-// Respect reduced motion
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Scroll progress bar
+// Scroll progress bar + condensed nav
 (function initScrollProgress() {
   const bar = document.getElementById('scrollProgress');
-  const navEl = document.querySelector('nav');
+  const navEl = document.getElementById('nav');
   if (!bar) return;
   let ticking = false;
   function update() {
     const h = document.documentElement;
-    const scrolled = h.scrollTop;
     const max = h.scrollHeight - h.clientHeight;
-    const pct = max > 0 ? (scrolled / max) * 100 : 0;
-    bar.style.width = pct + '%';
-    // Condense the nav once the hero starts scrolling away
-    if (navEl) navEl.classList.toggle('scrolled', scrolled > 24);
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    if (navEl) navEl.classList.toggle('scrolled', h.scrollTop > 24);
     ticking = false;
   }
   window.addEventListener('scroll', () => {
@@ -2390,45 +1478,20 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   update();
 })();
 
-// Scroll reveal
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.15 });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-// Parallax: elements with data-speed move as page scrolls
-if (!reducedMotion) {
-  const parallaxEls = document.querySelectorAll('.parallax');
-  let ticking = false;
-  function updateParallax() {
-    const y = window.scrollY;
-    parallaxEls.forEach(el => {
-      const speed = parseFloat(el.dataset.speed || '0.2');
-      el.style.transform = `translateY(${y * speed * -1}px)`;
-    });
-    ticking = false;
-  }
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
-  }, { passive: true });
-}
-
-// Hero carousel (deck-style)
-(function initCarousel() {
-  const stack = document.getElementById('carousel');
+// Hero screenshot deck
+(function initDeck() {
+  const stack = document.getElementById('deck');
   if (!stack) return;
-  const slides = Array.from(stack.querySelectorAll('.hero-carousel-slide'));
-  const dots = document.querySelectorAll('.hero-carousel-dot');
+  const slides = Array.from(stack.querySelectorAll('.phone-slide'));
+  const dots = Array.from(document.querySelectorAll('.phone-dot'));
+  const caption = document.getElementById('deck-caption');
+  const labels = ['Home', 'Lines', 'Poker results', 'Face Off'];
   const total = slides.length;
   let current = 0;
 
   function showSlide(i) {
     current = (i + total) % total;
     slides.forEach((s, idx) => {
-      // Offset from current (wraps around)
       const offset = (idx - current + total) % total;
       s.classList.remove('depth-0', 'depth-1', 'depth-2', 'depth-hidden');
       if (offset === 0) s.classList.add('depth-0');
@@ -2437,171 +1500,95 @@ if (!reducedMotion) {
       else s.classList.add('depth-hidden');
     });
     dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+    if (caption) caption.textContent = labels[current] || '';
   }
 
-  // Click stack to advance
-  stack.addEventListener('click', () => showSlide(current + 1));
-
-  // Keyboard: Enter/Space advances, arrows navigate
-  stack.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showSlide(current + 1); }
-    else if (e.key === 'ArrowRight') { e.preventDefault(); showSlide(current + 1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); showSlide(current - 1); }
-  });
-
-  // Dots jump directly
-  dots.forEach((dot, idx) => {
-    dot.addEventListener('click', (e) => {
-      e.stopPropagation();
-      showSlide(idx);
-      restartAuto();
-    });
-  });
-
-  // Auto-advance the deck on a gentle loop, pausing on hover/focus so the
-  // user is never fighting the animation while they explore.
   let autoTimer = null;
-  const AUTO_MS = 4500;
   function startAuto() {
     if (reducedMotion || autoTimer) return;
-    autoTimer = setInterval(() => showSlide(current + 1), AUTO_MS);
+    autoTimer = setInterval(() => showSlide(current + 1), 5000);
   }
   function stopAuto() {
     if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
   }
   function restartAuto() { stopAuto(); startAuto(); }
 
+  stack.addEventListener('click', () => { showSlide(current + 1); restartAuto(); });
+  stack.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') {
+      e.preventDefault(); showSlide(current + 1); restartAuto();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault(); showSlide(current - 1); restartAuto();
+    }
+  });
+  dots.forEach((dot, idx) => {
+    dot.addEventListener('click', (e) => { e.stopPropagation(); showSlide(idx); restartAuto(); });
+  });
+
   ['mouseenter', 'focusin'].forEach(ev => stack.addEventListener(ev, stopAuto));
   ['mouseleave', 'focusout'].forEach(ev => stack.addEventListener(ev, startAuto));
-  // Pause when the tab is hidden so we don't churn in the background
   document.addEventListener('visibilitychange', () => {
-    document.hidden ? stopAuto() : startAuto();
+    if (document.hidden) stopAuto(); else startAuto();
   });
   startAuto();
-
-  // Restart the loop after any manual interaction so it feels intentional
-  stack.addEventListener('click', restartAuto);
-  stack.addEventListener('keydown', restartAuto);
-
-  // Subtle 3D tilt toward the pointer for a sense of depth
-  if (!reducedMotion) {
-    const MAX_TILT = 7;
-    stack.addEventListener('pointermove', (e) => {
-      const r = stack.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width - 0.5;
-      const py = (e.clientY - r.top) / r.height - 0.5;
-      stack.classList.add('tilting');
-      stack.style.setProperty('--tiltY', (px * MAX_TILT * 2).toFixed(2) + 'deg');
-      stack.style.setProperty('--tiltX', (-py * MAX_TILT * 2).toFixed(2) + 'deg');
-    });
-    stack.addEventListener('pointerleave', () => {
-      stack.classList.remove('tilting');
-      stack.style.setProperty('--tiltY', '0deg');
-      stack.style.setProperty('--tiltX', '0deg');
-    });
-  }
 })();
 
-// Stat counter (animates count-up when element enters viewport)
-const statObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    const el = e.target;
-    const target = +el.dataset.target;
-    const suffix = el.dataset.suffix || '';
-    const prefix = el.dataset.prefix || '';
-    const useComma = target >= 1000;
-    let cur = 0;
-    const steps = 50;
-    const step = target / steps;
-    const format = (n) => {
-      const rounded = Math.floor(n);
-      const str = useComma ? rounded.toLocaleString('en-US') : String(rounded);
-      return prefix + str + suffix;
-    };
-    el.textContent = format(0);
-    const timer = setInterval(() => {
-      cur += step;
-      if (cur >= target) { cur = target; clearInterval(timer); }
-      el.textContent = format(cur);
-    }, 28);
-    statObs.unobserve(el);
-  });
-}, { threshold: 0.4 });
-document.querySelectorAll('[data-target]').forEach(el => statObs.observe(el));
+// Crew quotes.
+//
+// REAL QUOTES ONLY. This is where three invented testimonials stood until
+// 2026-09-08 — invented people, invented crews, invented cities — next to four
+// invented beta statistics. All of it was deleted. An entry goes in this array
+// only when every one of these is true:
+//
+//   1. a real person said it, about the real app, having actually used it;
+//   2. the words are theirs, not written for them and not tidied up;
+//   3. Steve has that person's permission to publish it with the attribution
+//      shown here;
+//   4. the name and the crew are real and are theirs.
+//
+// Nothing invented, nothing "representative", no placeholder, no example row —
+// not even commented out. There are no real quotes yet (the app is in a private
+// beta), so the array is empty and the section below does not exist on the
+// page. Adding a real quote here is the only thing that turns it on.
+//
+// Shape: { quote: '...', name: 'First L.', crew: 'The crew they play with' }
+const CREW_QUOTES = [];
 
-// Signup
-async function signup(loc) {
-  const id = loc === 'hero' ? 'email-1' : 'email-2';
-  const input = document.getElementById(id);
-  const email = input.value.trim();
-  if (!email || !email.includes('@') || !email.includes('.')) {
-    input.style.borderColor = 'var(--red)';
-    setTimeout(() => input.style.borderColor = 'var(--border)', 2000);
+(function initCrewQuotes() {
+  const section = document.getElementById('crew-quotes');
+  if (!section) return;
+  // No quotes means no section: it is taken out of the document rather than
+  // left standing empty, so the page can never ship a heading with nothing
+  // under it or a placeholder somebody mistakes for real feedback.
+  if (!Array.isArray(CREW_QUOTES) || CREW_QUOTES.length === 0) {
+    section.remove();
     return;
   }
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g,
+    (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const initials = (name) => String(name || '')
+    .trim().split(/\s+/).slice(0, 2).map((p) => p[0] || '').join('').toUpperCase();
 
-  const btn = input.nextElementSibling;
-  const originalLabel = btn ? btn.textContent : '';
-  if (btn) { btn.disabled = true; btn.textContent = 'Joining…'; }
-
-  try {
-    const res = await fetch('/.netlify/functions/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
-    if (!res.ok) throw new Error('Request failed');
-
-    bumpWaitlistCount();
-
-    if (loc === 'hero') {
-      document.getElementById('hero-form').style.display = 'none';
-      document.getElementById('hero-note').style.display = 'none';
-      document.getElementById('hero-success').style.display = 'block';
-    } else {
-      document.getElementById('cta-form').innerHTML =
-        '<div style="color:var(--accent);font-weight:600;font-size:14px;padding:14px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;width:100%">You\'re on the list.</div>';
-      document.getElementById('cta-note').style.display = 'none';
-    }
-  } catch (err) {
-    input.style.borderColor = 'var(--red)';
-    setTimeout(() => input.style.borderColor = 'var(--border)', 2500);
-    const note = document.getElementById(loc === 'hero' ? 'hero-note' : 'cta-note');
-    if (note) {
-      const prev = note.textContent;
-      note.textContent = 'Something went wrong. Please try again.';
-      note.style.color = 'var(--red)';
-      setTimeout(() => { note.textContent = prev; note.style.color = ''; }, 4000);
-    }
-    if (btn) { btn.disabled = false; btn.textContent = originalLabel; }
-  }
-}
-
-document.querySelectorAll('.hero-input').forEach(input => {
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') signup(input.id === 'email-1' ? 'hero' : 'cta');
-  });
-});
-
-// Waitlist count
-async function loadWaitlistCount() {
-  const el = document.getElementById('waitlist-count');
-  if (!el) return;
-  try {
-    const res = await fetch('/.netlify/functions/count');
-    if (!res.ok) return;
-    const { total } = await res.json();
-    if (typeof total === 'number') el.textContent = total.toLocaleString();
-  } catch {}
-}
-function bumpWaitlistCount() {
-  const el = document.getElementById('waitlist-count');
-  if (!el) return;
-  const n = parseInt(el.textContent.replace(/[^0-9]/g, ''), 10);
-  if (!isNaN(n)) el.textContent = (n + 1).toLocaleString();
-}
-loadWaitlistCount();
+  section.innerHTML =
+    '<div class="quotes-head">' +
+      '<div class="section-tag">From the crews</div>' +
+      '<h2 class="section-title" style="font-size:clamp(28px,3.4vw,40px)">What the beta says</h2>' +
+    '</div>' +
+    '<div class="quotes-grid">' +
+      CREW_QUOTES.map((q) =>
+        '<figure class="quote-card">' +
+          '<blockquote class="quote-text">' + esc(q.quote) + '</blockquote>' +
+          '<figcaption class="quote-who">' +
+            '<span class="quote-initials" aria-hidden="true">' + esc(initials(q.name)) + '</span>' +
+            '<span>' +
+              '<span class="quote-name">' + esc(q.name) + '</span>' +
+              '<span class="quote-crew">' + esc(q.crew) + '</span>' +
+            '</span>' +
+          '</figcaption>' +
+        '</figure>').join('') +
+    '</div>';
+  section.hidden = false;
+})();
 
 // Legal modal
 const legalOverlay = document.getElementById('legal-overlay');
@@ -2654,8 +1641,7 @@ legalBody.addEventListener('click', e => {
   e.preventDefault();
   const target = document.getElementById(link.dataset.scrollto);
   if (!target) return;
-  const offset = target.offsetTop - legalBody.offsetTop - 8;
-  legalBody.scrollTo({ top: offset, behavior: 'smooth' });
+  legalBody.scrollTo({ top: target.offsetTop - legalBody.offsetTop - 8, behavior: 'smooth' });
 });
 </script>
 
