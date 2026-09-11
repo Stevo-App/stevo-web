@@ -321,22 +321,6 @@
     letter-spacing: -0.4px;
     margin-bottom: 12px;
   }
-  /* Sits on the title line, at title weight, because it is the part of the
-     claim that keeps the page honest: golf is not in the app. */
-  .f-badge {
-    display: inline-block;
-    vertical-align: 4px;
-    margin-left: 10px;
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--gold300);
-    background: var(--gold-bg);
-    border: 1px solid var(--gold500);
-    border-radius: 999px;
-    padding: 5px 12px;
-  }
   .f-desc {
     color: var(--muted);
     font-size: 15px;
@@ -369,25 +353,6 @@
     border: 1px solid var(--border2);
     box-shadow: 0 20px 48px rgba(3,10,22,0.6);
   }
-  /* Stands in for a screenshot that cannot exist: the feature is not built, so
-     there is no screen to capture and none may be faked. Same phone aspect as
-     the real captures, dashed so it never reads as one. */
-  .f-placeholder {
-    aspect-ratio: 600 / 1304;
-    border-radius: 22px;
-    border: 1px dashed var(--border2);
-    background: var(--surface1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 28px 22px;
-    text-align: center;
-    color: var(--faint);
-  }
-  .f-placeholder-title { font-size: 15px; font-weight: 700; color: var(--soft); }
-  .f-placeholder-desc { font-size: 13px; line-height: 1.6; max-width: 220px; }
 
   /* ── PAIR CARDS ── */
   .pair {
@@ -463,12 +428,7 @@
 
   /* ── LATER ── */
   .later { max-width: 1120px; margin: 0 auto; padding: 0 40px 96px; }
-  .later-inner {
-    display: grid;
-    grid-template-columns: 1fr 260px;
-    gap: 48px;
-    align-items: center;
-  }
+  .later-inner { max-width: 620px; }
   .later-list { display: grid; gap: 12px; margin-top: 24px; }
   .later-item {
     display: flex;
@@ -492,14 +452,6 @@
     background: var(--blue300);
     border-radius: 999px;
     padding: 4px 10px;
-  }
-  .later-shot img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 22px;
-    border: 1px solid var(--border2);
-    box-shadow: 0 20px 48px rgba(3,10,22,0.6);
   }
 
   /* ── CREW QUOTES (rendered from the CREW_QUOTES array; absent while empty) ── */
@@ -616,8 +568,6 @@
     .ledger-inner { grid-template-columns: 1fr; gap: 22px; }
     .how-grid { grid-template-columns: 1fr 1fr; }
     .money-grid { grid-template-columns: 1fr; gap: 22px; }
-    .later-inner { grid-template-columns: 1fr; gap: 32px; }
-    .later-shot { max-width: 240px; }
     .quotes-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 768px) {
@@ -718,17 +668,15 @@
 
   <div>
     <div class="phone-deck" id="deck" role="button" tabindex="0" aria-label="App screenshots, activate to see the next screen">
-      <div class="phone-slide depth-0" data-slide="0"><img src="screen-home.png" alt="The Stevo home screen: net standing, Make a bet, and tiles for Bets, Settle, Crews, Face Off, Poker and Golf" width="600" height="1304"></div>
-      <div class="phone-slide depth-1" data-slide="1"><img src="screen-lines.png" alt="The Stevo game lines board with spread, total and moneyline prices for NFL games" width="600" height="1304" loading="lazy"></div>
-      <div class="phone-slide depth-2" data-slide="2"><img src="screen-poker.png" alt="A finished Stevo poker tournament: the podium, the prize split, final standings and who owes whom" width="600" height="1304" loading="lazy"></div>
-      <div class="phone-slide depth-hidden" data-slide="3"><img src="screen-faceoff.png" alt="A Stevo Face Off with one friend: who is up at the top, a bet with I won and I lost buttons, and the Add Bet sheet open on its microphone" width="600" height="1304" loading="lazy"></div>
-      <div class="phone-caption" id="deck-caption">Home</div>
+      <div class="phone-slide depth-0" data-slide="0"><img src="screen-lines.png" alt="The Stevo game lines board with spread, total and moneyline prices for NFL games" width="600" height="1304"></div>
+      <div class="phone-slide depth-1" data-slide="1"><img src="screen-poker.png" alt="A finished Stevo poker tournament: the podium, the prize split, final standings and who owes whom" width="600" height="1304" loading="lazy"></div>
+      <div class="phone-slide depth-2" data-slide="2"><img src="screen-faceoff.png" alt="A Stevo Face Off with one friend: who is up at the top, a bet with I won and I lost buttons, and the Add Bet sheet open on its microphone" width="600" height="1304" loading="lazy"></div>
+      <div class="phone-caption" id="deck-caption">Lines</div>
     </div>
     <div class="phone-dots" role="tablist" aria-label="Screen selector">
-      <button class="phone-dot active" data-dot="0" aria-label="Home screen"></button>
-      <button class="phone-dot" data-dot="1" aria-label="Lines board"></button>
-      <button class="phone-dot" data-dot="2" aria-label="Poker results"></button>
-      <button class="phone-dot" data-dot="3" aria-label="Face Off"></button>
+      <button class="phone-dot active" data-dot="0" aria-label="Lines board"></button>
+      <button class="phone-dot" data-dot="1" aria-label="Poker results"></button>
+      <button class="phone-dot" data-dot="2" aria-label="Face Off"></button>
     </div>
   </div>
 </section>
@@ -756,7 +704,7 @@
   <div class="features-head">
     <div class="section-tag">What is in the app</div>
     <h2 class="section-title">Everything your crew<br>already bets on.</h2>
-    <p class="section-desc">Three things carry the app today: the lines board, Face Off, and poker nights. Crews and the Settle tab tie them together. Golf is the one after that, and it is badged coming soon below because it is not in the app yet.</p>
+    <p class="section-desc">Three things carry the app today: the lines board, Face Off, and poker nights. Crews and the Settle tab tie them together.</p>
   </div>
 
   <div class="f-row">
@@ -827,48 +775,6 @@
     <div class="f-shot"><img src="screen-poker.png" alt="A finished Stevo tournament: winner podium, prize pool, final standings and two settle-up rows" width="600" height="1304" loading="lazy"></div>
   </div>
 
-  <div class="f-row reverse">
-    <!-- No screenshot: golf is not built, so there is no golf screen to capture
-         and none may be mocked up. This panel is the honest stand-in. -->
-    <div class="f-shot">
-      <div class="f-placeholder">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
-          <line x1="4" y1="22" x2="4" y2="15"/>
-        </svg>
-        <div class="f-placeholder-title">No screenshot yet</div>
-        <div class="f-placeholder-desc">Golf is not built, so there is no golf screen to show. Every other image on this page is a capture of the real app.</div>
-      </div>
-    </div>
-    <div>
-      <div class="f-num">04 — GOLF</div>
-      <div class="f-title">Nassau that adds itself up<span class="f-badge">Coming soon</span></div>
-      <p class="f-desc">
-        <strong>Golf is not in the app yet.</strong> It sits in the Games tab with a SOON
-        badge and nothing to tap, and this row is here so you know what is coming rather
-        than to claim it has arrived. What it is being built to do: schedule a round with a
-        course, a tee time and 9 or 18 holes; keep one scorecard the whole group writes on,
-        so whoever is holding a phone on the green can enter anybody's strokes; and run
-        <strong>Nassau</strong> — front nine, back nine and total, priced per bet.
-      </p>
-      <p class="f-desc">
-        <strong>Handicaps</strong> are part of that rather than an afterthought. You set one
-        per player when the round is created, strokes come off where they are due, and the bet
-        is decided on the adjusted score instead of raw strokes — so a 14 can take money off a
-        6 and the round is worth playing for something. Nobody keeps a count in their head on
-        the tee box. Want it straight up? Leave everyone at scratch and the same bets settle on
-        gross. When the last player marks themselves finished, the legs settle, ties push, and
-        who owes whom goes to the same Settle tab as everything else in Stevo.
-      </p>
-      <ul class="f-list">
-        <li>Handicaps set per round, so a friend who plays once a year needs no history</li>
-        <li>One shared card: anyone in the round can enter scores for anyone</li>
-        <li>Nassau legs settle per bet, and a tied leg pushes so nobody pays</li>
-        <li>Skins and closest to the pin queue up behind it, badged SOON in the app</li>
-        <li>Not shipped, not scheduled here: no golf round can be created in Stevo today</li>
-      </ul>
-    </div>
-  </div>
 </section>
 
 <div class="pair">
@@ -947,7 +853,7 @@
     <div>
       <div class="section-tag">Coming later</div>
       <h2 class="section-title" style="font-size:clamp(28px,3.4vw,40px)">Already in the app,<br>marked coming soon</h2>
-      <p class="section-desc">These sit in the Games tab today with a SOON badge, alongside golf. They are next after launch, not shipped.</p>
+      <p class="section-desc">These sit in the Games tab today with a SOON badge. They are next after launch, not shipped.</p>
       <div class="later-list">
         <div class="later-item">
           <div>
@@ -965,7 +871,6 @@
         </div>
       </div>
     </div>
-    <div class="later-shot"><img src="screen-games.png" alt="The Stevo Games tab: Poker is live, with Golf, Squares and Pick'em pools marked SOON" width="600" height="1304" loading="lazy"></div>
   </div>
 </section>
 
@@ -1060,7 +965,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   const slides = Array.from(stack.querySelectorAll('.phone-slide'));
   const dots = Array.from(document.querySelectorAll('.phone-dot'));
   const caption = document.getElementById('deck-caption');
-  const labels = ['Home', 'Lines', 'Poker results', 'Face Off'];
+  const labels = ['Lines', 'Poker results', 'Face Off'];
   const total = slides.length;
   let current = 0;
 
