@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stevo | Terms of Service</title>
+<meta name="description" content="You must be 18 or older to use Stevo. Stevo records who owes whom; it never holds, moves, charges or pays out money, and settling up happens between friends outside the app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #09182F;
+    --surface: #0F2440;
+    --surface2: #152D4D;
+    --border: #23446B;
+    --accent: #D9AD50;
+    --accent-hover: #E7C77E;
+    --blue-ice: #C9D9EC;
+    --purple: #3568B0;
+    --gold: #D9AD50;
+    --text: #F3F0E8;
+    --text2: #93A9C4;
+    --text3: #6C88AC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Ambient gradient mesh background (same as the landing page) */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(ellipse 900px 600px at 20% 0%, rgba(217,173,80,0.10), transparent 62%),
+      radial-gradient(ellipse 800px 600px at 85% 35%, rgba(53,104,176,0.14), transparent 62%),
+      radial-gradient(ellipse 700px 500px at 50% 100%, rgba(217,173,80,0.06), transparent 60%);
+    pointer-events: none;
+  }
+
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ── NAV (copied from index.html) ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(9,24,47,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: padding 0.3s ease, background 0.3s ease,
+                box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  nav.scrolled {
+    padding: 10px 40px;
+    background: rgba(9,24,47,0.95);
+    border-bottom-color: #1A3352;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-wordmark {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 1.1px;
+    color: var(--text);
+  }
+  .nav-right {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .nav-right a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-right a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent);
+    color: #20180A !important;
+    padding: 9px 20px;
+    border-radius: 12px;
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent-hover); }
+
+  /* ── PAGE ── */
+  .section-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(32px, 4.2vw, 52px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  .faq {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 120px 40px 64px;
+  }
+
+  .toc {
+    margin: 32px 0 8px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .toc-head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+  .toc ol {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+  }
+  .toc a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .toc a:hover { color: var(--blue-ice); }
+
+  .faq section {
+    padding-top: 48px;
+    scroll-margin-top: 80px;
+  }
+  .faq h2 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    line-height: 1.15;
+    color: var(--text);
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .faq h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 24px;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    overflow-wrap: anywhere;
+  }
+  .faq p {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+  }
+  .faq p strong { color: var(--text); font-weight: 600; }
+  .faq ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 10px;
+  }
+  .faq ul li {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 6px;
+    overflow-wrap: anywhere;
+  }
+  .faq ul li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 11px;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .faq a { color: var(--accent); text-decoration: none; }
+  .faq a:hover { text-decoration: underline; }
+  .faq .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .faq .top {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .faq .top:hover { color: var(--text2); }
+
+  .contact {
+    margin-top: 48px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .contact-head {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+    margin-bottom: 6px;
+  }
+  .contact p { margin-bottom: 0; }
+
+  /* ── FOOTER (copied from index.html) ── */
+  footer {
+    border-top: 1px solid var(--border);
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-brand-name {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text);
+  }
+  .footer-tagline {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 6px;
+    max-width: 220px;
+  }
+  .footer-cols {
+    display: flex;
+    gap: 56px;
+  }
+  .footer-col-head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+  .footer-cols a {
+    display: block;
+    color: var(--text3);
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+  .footer-cols a:hover { color: var(--text2); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-copy { font-size: 12px; color: var(--text3); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    nav.scrolled { padding: 10px 20px; }
+    .nav-right { gap: 16px; }
+    .faq { padding: 96px 20px 48px; }
+    .toc ol { grid-template-columns: 1fr; }
+    footer { padding-left: 20px; padding-right: 20px; }
+    .footer-row { flex-direction: column; gap: 28px; }
+    .footer-cols { gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; }
+  }
+  @media (max-width: 480px) {
+    .footer-cols { flex-direction: column; gap: 20px; }
+  }
+</style>
+<style>
+  /* Carried over with the LLC clauses from the site's legal pop-up. */
+  .faq .legal-meta { color: var(--text3); font-size: 14px; margin-bottom: 28px; }
+  .faq h4 { color: var(--text); font-size: 16px; font-weight: 600; margin: 20px 0 8px; }
+  .faq .legal-contact { color: var(--text2); font-size: 15px; line-height: 1.7; margin: 12px 0 20px; padding-left: 14px; border-left: 2px solid var(--border); }
+  .faq .legal-note { color: var(--text3); font-size: 13px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="https://stevoapp.com/" class="nav-left" aria-label="Stevo home">
+    <svg class="nav-mark" width="30" height="30" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="19" fill="#F3F0E8"/>
+      <g fill="#D9AD50">
+        <path d="M20 1a19 19 0 0 1 9.5 2.55l-3.5 6.06A12 12 0 0 0 20 8z"/>
+        <path d="M36.45 29.5A19 19 0 0 0 36.45 10.5l-6.06 3.5a12 12 0 0 1 0 12z"/>
+        <path d="M20 39a19 19 0 0 1-9.5-2.55l3.5-6.06A12 12 0 0 0 20 32z"/>
+        <path d="M3.55 10.5a19 19 0 0 0 0 19l6.06-3.5a12 12 0 0 1 0-12z"/>
+      </g>
+      <circle cx="20" cy="20" r="12" fill="#3568B0" stroke="#09182F" stroke-width="1.5"/>
+      <text x="20" y="20" text-anchor="middle" dominant-baseline="central"
+            font-family="Geist, sans-serif" font-style="italic" font-weight="800"
+            font-size="16" fill="#FFFFFF">S</text>
+    </svg>
+    <div class="nav-wordmark">STEVO</div>
+  </a>
+  <div class="nav-right">
+    <a href="https://stevoapp.com/">Home</a>
+    <a href="mailto:support@stevoapp.com" class="nav-cta">Contact support</a>
+  </div>
+</nav>
+
+<main class="faq" id="top">
+  <div class="section-tag">Legal</div>
+  <h1 class="section-title">Terms of Service</h1>
+  <p class="section-desc">You must be 18 or older to use Stevo. Stevo records who owes whom; it never holds, moves, charges or pays out money, and settling up happens between friends outside the app.</p>
+  <p class="legal-meta">Last updated: September 7, 2026 &middot; This is the same text the app shows under Profile &gt; About.</p>
+
+  <section>
+    <h3>1. Acceptance of Terms</h3>
+    <p>By using Stevo, you agree to these Terms of Service. If you do not agree, please do not use the app.</p>
+  </section>
+
+  <section>
+    <h3>2. Description of Service</h3>
+    <p>Stevo is a social platform for tracking friendly bets, golf rounds, and poker games among friends. Stevo records who owes whom; it never holds, moves, charges or pays out money. Settling up is between friends, outside the app.</p>
+  </section>
+
+  <section>
+    <h3>3. Eligibility</h3>
+    <p>You must be 18 years of age or older to use Stevo. By creating an account you confirm that you are 18 or older.</p>
+  </section>
+
+  <section>
+    <h3>4. User Accounts</h3>
+    <p>You are responsible for maintaining the security of your account. You must provide accurate information and keep your credentials confidential. You can delete your account at any time from Settings, under Delete account; deletion is immediate and permanent, and it is blocked only while you still have an unsettled balance with someone. If you would rather we did it for you, email <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>.</p>
+  </section>
+
+  <section>
+    <h3>5. Acceptable Use</h3>
+    <p>You agree not to use Stevo for any unlawful purpose or in violation of any applicable laws. Bet tracking is for entertainment purposes only.</p>
+  </section>
+
+  <section>
+    <h3>6. Privacy</h3>
+    <p>Your use of Stevo is also governed by our Privacy Policy. Please review it to understand our data practices.</p>
+  </section>
+
+  <section>
+    <h3>7. Changes to Terms</h3>
+    <p>We may update these terms from time to time. Continued use of the app constitutes acceptance of any changes.</p>
+  </section>
+
+  <section>
+    <h2>Full terms — Stevo App LLC</h2>
+    <p class="legal-meta"><strong>Stevo App LLC</strong><br>Effective Date: April 12, 2026 &middot; Last Updated: September 8, 2026</p>
+
+    <h3>1. Agreement to Terms</h3>
+    <p>These Terms of Service ("Terms") constitute a legally binding agreement between you and Stevo App LLC ("Company," "we," "us," or "our") governing your access to and use of the Stevo mobile application, website at stevoapp.com, and any related services (collectively, the "Services").</p>
+    <p>By accessing or using our Services, you agree to be bound by these Terms. If you do not agree to these Terms, you must immediately discontinue use of our Services.</p>
+    <p>These Services are intended for personal use only. You must be at least 18 years of age to use the Services.</p>
+
+    <h3>2. Description of Services</h3>
+    <p>Stevo is a private, invite-only mobile application for friend groups to record social bets between themselves, run head-to-head Face Offs, organize poker nights and seasons, and manage crew competitions and standings. Stevo is a record-keeping and scorekeeping tool only.</p>
+    <p><strong>Stevo App LLC does not hold, transfer, charge, or pay out money.</strong> The Services do not operate a wallet, an account balance, or a payment facility of any kind, and Stevo App LLC never acts as a bookmaker or a house, takes a rake or commission, or profits from any amount recorded in the Services. Amounts you enter are a record of what you and the other person have agreed between yourselves; you settle those amounts directly with each other, outside the Services. Bet tracking is for entertainment purposes only.</p>
+    <p>The Services are provided free of charge. There is no subscription, membership tier, or in-app purchase.</p>
+
+    <h3>3. User Accounts</h3>
+    <p>To use the Services, you must create an account. You agree to:</p>
+    <ul>
+      <li>Provide accurate, current, and complete information during registration</li>
+      <li>Maintain and promptly update your account information</li>
+      <li>Keep your account credentials secure and confidential</li>
+      <li>Accept responsibility for all activity that occurs under your account</li>
+      <li>Notify us immediately at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a> of any unauthorized use of your account</li>
+    </ul>
+    <p>We reserve the right to suspend or terminate accounts that violate these Terms or that have been inactive for an extended period.</p>
+
+    <h3>4. Prohibited Activities</h3>
+    <p>You agree not to use the Services to:</p>
+    <ul>
+      <li>Operate a betting business through the Services: acting as a bookmaker or a house, taking a rake, commission, or fee on any amount recorded, or offering odds to the public</li>
+      <li>Record bets with anyone who is under 18, or in any place where a wager between the people involved is unlawful</li>
+      <li>Advertise or offer to sell goods and services</li>
+      <li>Sell, transfer, or assign your profile or account to another party</li>
+      <li>Impersonate another user or submit false bet outcomes</li>
+      <li>Violate any applicable law or regulation</li>
+      <li>Harass, abuse, or harm other users</li>
+      <li>Upload or transmit viruses or malicious code</li>
+      <li>Attempt to gain unauthorized access to any part of the Services</li>
+      <li>Scrape, harvest, or collect data from the Services without authorization</li>
+      <li>Use the Services for any commercial purpose without our written consent</li>
+    </ul>
+
+    <h3>5. User Generated Content</h3>
+    <p>The Services allow users to post content including bet terms, outcomes, poker results, and activity feed posts ("User Content"). You retain ownership of your User Content. By posting User Content, you grant Stevo App LLC a non-exclusive, royalty-free license to use, store, display, and distribute such content solely for the purpose of providing the Services.</p>
+    <p>You are solely responsible for your User Content and its accuracy. You represent that you have all rights necessary to post the content and that it does not violate any third-party rights or applicable law.</p>
+
+    <h3>6. Third-Party Services and Links</h3>
+    <p>The Services may link to third-party payment platforms including Venmo, Cash App, and Zelle so that you can settle directly with another person. These links are provided as a convenience only: Stevo opens the other application and records what you tell it. Stevo App LLC does not process, hold, or control any funds transferred through these third-party services and is not a party to any such transfer. Your use of any third-party service is governed by that service's own terms and privacy policy. We are not responsible for the content, privacy practices, or availability of any third-party services.</p>
+
+    <h3>7. SMS Communications</h3>
+    <p>By creating an account, you consent to receive SMS text messages from Stevo for account alerts and authentication purposes (program name: Stevo). Message and data rates may apply. You may opt out at any time by replying STOP to any SMS message. For help, reply HELP or contact us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>.</p>
+
+    <h3>8. Intellectual Property</h3>
+    <p>The Services and their original content, features, and functionality are and will remain the exclusive property of Stevo App LLC. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of Stevo App LLC.</p>
+
+    <h3>9. Disclaimer of Warranties</h3>
+    <p>THE SERVICES ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.</p>
+
+    <h3>10. Limitation of Liability</h3>
+    <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, STEVO APP LLC SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING FROM YOUR USE OF THE SERVICES.</p>
+    <p>Stevo App LLC is not a party to any bet, wager, loan, or settlement recorded in the Services and is not responsible for whether any person pays another. Disputes about a recorded amount are between the people involved.</p>
+
+    <h3>11. Dispute Resolution</h3>
+    <p>Before initiating any formal legal proceeding, you agree to first attempt to resolve any dispute informally by contacting us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>. We will make good-faith efforts to resolve the dispute within thirty (30) days.</p>
+    <p>If informal resolution fails, disputes shall be resolved by binding arbitration in Douglas County, Colorado, United States. Arbitration is mandatory. If a dispute proceeds in court rather than arbitration, it shall take place in Douglas County, Colorado.</p>
+    <p>Stevo App LLC agrees to pay arbitration fees if deemed excessive by the arbitrator.</p>
+
+    <h3>12. Governing Law</h3>
+    <p>These Terms shall be governed by and construed in accordance with the laws of the State of Colorado, without regard to its conflict of law provisions.</p>
+
+    <h3>13. Updates to These Terms</h3>
+    <p>We reserve the right to update these Terms at any time. We will notify you of material changes at least seven (7) days before the update takes effect. The following changes may take effect immediately upon notification: new functionality, security updates, bug fixes, and court orders.</p>
+    <p>Your continued use of the Services after the effective date of any updates constitutes acceptance of the revised Terms.</p>
+
+    <h3>14. Contact Information</h3>
+    <p>For questions about these Terms, please contact us at:</p>
+    <div class="legal-contact">
+      <strong>Stevo App LLC</strong><br>
+      PO Box TBD<br>
+      Parker, CO 80134<br>
+      Email: <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>
+    </div>
+    <p class="legal-note">Note: Mailing address will be finalized before public launch.</p>
+    <p class="legal-note" style="margin-top:20px">Stevo App LLC &middot; stevoapp.com &middot; support@stevoapp.com</p>
+  </section>
+
+  <div class="contact">
+    <div class="contact-head">Questions about this page?</div>
+    <p>Email <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>. The other document is here: <a href="/privacy">Privacy Policy</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <div>
+      <div class="footer-brand">
+        <div class="footer-brand-name">STEVO</div>
+      </div>
+      <p class="footer-tagline">The private crew app for guys who bet, play, and compete.</p>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-head">Product</div>
+        <a href="https://stevoapp.com/#features">Features</a>
+        <a href="https://stevoapp.com/#how">How it works</a>
+        <a href="/faq">FAQ</a>
+      </div>
+      <div>
+        <div class="footer-col-head">Company</div>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="mailto:support@stevoapp.com">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 Stevo App LLC</div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+</script>
+</body>
+</html>
