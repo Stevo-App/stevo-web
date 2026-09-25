@@ -1,0 +1,7 @@
+# stevoapp.com
+User-agent: *
+Allow: /
+# The invite page is for a person holding a code, and the survey is a private study.
+Disallow: /crew/
+Disallow: /survey/
+Sitemap: https://stevoapp.com/sitemap.xml

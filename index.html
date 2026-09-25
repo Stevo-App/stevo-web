@@ -6,6 +6,25 @@
 <title>Stevo | The Private Crew App</title>
 <meta name="description" content="Stevo records the bets, Face Offs and poker nights your crew already runs, and keeps one balance per person. It never holds, moves, or pays out money.">
 <meta name="theme-color" content="#09182F">
+<link rel="canonical" href="https://stevoapp.com/">
+<!-- Link previews (Steve, 2026-09-25): iMessage, X, Facebook and Slack read these
+     when someone shares the link. og-image.png is built by scripts/make-og-image.py
+     from the coin, the tagline and the Home capture; re-run it after a re-shoot. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stevo">
+<meta property="og:url" content="https://stevoapp.com/">
+<meta property="og:title" content="Stevo | The Private Crew App">
+<meta property="og:description" content="Stevo records the bets, Face Offs and poker nights your crew already runs, and keeps one balance per person. It never holds, moves, or pays out money.">
+<meta property="og:image" content="https://stevoapp.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Stevo coin, the line The private crew app for friendly bets, and the app's Home screen">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@stevoapp">
+<meta name="twitter:title" content="Stevo | The Private Crew App">
+<meta name="twitter:description" content="Stevo records the bets, Face Offs and poker nights your crew already runs, and keeps one balance per person. It never holds, moves, or pays out money.">
+<meta name="twitter:image" content="https://stevoapp.com/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Stevo App LLC","url":"https://stevoapp.com/","logo":"https://stevoapp.com/stevo-coin.png","sameAs":["https://instagram.com/stevoapp","https://tiktok.com/@stevoapp","https://twitter.com/stevoapp","https://youtube.com/@stevoapp"],"contactPoint":{"@type":"ContactPoint","email":"support@stevoapp.com","contactType":"customer support"}}</script>
 <link rel="icon" href="/stevo-coin.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -503,6 +522,43 @@
   .cta-section .section-desc { margin: 0 auto 24px; }
   .cta-section .hero-note { text-align: center; margin: 16px auto 0; }
 
+  /* Early-access list: one email field and the gold action, same radius and
+     weights as .hero-btn so it reads as the page's own control. */
+  .waitlist-form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .waitlist-form[hidden] { display: none; }
+  .waitlist-email {
+    flex: 1;
+    min-width: 0;
+    background: var(--surface1);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 13px 16px;
+    color: var(--text);
+    font: inherit;
+    font-size: 14px;
+  }
+  .waitlist-email::placeholder { color: var(--faint); }
+  .waitlist-email[aria-invalid="true"] { border-color: var(--down); }
+  .waitlist-btn { border: 0; cursor: pointer; font-family: inherit; }
+  .waitlist-btn[disabled] { opacity: 0.6; cursor: default; }
+  .waitlist-label, .waitlist-trap {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .waitlist-status { font-size: 14px; line-height: 1.6; color: var(--soft); margin: 14px auto 0; max-width: 480px; }
+  .waitlist-status:empty { display: none; }
+  .waitlist-status.is-error { color: var(--down); }
+  .waitlist-status.is-done { color: var(--gold300); font-weight: 600; font-size: 16px; }
+
   /* ── FOOTER (shared with faq.html) ── */
   footer {
     border-top: 1px solid var(--border1);
@@ -589,6 +645,7 @@
     .later { padding: 0 20px 72px; }
     .quotes { padding: 0 20px 72px; }
     .cta-section { padding: 0 20px 72px; }
+    .waitlist-form { flex-direction: column; }
     footer { padding-left: 20px; padding-right: 20px; }
     .footer-row { flex-direction: column; gap: 28px; }
     .footer-cols { gap: 32px; }
@@ -644,7 +701,7 @@
     </p>
 
     <div>
-      <a class="hero-btn" href="#get-stevo">How to get Stevo</a>
+      <a class="hero-btn" href="#get-stevo">Get early access</a>
       <p class="hero-note">Stevo is in a private beta. It is not on the App Store yet.</p>
     </div>
 
@@ -658,15 +715,17 @@
 
   <div>
     <div class="phone-deck" id="deck" role="button" tabindex="0" aria-label="App screenshots, activate to see the next screen">
-      <div class="phone-slide depth-0" data-slide="0"><img src="screen-lines.png" alt="The Stevo game lines board with spread, total and moneyline prices for NFL games" width="600" height="1304"></div>
-      <div class="phone-slide depth-1" data-slide="1"><img src="screen-poker.png" alt="A finished Stevo poker tournament: the podium, the prize split, final standings and who owes whom" width="600" height="1304" loading="lazy"></div>
-      <div class="phone-slide depth-2" data-slide="2"><img src="screen-faceoff.png" alt="A Stevo Face Off with one friend: who is up at the top, a bet with I won and I lost buttons, and the Add Bet sheet open on its microphone" width="600" height="1304" loading="lazy"></div>
-      <div class="phone-caption" id="deck-caption">Lines</div>
+      <div class="phone-slide depth-0" data-slide="0"><img src="screen-home.png" alt="The Stevo Home screen: a Make a bet button, quick-access tiles for Bets, Settle, Crews, Face Off and Poker, and a Needs attention row for a Face Off bet a friend proposed" width="600" height="1304"></div>
+      <div class="phone-slide depth-1" data-slide="1"><img src="screen-lines.png" alt="The Stevo game lines board with spread, total and moneyline prices for NFL games" width="600" height="1304" loading="lazy"></div>
+      <div class="phone-slide depth-2" data-slide="2"><img src="screen-poker.png" alt="A finished Stevo poker tournament: the podium, the payouts split, final standings and who owes whom" width="600" height="1304" loading="lazy"></div>
+      <div class="phone-slide depth-hidden" data-slide="3"><img src="screen-faceoff-mic.png" alt="A Stevo Face Off with one friend: who is up at the top, and the Add Bet sheet open on its microphone" width="600" height="1304" loading="lazy"></div>
+      <div class="phone-caption" id="deck-caption">Home</div>
     </div>
     <div class="phone-dots" role="tablist" aria-label="Screen selector">
-      <button class="phone-dot active" data-dot="0" aria-label="Lines board"></button>
-      <button class="phone-dot" data-dot="1" aria-label="Poker results"></button>
-      <button class="phone-dot" data-dot="2" aria-label="Face Off"></button>
+      <button class="phone-dot active" data-dot="0" aria-label="Home"></button>
+      <button class="phone-dot" data-dot="1" aria-label="Lines board"></button>
+      <button class="phone-dot" data-dot="2" aria-label="Poker results"></button>
+      <button class="phone-dot" data-dot="3" aria-label="Face Off"></button>
     </div>
   </div>
 </section>
@@ -720,7 +779,7 @@
   </div>
 
   <div class="f-row reverse">
-    <div class="f-shot"><img src="screen-faceoff.png" alt="A Stevo Face Off: the header reads You are up $20.00, one bet carries I won and I lost buttons, and the Add Bet sheet is open on its microphone" width="600" height="1304" loading="lazy"></div>
+    <div class="f-shot"><img src="screen-faceoff.png" alt="A Stevo Face Off with Tyler: the header reads You are up $10.00, one bet waits on Accept or Decline, one carries I won and I lost buttons, and one is confirmed" width="600" height="1304" loading="lazy"></div>
     <div>
       <div class="f-num">02 — FACE OFF</div>
       <div class="f-title">Say the bet, wherever the game is on</div>
@@ -729,7 +788,9 @@
         stadium, on the couch, or a thousand miles apart with the same game on. A new bet opens
         on a <strong>microphone</strong>, not a keyboard: say "he hits a home run next at bat,
         ten dollars at five to one" and Stevo writes the bet, the stake and the odds into a slip
-        you can fix before it goes over. Both phones stay in sync and the header shows who is up.
+        you can fix before it goes over. Your friend gets it as a proposal and taps
+        <strong>Accept</strong> before it counts; a decline just drops it. Both phones stay in
+        sync and the header shows who is up.
         Each of you declares your own result with <strong>I won</strong> or
         <strong>I lost</strong>, and their answer stays hidden until you have given yours, so
         you report what you saw rather than reacting to them. Matching answers confirm the bet;
@@ -762,7 +823,7 @@
         <li>Guests without a Stevo account can play; you settle their cash in person</li>
       </ul>
     </div>
-    <div class="f-shot"><img src="screen-poker.png" alt="A finished Stevo tournament: winner podium, payouts, final standings and two settle-up rows" width="600" height="1304" loading="lazy"></div>
+    <div class="f-shot"><img src="screen-poker.png" alt="A finished Stevo tournament: the winner podium with the payouts split, final standings and two settle-up rows" width="600" height="1304" loading="lazy"></div>
   </div>
 
 </section>
@@ -770,11 +831,15 @@
 <div class="pair">
   <div class="pair-card">
     <div class="pair-card-title">Crews</div>
-    <p>A private group with a <strong>6-character invite code</strong> (no I, O, 0 or 1, so it still works read out loud). Everyone in a crew can see and take each other's shared bets, gets invited to its poker nights, and can start a Face Off. Public crews let anyone with the code join; in a private crew only the owner and admins send invites.</p>
+    <p>A private group with a <strong>6-character invite code</strong> (no I, O, 0 or 1, so it still works read out loud). Everyone in a crew can see and take each other's shared bets, gets invited to its poker nights, and can start a Face Off. Public crews let anyone with the code join; in a private crew only the owner and admins send invites. Find your people by username or by
+    name, or match your Contacts on the phone itself; the list never leaves it.</p>
   </div>
   <div class="pair-card">
     <div class="pair-card-title">Settle</div>
-    <p>Every bet with the same person totals into one balance under <strong>I owe</strong> and <strong>Owed to me</strong>. Tap Pay and Stevo opens Venmo or Cash App addressed to your friend, shows their Zelle details, or just records that you handed over cash. You mark it sent, they confirm received, and the balance clears for both of you.</p>
+    <p>Every bet with the same person totals into one balance under <strong>I owe</strong> and <strong>Owed to me</strong>. Tap Pay and Stevo opens Venmo or Cash App addressed to your friend, shows their Zelle details, or just records that you handed over cash. You mark it sent, they confirm received, and the balance clears for both of you. Spots go on the
+    same balance: cover a friend's buy-in, tap <strong>Spot</strong> on their profile, and the ledger
+    changes with a note on why. No odds, no result to argue. Write that you owe and it lands at once;
+    write that they owe you and they confirm it first.</p>
   </div>
 </div>
 
@@ -871,15 +936,38 @@
      page without a real, permitted quote in it. -->
 <section class="quotes" id="crew-quotes" hidden></section>
 
-<!-- CTA -->
+<!-- CTA: the early-access list.
+     The form posts straight to the app's own database (public.waitlist_signups,
+     supabase/add-waitlist-signups.sql) with the publishable key, and that table
+     lets the key INSERT and nothing else. There is no third-party script and no
+     server of ours in between. Card #380 removed the last form because it
+     posted to an endpoint that never existed; this one must not ship ahead of
+     its table. The form stays hidden until the script below is running, so a
+     browser without JavaScript never submits an email into the address bar. -->
 <section class="cta-section" id="get-stevo">
-  <div class="section-tag">Getting Stevo</div>
+  <div class="section-tag">Get early access</div>
   <h2 class="section-title" style="font-size:clamp(34px,4.6vw,56px)">It comes from<br>the App Store</h2>
   <p class="section-desc">
     Stevo is in a private beta, and goes to Apple for review after that. There is nothing
-    to download today and no waitlist to join. When it is approved, the App Store is where
-    you get it, and the link will be on this page.
+    to download today. Leave your email and you get one email from us: on the day Stevo is
+    in the App Store, with the link. Stevo is for adults, 18 and over.
   </p>
+  <form class="waitlist-form" id="waitlist-form" novalidate hidden>
+    <label class="waitlist-label" for="waitlist-email">Email address</label>
+    <input class="waitlist-email" id="waitlist-email" name="email" type="email" inputmode="email"
+           autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254"
+           placeholder="you@example.com" required>
+    <!-- Honeypot. People never see or reach it; a bot that fills every field does,
+         and its submission is dropped without a request. -->
+    <div class="waitlist-trap" aria-hidden="true">
+      <label for="waitlist-company">Leave this field empty</label>
+      <input id="waitlist-company" name="company" type="text" tabindex="-1" autocomplete="off">
+    </div>
+    <button class="hero-btn waitlist-btn" id="waitlist-submit" type="submit">Get early access</button>
+  </form>
+  <p class="waitlist-status" id="waitlist-status" role="status" aria-live="polite"></p>
+  <noscript><p class="hero-note">To be told on launch day, email <a href="mailto:support@stevoapp.com" style="color:var(--gold500)">support@stevoapp.com</a>.</p></noscript>
+  <p class="hero-note">One email, on launch day. We do not share or sell your address, and <a href="/privacy" style="color:var(--gold500)">the privacy policy</a> says what happens to it.</p>
   <p class="hero-note">Questions in the meantime: <a href="mailto:support@stevoapp.com" style="color:var(--gold500)">support@stevoapp.com</a>.</p>
 </section>
 
@@ -955,7 +1043,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   const slides = Array.from(stack.querySelectorAll('.phone-slide'));
   const dots = Array.from(document.querySelectorAll('.phone-dot'));
   const caption = document.getElementById('deck-caption');
-  const labels = ['Lines', 'Poker results', 'Face Off'];
+  const labels = ['Home', 'Lines', 'Poker results', 'Face Off'];
   const total = slides.length;
   let current = 0;
 
@@ -1058,6 +1146,72 @@ const CREW_QUOTES = [];
         '</figure>').join('') +
     '</div>';
   section.hidden = false;
+})();
+
+// Early-access list.
+// The key below is the app's PUBLISHABLE key: the same one that ships inside the
+// app bundle, public by design, and able to do only what row level security
+// allows. On public.waitlist_signups that is INSERT and nothing else
+// (supabase/add-waitlist-signups.sql). A secret key must never appear in this file;
+// lib/__tests__/waitlistCapture.test.ts fails if one does.
+const WAITLIST_ENDPOINT = 'https://cskoqudiumgaquqwowlc.supabase.co/rest/v1/waitlist_signups';
+const WAITLIST_KEY = 'sb_publishable_DOD8Ob8N5OW4EP5Q8-AW4A_LLi3l5rQ';
+
+(function initWaitlist() {
+  const form = document.getElementById('waitlist-form');
+  const status = document.getElementById('waitlist-status');
+  if (!form || !status) return;
+  const email = form.querySelector('input[name="email"]');
+  const trap = form.querySelector('input[name="company"]');
+  const button = form.querySelector('button[type="submit"]');
+  // The same loose shape the table's CHECK enforces.
+  const LOOKS_LIKE_EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  form.hidden = false;
+
+  function say(text, kind) {
+    status.textContent = text;
+    status.className = 'waitlist-status' + (kind ? ' is-' + kind : '');
+  }
+  function done() {
+    form.remove();
+    say('Thank you. You are on the list, and you will get one email from us on launch day.', 'done');
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    // A filled honeypot is a bot: answer as if it worked and send nothing.
+    if (trap && trap.value) { done(); return; }
+    const value = email.value.trim();
+    if (value.length > 254 || !LOOKS_LIKE_EMAIL.test(value)) {
+      email.setAttribute('aria-invalid', 'true');
+      say('That does not look like an email address.', 'error');
+      email.focus();
+      return;
+    }
+    email.removeAttribute('aria-invalid');
+    button.disabled = true;
+    say('Saving...', '');
+    try {
+      const res = await fetch(WAITLIST_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'apikey': WAITLIST_KEY,
+          'Authorization': 'Bearer ' + WAITLIST_KEY,
+          'Content-Type': 'application/json',
+          // The key may not read the table, so ask for no row back.
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({ email: value, source: 'site-cta' }),
+      });
+      // 409 is the unique index on lower(email): already on the list, which is
+      // the outcome the person wanted.
+      if (res.ok || res.status === 409) { done(); return; }
+      throw new Error('waitlist ' + res.status);
+    } catch (err) {
+      button.disabled = false;
+      say('That did not save. Try again in a minute, or email support@stevoapp.com and we will add you.', 'error');
+    }
+  });
 })();
 
 </script>
