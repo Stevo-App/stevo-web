@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Stevo | Stevo</title>
+<!-- stevoapp.com/beta (Steve, 2026-09-26). The one link to hand a tester, or for a
+     tester to hand a friend: four buttons in order - install TestFlight, install
+     Stevo, open it, then add the person who sent the link and join their crew.
+     Needs nothing in the address to work; two optional parameters personalise the
+     last step so one page serves everyone:
+       ?from=<inviter's account id>  -> step 4 is that person's friend-invite link
+       &crew=<6-character code>      -> step 4 also carries "Join the crew"
+     e.g. https://stevoapp.com/beta?from=3438a48f-...&crew=ABC234
+
+     Unlisted on purpose: the home page says there is nothing to download yet
+     (the beta is by invitation), so this page is not indexed and nothing on the
+     public site links to it. No analytics, no third-party scripts, no referrer. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#09182F">
+<link rel="icon" href="/stevo-coin.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Navy & Warm Gold, the same tokens as web/index.html (constants/theme.ts). */
+  :root {
+    --bg: #09182F;
+    --surface1: #0F2440;
+    --surface2: #152D4D;
+    --border1: #1A3352;
+    --border2: #23446B;
+    --gold500: #D9AD50;
+    --gold300: #E7C77E;
+    --gold-ink: #20180A;
+    --text: #F3F0E8;
+    --muted: #93A9C4;
+    --soft: #C9D9EC;
+    --faint: #6C88AC;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 700px 500px at 20% 0%, rgba(217,173,80,0.10), transparent 62%),
+      radial-gradient(ellipse 700px 500px at 85% 60%, rgba(53,104,176,0.14), transparent 62%);
+    pointer-events: none;
+  }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold500); outline-offset: 2px; }
+
+  .wrap { max-width: 480px; margin: 0 auto; padding: 28px 20px 40px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 30px; }
+  .brand-word { font-size: 20px; font-weight: 800; letter-spacing: 1.1px; color: var(--text); }
+
+  .tag { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold500); margin-bottom: 10px; }
+  h1 { font-size: clamp(28px, 8vw, 36px); font-weight: 800; line-height: 1.08; letter-spacing: -0.5px; margin-bottom: 10px; }
+  .lede { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 22px; }
+
+  .note {
+    background: var(--surface1);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--soft);
+    margin-bottom: 18px;
+  }
+
+  .step { margin-bottom: 14px; }
+  .step-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .num {
+    flex: none;
+    width: 26px; height: 26px;
+    border-radius: 999px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--gold500);
+    font-size: 12px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; top: 5px;
+  }
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: var(--gold500);
+    color: var(--gold-ink);
+    border: 0;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--gold300); }
+  .btn.quiet { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+  .btn.quiet:hover { background: var(--border2); }
+  .btn + .btn { margin-top: 8px; }
+  .sub { color: var(--faint); font-size: 13px; line-height: 1.5; margin-top: 8px; }
+  .sub strong { color: var(--soft); }
+
+  .then { color: var(--muted); font-size: 14px; line-height: 1.6; margin-top: 26px; }
+  .then strong { color: var(--soft); }
+  .fine { margin-top: 22px; color: var(--faint); font-size: 13px; line-height: 1.6; }
+  .fine a { color: var(--gold500); text-decoration: none; }
+
+  .foot { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; font-size: 12px; }
+  .foot a { color: var(--faint); text-decoration: none; }
+  .foot a:hover { color: var(--gold500); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="brand" href="/" aria-label="Stevo home">
+    <img src="/stevo-coin.png" width="30" height="30" alt="" aria-hidden="true">
+    <span class="brand-word">STEVO</span>
+  </a>
+
+  <div class="tag">Private beta</div>
+  <h1>Get Stevo in four taps</h1>
+  <p class="lede">Do these on your iPhone, in order. Each one is a link.</p>
+
+  <p class="note" id="platformNote" hidden></p>
+
+  <div class="step">
+    <div class="step-head"><span class="num">1</span> Install TestFlight</div>
+    <a class="btn" id="getTestFlight" href="#">Install TestFlight</a>
+    <p class="sub">Apple's free app for beta testing. Already have it? Go to 2.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">2</span> Install Stevo</div>
+    <a class="btn" id="getStevo" href="#">Install Stevo</a>
+    <p class="sub" id="getStevoSub">Opens in TestFlight. Tap <strong>Accept</strong>, then <strong>Install</strong>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="num">3</span> Open Stevo and sign up</div>
+    <a class="btn quiet" id="openStevo" href="stevo://">Open Stevo</a>
+    <p class="sub">Tap <strong>Create Your Account</strong>. Email, password, your name, a username, your phone number.</p>
+  </div>
+
+  <div class="step" id="stepConnect">
+    <div class="step-head"><span class="num">4</span> <span id="connectTitle">Find your people</span></div>
+    <a class="btn quiet" id="addFriend" href="#" hidden>Add <span id="friendName">your friend</span></a>
+    <a class="btn quiet" id="joinCrew" href="#" hidden>Join the crew</a>
+    <p class="sub" id="connectSub"></p>
+  </div>
+
+  <p class="then">
+    <strong>Then you are in.</strong> Make a bet from Lines, start a Face Off with one friend, or
+    schedule a poker night. Stevo keeps score; it never holds the money.
+  </p>
+  <p class="fine">
+    Something broke? <span style="color:var(--soft)">Profile &gt; Help &amp; support &gt; Send feedback</span>,
+    or <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>. Questions: <a href="/faq">FAQ</a>.
+  </p>
+
+  <noscript>
+    <p class="fine">This page needs JavaScript for its buttons. Stevo is in a private beta on iPhone: install
+      Apple's TestFlight app, then open the beta invite link you were sent.</p>
+  </noscript>
+
+  <nav class="foot" aria-label="Site">
+    <a href="/">Home</a>
+    <a href="/faq">FAQ</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+    <a href="mailto:support@stevoapp.com">Contact</a>
+  </nav>
+</main>
+
+<script>
+/* invite-core:start
+   Pure helpers, no DOM. lib/__tests__/betaPage.test.ts runs exactly this block,
+   so what the test pins is what the page does. */
+
+// Where "Install Stevo" goes. The TestFlight public link until launch; at launch
+// replace it with the App Store URL (the same line lives in web/crew/join.html,
+// web/invite/friend.html and lib/friendInvite.ts; the LAUNCH-PLAN swap task
+// names all of them).
+var GET_STEVO_URL = 'https://testflight.apple.com/join/RpchYrJc';
+
+// Apple's own App Store page for TestFlight.
+var TESTFLIGHT_APP_URL = 'https://apps.apple.com/app/testflight/id899247664';
+
+// The same links the app makes (lib/friendInvite.ts, lib/crewInvite.ts).
+var FRIEND_LINK_BASE = 'https://stevoapp.com/invite/friend/';
+var CREW_LINK_BASE = 'https://stevoapp.com/crew/join?code=';
+
+var UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+var CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+function getStevoIsBeta() {
+  return /^https:\/\/testflight\.apple\.com\//i.test(GET_STEVO_URL);
+}
+
+// The optional personalisation in the address: ?from=<inviter id>&crew=<code>.
+// Anything that is not exactly an account id or a Stevo crew code is ignored,
+// so the page never echoes arbitrary text.
+function readParams(search) {
+  var from = null, crew = null;
+  try {
+    var p = new URLSearchParams(String(search || ''));
+    var f = String(p.get('from') || '').trim().toLowerCase();
+    if (UUID_RE.test(f)) from = f;
+    var c = String(p.get('crew') || '').trim().toUpperCase();
+    if (c.length === 6) {
+      var ok = true;
+      for (var i = 0; i < 6; i++) if (CODE_ALPHABET.indexOf(c.charAt(i)) === -1) ok = false;
+      if (ok) crew = c;
+    }
+  } catch (e) { /* no params */ }
+  return { from: from, crew: crew };
+}
+
+// 'ios', 'android' or 'other'. iPadOS Safari reports a Mac user agent, so a
+// "Mac" with a touch screen counts as iOS.
+function detectPlatform(userAgent, maxTouchPoints) {
+  var ua = String(userAgent || '');
+  if (/Android/i.test(ua)) return 'android';
+  if (/iPhone|iPad|iPod/i.test(ua)) return 'ios';
+  if (/Macintosh/i.test(ua) && Number(maxTouchPoints) > 1) return 'ios';
+  return 'other';
+}
+
+// Everything the page shows. The links are always shown (someone reading on a
+// Mac still wants to see them); only the note changes off an iPhone.
+function betaView(params, platform) {
+  var beta = getStevoIsBeta();
+  var friendUrl = params.from ? FRIEND_LINK_BASE + params.from : null;
+  var crewUrl = params.crew ? CREW_LINK_BASE + params.crew : null;
+  var connectSub;
+  if (friendUrl && crewUrl) connectSub = 'Both links open Stevo once it is installed. A private crew shows "Request sent" until the owner approves you.';
+  else if (friendUrl) connectSub = 'Opens Stevo and sends the friend request for you. Others: Social > Friends > Add, and search a name or @username.';
+  else if (crewUrl) connectSub = 'Opens Stevo with the code filled in. Friends: Social > Friends > Add, and search a name or @username.';
+  else connectSub = 'Social > Friends > Add, and search a name or @username. Got a crew code? Social > Join a crew.';
+  return {
+    testFlightUrl: beta ? TESTFLIGHT_APP_URL : null,
+    installUrl: GET_STEVO_URL,
+    installSub: beta ? 'Opens in TestFlight. Tap Accept, then Install.' : 'Opens the App Store.',
+    openUrl: 'stevo://',
+    friendUrl: friendUrl,
+    crewUrl: crewUrl,
+    connectTitle: friendUrl || crewUrl ? 'Connect' : 'Find your people',
+    connectSub: connectSub,
+    note: platform === 'ios' ? null
+      : (platform === 'android'
+        ? 'Stevo is on iPhone for now. Open this page on an iPhone to use these links.'
+        : 'Stevo is on iPhone for now. Send this page to your iPhone, or open it there, to use these links.')
+  };
+}
+/* invite-core:end */
+
+(function () {
+  var view = betaView(readParams(window.location.search), detectPlatform(navigator.userAgent, navigator.maxTouchPoints));
+
+  var tf = document.getElementById('getTestFlight');
+  if (view.testFlightUrl) tf.href = view.testFlightUrl; else tf.parentNode.hidden = true;
+  document.getElementById('getStevo').href = view.installUrl;
+  document.getElementById('getStevoSub').textContent = view.installSub;
+  document.getElementById('openStevo').href = view.openUrl;
+
+  document.getElementById('connectTitle').textContent = view.connectTitle;
+  if (view.friendUrl) {
+    var f = document.getElementById('addFriend');
+    f.href = view.friendUrl; f.hidden = false;
+  }
+  if (view.crewUrl) {
+    var c = document.getElementById('joinCrew');
+    c.href = view.crewUrl; c.hidden = false;
+  }
+  document.getElementById('connectSub').textContent = view.connectSub;
+
+  if (view.note) {
+    var n = document.getElementById('platformNote');
+    n.textContent = view.note; n.hidden = false;
+  }
+})();
+</script>
+</body>
+</html>
