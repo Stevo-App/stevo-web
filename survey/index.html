@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Stevo — Help Choose the Look</title>
+<title>Stevo: Help Choose the Look</title>
 <link rel="icon" href="/survey/stevo-logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -124,7 +124,7 @@
 
   <section class="hero">
     <h1>Help choose the look of <span>Stevo</span></h1>
-    <p>Stevo is the app for tracking bets with your crew. Here are eight looks for the home screen — same screen every time, just styled differently. Take a look, then answer six quick questions. About 3 minutes.</p>
+    <p>Stevo is the app for tracking bets with your crew. Here are eight looks for the home screen. Same screen every time, just styled differently. Take a look, then answer six quick questions. About 3 minutes.</p>
     <div class="steps">
       <div class="step"><b>1</b> Compare the eight looks</div>
       <div class="step"><b>2</b> Try light and dark</div>
@@ -145,7 +145,7 @@
 
   <form id="survey-form">
     <h2>Which would you choose?</h2>
-    <p class="formsub">Go with your gut — there are no right answers.</p>
+    <p class="formsub">Go with your gut. There are no right answers.</p>
 
     <div id="form-error"></div>
     <div style="position:absolute;left:-9999px" aria-hidden="true">
@@ -178,7 +178,7 @@
 
     <div class="q">
       <label class="qlabel" for="would_keep">5. What would you keep? <span class="opt">(optional)</span></label>
-      <textarea id="would_keep" name="would_keep" placeholder="Anything that stood out as a keeper — artwork, layout, colors, a specific tile…"></textarea>
+      <textarea id="would_keep" name="would_keep" placeholder="Anything that stood out as a keeper: artwork, layout, colors, a specific tile…"></textarea>
     </div>
 
     <div class="q">
@@ -187,14 +187,14 @@
     </div>
 
     <div class="q">
-      <label class="qlabel" for="age_range">Age range <span class="opt">(optional — helps us see if taste varies by generation)</span></label>
+      <label class="qlabel" for="age_range">Age range <span class="opt">(optional, it helps us see if taste varies by generation)</span></label>
       <select id="age_range" name="age_range">
         <option value="">Prefer not to say</option>
         <option>Under 25</option>
-        <option>25–34</option>
-        <option>35–44</option>
-        <option>45–54</option>
-        <option>55–64</option>
+        <option>25-34</option>
+        <option>35-44</option>
+        <option>45-54</option>
+        <option>55-64</option>
         <option>65+</option>
       </select>
     </div>
@@ -291,7 +291,7 @@
   function openLb(k){
     var d = DESIGNS.filter(function(x){ return x.k === k; })[0];
     if (!d) return;
-    document.getElementById('lb-title').textContent = d.L + ' — ' + d.name;
+    document.getElementById('lb-title').textContent = d.L + ': ' + d.name;
     document.getElementById('lb-sub').textContent = d.sub;
     document.getElementById('lb-light').src = img(d, 'light');
     document.getElementById('lb-dark').src = img(d, 'dark');
