@@ -409,7 +409,8 @@
     margin: 0 -24px;
     transform: rotate(-1.4deg);
     background: linear-gradient(160deg, var(--cta-top), var(--cta-body) 30%, var(--cta-base));
-    box-shadow: 0 14px 40px rgba(241,194,64,0.28);
+    /* No glow: a gold shadow here showed as faint yellow lines above and below
+       the band, cut off where the wrap clips it (Steve, 2026-09-30). */
     overflow: hidden;
   }
   .ticker-track {
