@@ -26,18 +26,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #09182F;
-    --surface: #0F2440;
-    --surface2: #152D4D;
-    --border: #23446B;
-    --accent: #D9AD50;
-    --accent-hover: #E7C77E;
-    --blue-ice: #C9D9EC;
-    --purple: #3568B0;
-    --gold: #D9AD50;
-    --text: #F3F0E8;
-    --text2: #93A9C4;
-    --text3: #6C88AC;
+    --bg: #06132E;
+    --surface: #062A6B;
+    --surface2: #07388C;
+    --border: #245291;
+    --accent: #F3C744;
+    --accent-hover: #F7D15C;
+    --blue-ice: #E3EEFB;
+    --purple: #2496FC;
+    --gold: #F3C744;
+    --text: #FFFFFF;
+    --text2: #C6DDF7;
+    --text3: #8DAFDB;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,15 +53,19 @@
   }
 
   /* Ambient gradient mesh background (same as the landing page) */
+  /* The corner glow at part strength: on a phone the small gold label and the
+     intro copy sit inside it, and at full strength the label fell under 3:1. */
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1100px;
     z-index: -2;
     background:
-      radial-gradient(ellipse 900px 600px at 20% 0%, rgba(217,173,80,0.10), transparent 62%),
-      radial-gradient(ellipse 800px 600px at 85% 35%, rgba(53,104,176,0.14), transparent 62%),
-      radial-gradient(ellipse 700px 500px at 50% 100%, rgba(217,173,80,0.06), transparent 60%);
+      radial-gradient(ellipse 900px 640px at 0% 0%,
+        rgba(36,150,252,0.70) 0%, rgba(8,105,228,0.52) 22%, rgba(1,80,200,0.36) 42%,
+        rgba(0,58,157,0.20) 62%, rgba(6,19,46,0) 100%),
+      radial-gradient(ellipse 700px 500px at 100% 60%, rgba(8,105,228,0.20), rgba(6,19,46,0) 70%);
     pointer-events: none;
   }
 
@@ -76,16 +80,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(9,24,47,0.85);
+    background: rgba(6,19,46,0.85);
     backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(58,147,245,0.18);
     transition: padding 0.3s ease, background 0.3s ease,
                 box-shadow 0.3s ease, border-color 0.3s ease;
   }
   nav.scrolled {
     padding: 10px 40px;
-    background: rgba(9,24,47,0.95);
-    border-bottom-color: #1A3352;
+    background: rgba(6,19,46,0.95);
+    border-bottom-color: #245291;
     box-shadow: 0 8px 30px rgba(0,0,0,0.45);
   }
   .nav-left {
@@ -95,10 +99,11 @@
     text-decoration: none;
   }
   .nav-wordmark {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 800;
-    letter-spacing: 1.1px;
+    letter-spacing: 0.5px;
     color: var(--text);
+    transform: skewX(-8deg);
   }
   .nav-right {
     display: flex;
@@ -114,8 +119,9 @@
   }
   .nav-right a:hover { color: var(--text); }
   .nav-cta {
-    background: var(--accent);
-    color: #20180A !important;
+    background: linear-gradient(160deg, #F7D15C, #F1C240 30%, #E8B73C);
+    box-shadow: 0 4px 14px rgba(241,194,64,0.35);
+    color: #101B30 !important;
     padding: 9px 20px;
     border-radius: 12px;
     white-space: nowrap;
@@ -123,7 +129,7 @@
     font-size: 13px;
     transition: background 0.2s;
   }
-  .nav-cta:hover { background: var(--accent-hover); }
+  .nav-cta:hover { filter: brightness(1.06); }
 
   /* ── PAGE ── */
   .section-tag {
@@ -366,11 +372,11 @@
   <div class="section-tag">Legal</div>
   <h1 class="section-title">Privacy Policy</h1>
   <p class="section-desc">What Stevo collects, why, and how to delete it. Stevo records who owes whom; it never holds, moves, charges or pays out money.</p>
-  <p class="legal-meta">Last updated: September 19, 2026 &middot; This is the same text the app shows under Profile &gt; About.</p>
+  <p class="legal-meta">Last updated: September 29, 2026 &middot; This is the same text the app shows under Profile &gt; About.</p>
 
   <section>
     <h3>1. Account Information</h3>
-    <p>You create a Stevo account with an email address and a password. We store your email address so you can sign in and so we can send you account email such as a password-reset code. Sign-in is handled by our authentication service; the app never stores your password, and your session is kept in your device's secure storage.</p>
+    <p>You create a Stevo account with an email address and a password. We store your email address so you can sign in and so we can send you account email such as a password-reset code. That email is sent through a third-party email delivery service, which receives your address only to deliver it. Sign-in is handled by our authentication service; the app never stores your password, and your session is kept in your device's secure storage.</p>
   </section>
 
   <section>
@@ -390,12 +396,12 @@
 
   <section>
     <h3>5. Your Activity in Stevo</h3>
-    <p>We store what you create in the app: bets and their outcomes, Face Offs, poker games and season standings, crews and crew posts, the comments and reactions you leave on posts, your friend list and your settle-up records. This activity is visible to the friends and crew members you share it with. GIFs in comments come from Giphy, a third-party GIF service: opening the GIF picker loads popular GIFs from Giphy, and a GIF search sends the words you type to Giphy to find matches.</p>
+    <p>We store what you create in the app: bets and their outcomes, Face Offs, poker games and season standings, crews and crew posts, the comments and reactions you leave on posts, your friend list and your settle-up records. This activity is visible to the friends and crew members you share it with. GIFs in comments come from Giphy, a third-party GIF service: opening the GIF picker loads popular GIFs from Giphy, and a GIF search sends the words you type to Giphy to find matches. Team logos on game cards load from a third-party sports image server. Giphy and that image server each see your device's internet address, as any server your phone contacts does, and nothing about your Stevo account.</p>
   </section>
 
   <section>
     <h3>6. Push Notifications</h3>
-    <p>If you allow notifications, we store a push token for your device on your profile so we can send alerts about bets, games, crews and settling up. You can turn categories off in Settings, and signing out removes the token from your profile.</p>
+    <p>If you allow notifications, we store a push token for your device on your profile so we can send alerts about bets, games, crews and settling up. Notifications travel through a third-party push delivery service and then Apple's or Google's notification service, which receive the push token and the text of the notification in order to deliver it. You can turn categories off in Settings, and signing out removes the token from your profile.</p>
   </section>
 
   <section>
@@ -405,17 +411,17 @@
 
   <section>
     <h3>8. Diagnostics and Crash Reports</h3>
-    <p>When the app hits an error it sends us a diagnostic record so we can fix it: the error message and stack trace, where in the app it happened, the app version and build number, whether you are on iOS or Android, and your user id. The same crash and error reports are also sent to a third-party crash-reporting service that we use to be told when the app breaks, along with your device model and operating system version. Before anything leaves your phone we remove personal details from it: your email address and any phone number are redacted out of the report, and you are identified only by your user id, never by your email address, username or IP address. We do not use this service to track what you do in the app. Separately, when the app opens it checks our update service for a newer version of the app; that check sends a random identifier for this installation of the app, the app version and your platform, and nothing about your account.</p>
+    <p>When the app hits an error it sends us a diagnostic record so we can fix it: the error message and stack trace, where in the app it happened, the app version and build number, whether you are on iOS or Android, and your user id. The same crash and error reports are also sent to a third-party crash-reporting service that we use to be told when the app breaks, along with your device model and operating system version. Before anything leaves your phone we remove personal details from it: your email address and any phone number are redacted out of the report, and you are identified only by your user id, never by your email address, username or IP address. We do not use this service to track what you do in the app. Separately, when the app opens it checks our update service for a newer version of the app; that check sends a random identifier for this installation of the app, the app version and your platform, and nothing about your account. The app also tells our own servers, once each time it opens while you are signed in, which update your account is running: the update's identifier and publish time, the app version, the build number and your platform. We use that to know when an older version is no longer in use.</p>
   </section>
 
   <section>
     <h3>9. How We Use Your Information</h3>
-    <p>We use it only to run the features described above and to keep the app working. We do not sell or rent your data, we show no ads, and the app carries no third-party advertising or analytics trackers. Stevo records who owes whom; it never holds, moves, charges or pays out money.</p>
+    <p>We use it only to run the features described above and to keep the app working. We do not sell or rent your data, we show no ads, and the app carries no third-party advertising or analytics trackers. Stevo does not track you across other companies' apps or websites, so it does not respond to a browser's Do Not Track signal. Stevo records who owes whom; it never holds, moves, charges or pays out money.</p>
   </section>
 
   <section>
     <h3>10. Where Your Data Is Stored</h3>
-    <p>Your account, profile, activity and uploaded images are held in a hosted database and file storage operated for us by a third-party infrastructure provider, and are transmitted over encrypted connections.</p>
+    <p>Your account, profile, activity and uploaded images are held in a hosted database and file storage operated for us by a third-party infrastructure provider, and are transmitted over encrypted connections. Access rules in the database limit who can read each record, but no service can promise perfect security.</p>
   </section>
 
   <section>
@@ -425,7 +431,7 @@
 
   <section>
     <h3>12. Data Retention and Deletion</h3>
-    <p>We keep your information for as long as your account exists. You can delete your account yourself, from inside the app: Settings, then Delete account. Deleting removes your name, username, photo, bio, phone number, payment handles, push token, friend list, invites and diagnostic records, and stops you signing in. It is immediate and cannot be undone. Records that other people share with you, such as a settled bet, a poker game or a crew post, are kept for them, with your name replaced by &quot;Deleted user&quot;. Deletion is blocked while you still have an unsettled balance with someone, because that money is owed between the two of you. You can also email <a href="mailto:support@stevoapp.com">support@stevoapp.com</a> and we will delete the account for you.</p>
+    <p>We keep your information for as long as your account exists. You can delete your account yourself, from inside the app: Settings, then Delete account. Deleting removes your name, username, photo, bio, phone number, payment handles, push token, friend list, invites and diagnostic records, and stops you signing in. It is immediate and cannot be undone. Records that other people share with you, such as a settled bet, a poker game or a crew post, are kept for them, with your name replaced by &quot;Deleted user&quot;. Deletion is blocked while something is still open between you and another person (an unsettled balance, an accepted bet that has not finished, a Face Off with an accepted bet, or a live poker night you are hosting), because the other person is counting on that record. Crash reports already sent to the crash-reporting service carry only your user id and stay there until that service's own retention period ends. You can also email <a href="mailto:support@stevoapp.com">support@stevoapp.com</a> and we will delete the account for you.</p>
   </section>
 
   <section>
@@ -434,13 +440,23 @@
   </section>
 
   <section>
-    <h3>14. Changes to This Policy</h3>
+    <h3>14. Who We Share It With</h3>
+    <p>Your information goes to the people you share it with in the app and to the service providers described above, which receive it to run Stevo for us: hosting, sign-in, email delivery, push delivery, crash reporting and app updates. We may also disclose information when the law requires it, such as a court order, or when it is needed to protect someone's safety or our legal rights. If Stevo App LLC is sold or merged, your information would pass to the new owner under this policy.</p>
+  </section>
+
+  <section>
+    <h3>15. Your Choices</h3>
+    <p>You can see and change your profile, phone number and payment handles in Settings, turn notification categories and the Contacts match off, and delete your account. To ask for a copy of the information we hold about you, or for a correction you cannot make yourself, email <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>.</p>
+  </section>
+
+  <section>
+    <h3>16. Changes to This Policy</h3>
     <p>We may update this policy as the app changes. The date below shows when it was last revised.</p>
   </section>
 
   <section>
-    <h3>15. Contact</h3>
-    <p>Questions about this policy? Email us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>.</p>
+    <h3>17. Contact</h3>
+    <p>Stevo is operated by Stevo App LLC. Questions about this policy? Email us at <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>.</p>
   </section>
 
   <div class="contact">
@@ -455,7 +471,7 @@
       <div class="footer-brand">
         <div class="footer-brand-name">STEVO</div>
       </div>
-      <p class="footer-tagline">Bets with your crew, not a book. Stevo keeps score; it never holds, moves, or pays out money.</p>
+      <p class="footer-tagline">The private crew app. Stevo keeps score; it never holds, moves, or pays out money.</p>
     </div>
     <div class="footer-cols">
       <div>

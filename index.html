@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stevo | The Private Crew App</title>
-<meta name="description" content="Stevo records the bets, Face Offs and poker nights your crew already runs, and keeps one balance per person. It never holds, moves, or pays out money.">
-<meta name="theme-color" content="#09182F">
+<meta name="description" content="Stevo is the private app for the bets, Face Offs and poker nights your crew already runs. One scoreboard, shared by everyone in the crew.">
+<meta name="theme-color" content="#06132E">
 <link rel="canonical" href="https://stevoapp.com/">
 <!-- Link previews (Steve, 2026-09-25): iMessage, X, Facebook and Slack read these
      when someone shares the link. og-image.png is built by scripts/make-og-image.py
@@ -14,53 +14,71 @@
 <meta property="og:site_name" content="Stevo">
 <meta property="og:url" content="https://stevoapp.com/">
 <meta property="og:title" content="Stevo | The Private Crew App">
-<meta property="og:description" content="Stevo records the bets, Face Offs and poker nights your crew already runs, and keeps one balance per person. It never holds, moves, or pays out money.">
+<meta property="og:description" content="Stevo is the private app for the bets, Face Offs and poker nights your crew already runs. One scoreboard, shared by everyone in the crew.">
 <meta property="og:image" content="https://stevoapp.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Stevo coin, the line Bets with your crew, not a book, and the app's Home screen">
+<meta property="og:image:alt" content="The Stevo coin, the line Your crew. Your games. One scoreboard, and the app's Home screen">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@stevoapp">
 <meta name="twitter:title" content="Stevo | The Private Crew App">
-<meta name="twitter:description" content="Stevo records the bets, Face Offs and poker nights your crew already runs, and keeps one balance per person. It never holds, moves, or pays out money.">
+<meta name="twitter:description" content="Stevo is the private app for the bets, Face Offs and poker nights your crew already runs. One scoreboard, shared by everyone in the crew.">
 <meta name="twitter:image" content="https://stevoapp.com/og-image.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Stevo App LLC","url":"https://stevoapp.com/","logo":"https://stevoapp.com/stevo-coin.png","sameAs":["https://instagram.com/stevoapp","https://tiktok.com/@stevoapp","https://twitter.com/stevoapp","https://youtube.com/@stevoapp"],"contactPoint":{"@type":"ContactPoint","email":"support@stevoapp.com","contactType":"customer support"}}</script>
 <link rel="icon" href="/stevo-coin.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75,700;0,75,800;1,75,800&family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
 <style>
-  /* Navy & Warm Gold — the tokens are constants/theme.ts in the app repo, so the
-     site and the app are the same palette. Gold is the primary action and the
-     active state; blue carries identity and structure. */
+  /* Electric Sapphire. The tokens are the ES block of constants/theme.ts in the
+     app repo, so the site and the app are the same palette (Steve, 2026-09-29):
+     a sapphire glow in the top-left corner falling to deep navy, fine blue
+     outlines on every card, gold for the primary action and the small labels.
+     The older names (--surface1, --gold500, --muted) are kept so the chrome
+     shared with faq.html still reads the same variables. */
   :root {
-    --ink900: #050F20;
-    --bg: #09182F;
-    --surface1: #0F2440;
-    --surface2: #152D4D;
-    --surface3: #1B3A5F;
-    --surface4: #2A5183;
-    --border1: #1A3352;
-    --border2: #23446B;
-    --border3: #203D60;
-    --blue500: #3568B0;
-    --blue300: #2E5480;
-    --gold500: #D9AD50;
-    --gold300: #E7C77E;
-    --gold-ink: #20180A;
-    --text: #F3F0E8;
-    --muted: #93A9C4;
-    --soft: #C9D9EC;
-    --faint: #6C88AC;
+    --ink900: #030B1C;
+    --bg: #06132E;
+    --navy-deep: #021B4C;
+    --glow: #2496FC;
+    --sapphire: #0869E4;
+    --sapphire-mid: #0150C8;
+    --sapphire-deep: #003A9D;
+    --navy-blue: #002C78;
+    --navy-soft: #011F54;
+    --card-light: #0654D2;
+    --card-dark: #012C74;
+    --surface1: #062A6B;
+    --surface2: #07388C;
+    --surface3: #0A47AE;
+    --surface4: #2A6FD6;
+    --border1: #245291;
+    --border2: #3A93F5;
+    --border3: #245291;
+    --blue500: #2496FC;
+    --blue300: #0654D2;
+    --gold500: #F3C744;
+    --gold300: #F7D15C;
+    --gold-line: #B08E3E;
+    --cta-top: #F7D15C;
+    --cta-body: #F1C240;
+    --cta-base: #E8B73C;
+    --gold-ink: #101B30;
+    --text: #FFFFFF;
+    --muted: #C6DDF7;
+    --soft: #E3EEFB;
+    --faint: #8DAFDB;
     --down: #FF7B7B;
     --up: #6FD3A0;
-    --gold-bg: rgba(217,173,80,0.30);
-    --blue-bg: rgba(53,104,176,0.16);
+    --display: 'Archivo', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  /* overflow-x on html as well as body: on a phone, body alone does not stop a
+     decorative glow from widening the layout viewport. */
+  html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body {
     background: var(--bg);
@@ -71,16 +89,19 @@
     overflow-x: hidden;
   }
 
-  /* Ambient wash: gold above, blue below, the same two families as the app */
+  /* The app's screen gradient, as a corner glow that scrolls away with the
+     hero: brightest top-left, deep navy by the time body copy starts. */
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1180px;
     z-index: -2;
     background:
-      radial-gradient(ellipse 900px 600px at 20% 0%, rgba(217,173,80,0.10), transparent 62%),
-      radial-gradient(ellipse 800px 600px at 85% 35%, rgba(53,104,176,0.14), transparent 62%),
-      radial-gradient(ellipse 700px 500px at 50% 100%, rgba(217,173,80,0.06), transparent 60%);
+      radial-gradient(ellipse 1040px 780px at 0% 0%,
+        #2496FC 0%, #1C8CFA 9%, #0869E4 20%, #0150C8 34%, #003A9D 50%,
+        #002C78 65%, #011F54 82%, rgba(6,19,46,0) 100%),
+      radial-gradient(ellipse 700px 560px at 100% 38%, rgba(8,105,228,0.30), rgba(6,19,46,0) 70%);
     pointer-events: none;
   }
 
@@ -92,10 +113,18 @@
   .scroll-progress {
     position: fixed;
     top: 0; left: 0;
-    height: 2px;
+    height: 3px;
     width: 0;
-    background: var(--gold500);
+    background: linear-gradient(90deg, var(--cta-top), var(--cta-base));
     z-index: 200;
+  }
+
+  /* Display type: Archivo at condensed width, the app's display face. */
+  .display {
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-weight: 800;
+    text-transform: uppercase;
   }
 
   /* ── NAV (shared with faq.html) ── */
@@ -107,17 +136,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(9,24,47,0.85);
+    background: rgba(6,19,46,0.55);
     backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(58,147,245,0.18);
     transition: padding 0.3s ease, background 0.3s ease,
                 box-shadow 0.3s ease, border-color 0.3s ease;
   }
   nav.scrolled {
     padding: 10px 40px;
-    background: rgba(9,24,47,0.95);
+    background: rgba(6,19,46,0.94);
     border-bottom-color: var(--border1);
-    box-shadow: 0 8px 30px rgba(3,10,22,0.55);
+    box-shadow: 0 8px 30px rgba(2,8,22,0.55);
   }
   .nav-left {
     display: flex;
@@ -127,10 +157,11 @@
   }
   .nav-mark { display: block; }
   .nav-wordmark {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 800;
-    letter-spacing: 1.1px;
+    letter-spacing: 0.5px;
     color: var(--text);
+    transform: skewX(-8deg);
   }
   .nav-right {
     display: flex;
@@ -146,337 +177,535 @@
   }
   .nav-right a:hover { color: var(--text); }
   .nav-cta {
-    background: var(--gold500);
+    background: linear-gradient(160deg, var(--cta-top), var(--cta-body) 30%, var(--cta-base));
     color: var(--gold-ink) !important;
     padding: 9px 20px;
     border-radius: 12px;
     font-weight: 700;
     font-size: 13px;
     white-space: nowrap;
-    transition: background 0.2s;
+    box-shadow: 0 4px 14px rgba(241,194,64,0.35);
+    transition: filter 0.2s, transform 0.2s;
   }
-  .nav-cta:hover { background: var(--gold300); }
+  .nav-cta:hover { filter: brightness(1.06); transform: translateY(-1px); }
 
   /* ── SHARED SECTION TYPE ── */
   .section-tag {
-    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-size: 17px;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 2.4px;
     text-transform: uppercase;
     color: var(--gold500);
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+  }
+  /* The gold hairline beside a section label, as on the app's Home. */
+  .section-tag::after {
+    content: '';
+    flex: 0 1 120px;
+    height: 1px;
+    background: var(--gold-line);
   }
   .section-title {
-    font-size: clamp(32px, 4.2vw, 52px);
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-size: clamp(38px, 5vw, 64px);
     font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.5px;
-    margin-bottom: 16px;
+    line-height: 0.98;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
   }
   .section-desc {
     color: var(--muted);
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.7;
     max-width: 560px;
   }
 
+  /* Sapphire card: the app's card gradient and its fine blue outline. */
+  .s-card {
+    position: relative;
+    background: linear-gradient(135deg, var(--card-light), var(--card-dark));
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(2,8,22,0.45);
+  }
+
   /* ── HERO ── */
   .hero {
-    max-width: 1120px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 148px 40px 72px;
+    padding: 150px 40px 84px;
     display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 56px;
+    grid-template-columns: minmax(0, 1fr) 460px;
+    gap: 48px;
     align-items: center;
   }
   .hero-badge {
-    display: inline-block;
-    font-size: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
     font-weight: 800;
-    letter-spacing: 0.7px;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: var(--soft);
-    background: var(--blue300);
+    color: var(--gold500);
+    background: rgba(2,27,76,0.78);
+    border: 1px solid rgba(243,199,68,0.45);
     border-radius: 999px;
-    padding: 5px 12px;
-    margin-bottom: 20px;
+    padding: 7px 14px;
+    margin-bottom: 22px;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gold500);
+    box-shadow: 0 0 0 0 rgba(243,199,68,0.7);
+    animation: pulse 2.2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(243,199,68,0.65); }
+    100% { box-shadow: 0 0 0 10px rgba(243,199,68,0); }
   }
   .hero-title {
-    font-size: clamp(40px, 6vw, 72px);
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-style: italic;
     font-weight: 800;
-    line-height: 1.02;
-    letter-spacing: -1.5px;
-    margin-bottom: 20px;
+    font-size: clamp(44px, 5.2vw, 74px);
+    line-height: 0.9;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    margin-bottom: 26px;
+    text-shadow: 0 6px 30px rgba(2,8,22,0.35);
   }
-  .hero-title .accent { color: var(--gold500); }
+  .hero-title span { display: block; white-space: nowrap; }
+  .hero-title .accent {
+    background: linear-gradient(160deg, var(--cta-top), var(--cta-body) 40%, var(--cta-base));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 6px 22px rgba(241,194,64,0.30));
+    padding-right: 0.12em;
+  }
   .hero-sub {
-    color: var(--muted);
-    font-size: 16px;
-    line-height: 1.75;
-    max-width: 520px;
-    margin-bottom: 28px;
+    color: var(--soft);
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 540px;
+    margin-bottom: 30px;
   }
-  .hero-sub strong { color: var(--text); font-weight: 600; }
+  .hero-sub strong { color: var(--text); font-weight: 700; }
+  .hero-actions { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
 
   .hero-btn {
     display: inline-block;
-    background: var(--gold500);
+    background: linear-gradient(160deg, var(--cta-top), var(--cta-body) 30%, var(--cta-base));
     color: var(--gold-ink);
-    border-radius: 12px;
-    padding: 13px 22px;
-    font-size: 14px;
-    font-weight: 700;
+    border-radius: 14px;
+    padding: 15px 28px;
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
     text-decoration: none;
     white-space: nowrap;
-    box-shadow: 0 8px 24px rgba(255,176,32,0.26);
-    transition: background 0.2s;
+    box-shadow: 0 10px 28px rgba(241,194,64,0.45);
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
   }
-  .hero-btn:hover { background: var(--gold300); }
-  .hero-note { font-size: 12px; color: var(--faint); margin-top: 12px; max-width: 440px; }
+  .hero-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+    box-shadow: 0 16px 36px rgba(241,194,64,0.55);
+  }
+  .hero-link {
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    padding-bottom: 2px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .hero-link:hover { color: var(--gold500); border-color: var(--gold500); }
+  .hero-note { font-size: 13px; color: var(--muted); margin-top: 16px; max-width: 440px; }
   .hero-socials { display: flex; gap: 14px; margin-top: 28px; }
   .hero-socials a {
-    width: 34px; height: 34px;
+    width: 36px; height: 36px;
     border-radius: 999px;
+    background: rgba(2,27,76,0.6);
     border: 1px solid var(--border2);
     display: flex; align-items: center; justify-content: center;
     color: var(--muted);
-    transition: color 0.2s, border-color 0.2s;
+    transition: color 0.2s, border-color 0.2s, transform 0.2s;
   }
-  .hero-socials a:hover { color: var(--gold500); border-color: var(--gold500); }
+  .hero-socials a:hover { color: var(--gold500); border-color: var(--gold500); transform: translateY(-2px); }
 
-  /* ── PHONE CAROUSEL ── */
-  .phone-deck {
+  /* ── PHONE FAN: two captures, the poker night leaning out behind Home ── */
+  .phone-fan {
     position: relative;
-    height: 620px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    height: 640px;
   }
-  .phone-slide {
+  .phone-fan::before {
+    content: '';
     position: absolute;
-    width: 268px;
-    transition: transform 0.6s cubic-bezier(0.2,0.8,0.2,1), opacity 0.6s ease;
+    left: 50%; top: 52%;
+    width: min(520px, 100%); height: 520px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(241,194,64,0.26), rgba(241,194,64,0) 62%);
+    pointer-events: none;
   }
-  .phone-slide img {
+  .phone {
+    position: absolute;
+    width: 272px;
+    border-radius: 34px;
+    padding: 7px;
+    background: linear-gradient(160deg, #2A6FD6, #021B4C 40%, #030B1C);
+    box-shadow: 0 30px 70px rgba(2,8,22,0.7), 0 0 0 1px rgba(58,147,245,0.55);
+  }
+  .phone img {
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 26px;
-    border: 1px solid var(--border2);
-    box-shadow: 0 24px 60px rgba(3,10,22,0.65);
+    border-radius: 28px;
   }
-  .phone-slide.depth-0 { transform: translate(0,0) scale(1); opacity: 1; z-index: 3; }
-  .phone-slide.depth-1 { transform: translate(48px,26px) scale(0.93); opacity: 0.42; z-index: 2; }
-  .phone-slide.depth-2 { transform: translate(86px,50px) scale(0.86); opacity: 0.20; z-index: 1; }
-  .phone-slide.depth-hidden { transform: translate(104px,66px) scale(0.82); opacity: 0; z-index: 0; }
-  .phone-caption {
-    position: absolute;
-    bottom: -6px;
-    left: 0; right: 0;
-    text-align: center;
-    font-size: 12px;
-    color: var(--faint);
+  .phone-front {
+    left: 18px; top: 8px;
+    z-index: 2;
+    transform: rotate(-5deg);
+    animation: floatA 7s ease-in-out infinite;
   }
-  .phone-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 22px;
+  .phone-back {
+    right: 0; top: 54px;
+    z-index: 1;
+    transform: rotate(8deg) scale(0.9);
+    animation: floatB 8s ease-in-out infinite;
   }
-  .phone-dot {
-    width: 7px; height: 7px;
-    border-radius: 999px;
-    border: none;
-    padding: 0;
-    background: var(--surface4);
-    cursor: pointer;
+  .phone-back img { filter: brightness(0.82); }
+  @keyframes floatA {
+    0%, 100% { transform: rotate(-5deg) translateY(0); }
+    50% { transform: rotate(-4deg) translateY(-12px); }
   }
-  .phone-dot.active { background: var(--gold500); }
+  @keyframes floatB {
+    0%, 100% { transform: rotate(8deg) scale(0.9) translateY(0); }
+    50% { transform: rotate(9deg) scale(0.9) translateY(10px); }
+  }
 
-  /* ── LEDGER STRIP ── */
-  .ledger {
-    border-top: 1px solid var(--border1);
-    border-bottom: 1px solid var(--border1);
-    background: rgba(15,36,64,0.5);
+  /* ── TICKER: a gold band that runs across the page under the hero ── */
+  .ticker-wrap { overflow: hidden; padding: 22px 0; }
+  .ticker {
+    position: relative;
+    margin: 0 -24px;
+    transform: rotate(-1.4deg);
+    background: linear-gradient(160deg, var(--cta-top), var(--cta-body) 30%, var(--cta-base));
+    box-shadow: 0 14px 40px rgba(241,194,64,0.28);
+    overflow: hidden;
   }
-  .ledger-inner {
-    max-width: 1120px;
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker 36s linear infinite;
+  }
+  .ticker-group { display: flex; align-items: center; }
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-style: italic;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+    padding: 13px 0;
+    white-space: nowrap;
+  }
+  .ticker-item::after {
+    content: '';
+    width: 9px; height: 9px;
+    margin: 0 26px;
+    background: var(--gold-ink);
+    transform: rotate(45deg);
+  }
+  @keyframes ticker { to { transform: translateX(-50%); } }
+
+  /* ── PROOF STRIP ── */
+  .proof {
+    max-width: 1160px;
     margin: 0 auto;
-    padding: 40px;
+    padding: 72px 40px 0;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
+    gap: 20px;
   }
-  .ledger-item-title {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 6px;
+  .proof-item { padding: 26px 26px 28px; }
+  .proof-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(2,27,76,0.55);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold500);
+    margin-bottom: 16px;
   }
-  .ledger-item-desc { font-size: 14px; line-height: 1.65; color: var(--muted); }
+  .proof-title {
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .proof-desc { font-size: 15px; line-height: 1.65; color: var(--muted); }
 
   /* ── FEATURES ── */
-  .features { max-width: 1120px; margin: 0 auto; padding: 96px 40px 0; }
-  .features-head { margin-bottom: 56px; }
+  .features { position: relative; max-width: 1160px; margin: 0 auto; padding: 110px 40px 0; }
+  .features-head { margin-bottom: 40px; }
   .f-row {
     display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 48px;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 64px;
     align-items: center;
-    padding: 48px 0;
+    padding: 56px 0;
     border-top: 1px solid var(--border1);
   }
-  .f-row.reverse { grid-template-columns: 300px 1fr; }
-  .f-row.reverse .f-shot { order: -1; }
+  .f-row.reverse { grid-template-columns: 380px minmax(0, 1fr); }
   .f-num {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 2px;
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2.2px;
     color: var(--gold500);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   .f-title {
-    font-size: 28px;
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-size: clamp(32px, 3.6vw, 46px);
     font-weight: 800;
-    letter-spacing: -0.4px;
-    margin-bottom: 12px;
+    line-height: 1;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
   }
   .f-desc {
     color: var(--muted);
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.75;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     max-width: 620px;
   }
   .f-desc strong { color: var(--text); font-weight: 600; }
-  .f-list { list-style: none; display: grid; gap: 8px; }
+  .f-list { list-style: none; display: grid; gap: 10px; }
   .f-list li {
     position: relative;
-    padding-left: 18px;
-    font-size: 14px;
+    padding-left: 22px;
+    font-size: 15px;
     line-height: 1.6;
     color: var(--soft);
   }
   .f-list li::before {
     content: '';
     position: absolute;
-    left: 3px; top: 9px;
-    width: 5px; height: 5px;
-    border-radius: 50%;
+    left: 2px; top: 8px;
+    width: 8px; height: 8px;
     background: var(--gold500);
+    transform: rotate(45deg);
   }
-  .f-shot img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 22px;
+  .f-shot { display: flex; justify-content: center; }
+  .f-shot .phone { position: relative; width: 280px; transform: rotate(3deg); }
+
+  /* Feature artwork. These are drawings, not captures of the app. */
+  .f-art {
+    position: relative;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .f-art::before {
+    content: '';
+    position: absolute;
+    inset: 6% 0;
+    background: radial-gradient(circle, rgba(36,150,252,0.30), rgba(36,150,252,0) 66%);
+    pointer-events: none;
+  }
+  .call-card {
+    position: relative;
+    width: 300px;
+    padding: 20px 22px 18px;
+    background: linear-gradient(135deg, var(--card-light), var(--card-dark));
     border: 1px solid var(--border2);
-    box-shadow: 0 20px 48px rgba(3,10,22,0.6);
+    border-radius: 16px;
+    box-shadow: 0 22px 44px rgba(2,8,22,0.55);
+    transition: transform 0.35s cubic-bezier(0.2,0.8,0.2,1);
+  }
+  .call-card + .call-card { margin-top: -18px; }
+  .call-card.c1 { transform: rotate(-5deg) translateX(-22px); z-index: 1; }
+  .call-card.c2 { transform: rotate(3deg) translateX(26px); z-index: 2; }
+  .call-card.c3 { transform: rotate(-2deg) translateX(-8px); z-index: 3; border-color: var(--gold500); box-shadow: 0 22px 44px rgba(2,8,22,0.55), 0 6px 26px rgba(241,194,64,0.28); }
+  .art-calls:hover .call-card.c1 { transform: rotate(-7deg) translate(-34px, -10px); }
+  .art-calls:hover .call-card.c2 { transform: rotate(4deg) translate(36px, 0); }
+  .art-calls:hover .call-card.c3 { transform: rotate(-2deg) translate(-8px, 10px); }
+  .call-tag {
+    display: inline-block;
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+    background: linear-gradient(160deg, var(--cta-top), var(--cta-base));
+    border-radius: 6px;
+    padding: 3px 9px;
+    margin-bottom: 12px;
+  }
+  .call-text { font-size: 20px; font-weight: 700; line-height: 1.3; color: var(--text); margin-bottom: 10px; }
+  .call-meta { font-size: 13px; color: var(--muted); }
+
+  .fo-versus { position: relative; display: flex; align-items: center; gap: 22px; margin-bottom: 34px; }
+  .fo-avatar {
+    width: 92px; height: 92px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--text);
+    background: linear-gradient(135deg, var(--card-light), var(--card-dark));
+    border: 2px solid var(--border2);
+    box-shadow: 0 16px 34px rgba(2,8,22,0.55);
+  }
+  .fo-avatar.gold { border-color: var(--gold500); box-shadow: 0 16px 34px rgba(2,8,22,0.55), 0 0 26px rgba(241,194,64,0.30); }
+  .fo-bolt { color: var(--gold500); filter: drop-shadow(0 0 14px rgba(241,194,64,0.6)); }
+  .fo-mic {
+    position: relative;
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    border: 2px solid var(--gold500);
+    background: rgba(2,27,76,0.7);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold500);
+    margin-bottom: 20px;
+  }
+  .fo-mic::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid rgba(243,199,68,0.6);
+    animation: ring 2.4s ease-out infinite;
+  }
+  @keyframes ring {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.7); opacity: 0; }
+  }
+  .fo-wave { position: relative; display: flex; align-items: center; gap: 6px; height: 46px; margin-bottom: 18px; }
+  .fo-wave i {
+    display: block;
+    width: 5px;
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--cta-top), var(--cta-base));
+    transform-origin: center;
+    animation: wave 1.1s ease-in-out infinite;
+  }
+  .fo-wave i:nth-child(1) { animation-delay: -0.9s; }
+  .fo-wave i:nth-child(2) { animation-delay: -0.2s; }
+  .fo-wave i:nth-child(3) { animation-delay: -0.6s; }
+  .fo-wave i:nth-child(4) { animation-delay: -0.05s; }
+  .fo-wave i:nth-child(5) { animation-delay: -0.75s; }
+  .fo-wave i:nth-child(6) { animation-delay: -0.35s; }
+  .fo-wave i:nth-child(7) { animation-delay: -0.95s; }
+  .fo-wave i:nth-child(8) { animation-delay: -0.5s; }
+  .fo-wave i:nth-child(9) { animation-delay: -0.15s; }
+  .fo-wave i:nth-child(10) { animation-delay: -0.65s; }
+  .fo-wave i:nth-child(11) { animation-delay: -0.3s; }
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.22); }
+    50% { transform: scaleY(1); }
+  }
+  .fo-quote {
+    position: relative;
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
   }
 
-  /* ── PAIR CARDS ── */
-  .pair {
-    max-width: 1120px;
+  /* ── TRIO CARDS ── */
+  .trio {
+    max-width: 1160px;
     margin: 0 auto;
-    padding: 24px 40px 0;
+    padding: 32px 40px 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
-  .pair-card {
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 14px;
-    padding: 26px;
+  .trio-card { padding: 28px; transition: transform 0.25s, border-color 0.25s; }
+  .trio-card:hover { transform: translateY(-4px); border-color: var(--gold500); }
+  .trio-card-title {
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
   }
-  .pair-card-title { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
-  .pair-card p { color: var(--muted); font-size: 14px; line-height: 1.7; }
-  .pair-card p strong { color: var(--text); font-weight: 600; }
+  .trio-card p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+  .trio-card p strong { color: var(--text); font-weight: 600; }
 
   /* ── HOW ── */
-  .how { max-width: 1120px; margin: 0 auto; padding: 96px 40px; }
+  .how { max-width: 1160px; margin: 0 auto; padding: 120px 40px 110px; }
   .how-head { margin-bottom: 44px; }
   .how-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
-  .how-step {
-    background: var(--surface1);
-    border: 1px solid var(--border1);
-    border-radius: 14px;
-    padding: 24px;
-  }
+  .how-step { padding: 26px 24px 28px; overflow: hidden; }
   .how-num {
-    font-size: 12px;
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-style: italic;
+    font-size: 84px;
     font-weight: 800;
-    letter-spacing: 1.5px;
-    color: var(--gold500);
-    margin-bottom: 14px;
+    line-height: 0.9;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--gold500);
+    margin-bottom: 18px;
   }
-  .how-step-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-  .how-step-desc { font-size: 14px; line-height: 1.65; color: var(--muted); }
-
-  /* ── MONEY ── */
-  .money {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 0 40px 96px;
-  }
-  .money-inner {
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 16px;
-    padding: 40px;
-  }
-  .money-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
-    margin-top: 28px;
-  }
-  .money-item-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-  .money-item-desc { font-size: 14px; line-height: 1.65; color: var(--muted); }
-  .money-foot {
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border3);
-    font-size: 13px;
-    color: var(--faint);
-    line-height: 1.7;
-  }
-
-  /* ── LATER ── */
-  .later { max-width: 1120px; margin: 0 auto; padding: 0 40px 96px; }
-  .later-inner { max-width: 620px; }
-  .later-list { display: grid; gap: 12px; margin-top: 24px; }
-  .later-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    background: var(--surface1);
-    border: 1px solid var(--border1);
-    border-radius: 12px;
-    padding: 16px 18px;
-  }
-  .later-item-name { font-size: 16px; font-weight: 700; color: var(--soft); }
-  .later-item-desc { font-size: 13px; color: var(--faint); margin-top: 2px; }
-  .later-pill {
-    flex-shrink: 0;
-    font-size: 10px;
+  .how-step-title {
+    font-family: var(--display);
+    font-stretch: 75%;
+    font-size: 24px;
     font-weight: 800;
-    letter-spacing: 0.7px;
+    letter-spacing: 0.4px;
     text-transform: uppercase;
-    color: var(--soft);
-    background: var(--blue300);
-    border-radius: 999px;
-    padding: 4px 10px;
+    margin-bottom: 8px;
   }
+  .how-step-desc { font-size: 15px; line-height: 1.65; color: var(--muted); }
 
   /* ── CREW QUOTES (rendered from the CREW_QUOTES array; absent while empty) ── */
-  .quotes { max-width: 1120px; margin: 0 auto; padding: 0 40px 96px; }
+  .quotes { max-width: 1160px; margin: 0 auto; padding: 0 40px 110px; }
   .quotes[hidden] { display: none; }
   .quotes-head { margin-bottom: 32px; }
   .quotes-grid {
@@ -485,25 +714,19 @@
     gap: 20px;
   }
   .quote-card {
-    background: var(--surface2);
+    background: linear-gradient(135deg, var(--card-light), var(--card-dark));
     border: 1px solid var(--border2);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 26px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
   }
-  .quote-text {
-    font-size: 15px;
-    line-height: 1.7;
-    color: var(--soft);
-  }
+  .quote-text { font-size: 15px; line-height: 1.7; color: var(--soft); margin-bottom: 18px; }
   .quote-who { display: flex; align-items: center; gap: 12px; }
   .quote-initials {
     flex-shrink: 0;
     width: 36px; height: 36px;
     border-radius: 999px;
-    background: var(--blue300);
+    background: var(--navy-deep);
+    border: 1px solid var(--border2);
     color: var(--text);
     display: flex; align-items: center; justify-content: center;
     font-size: 13px;
@@ -512,40 +735,54 @@
   .quote-name { display: block; font-size: 14px; font-weight: 700; }
   .quote-crew { display: block; font-size: 12px; color: var(--faint); margin-top: 2px; }
 
-  /* ── CTA ── */
+  /* ── CTA: the closing panel, the app's screen gradient again ── */
   .cta-section {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 0 40px 96px;
+    position: relative;
+    max-width: 1080px;
+    margin: 0 auto 110px;
+    padding: 72px 40px 64px;
     text-align: center;
+    border: 1px solid var(--border2);
+    border-radius: 28px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 760px 520px at 0% 0%,
+        #2496FC 0%, #0869E4 22%, #0150C8 40%, #003A9D 58%, #002C78 74%, #011F54 100%);
+    box-shadow: 0 30px 80px rgba(2,8,22,0.6);
   }
-  .cta-section .section-desc { margin: 0 auto 24px; }
-  .cta-section .hero-note { text-align: center; margin: 16px auto 0; }
-
+  .cta-section .section-tag { justify-content: center; }
+  .cta-section .section-tag::after { display: none; }
+  .cta-section .section-desc { margin: 0 auto 26px; color: var(--soft); }
+  .cta-section .hero-note { text-align: center; margin: 16px auto 0; color: var(--soft); }
+  .cta-coin {
+    display: block;
+    margin: 0 auto 18px;
+    filter: drop-shadow(0 10px 26px rgba(2,8,22,0.55));
+  }
   /* Early-access list: one email field and the gold action, same radius and
      weights as .hero-btn so it reads as the page's own control. */
   .waitlist-form {
     display: flex;
     gap: 10px;
     justify-content: center;
-    max-width: 480px;
+    max-width: 520px;
     margin: 0 auto;
   }
   .waitlist-form[hidden] { display: none; }
   .waitlist-email {
     flex: 1;
     min-width: 0;
-    background: var(--surface1);
+    background: rgba(2,27,76,0.78);
     border: 1px solid var(--border2);
-    border-radius: 12px;
-    padding: 13px 16px;
+    border-radius: 14px;
+    padding: 15px 18px;
     color: var(--text);
     font: inherit;
-    font-size: 14px;
+    font-size: 15px;
   }
   .waitlist-email::placeholder { color: var(--faint); }
   .waitlist-email[aria-invalid="true"] { border-color: var(--down); }
-  .waitlist-btn { border: 0; cursor: pointer; font-family: inherit; }
+  .waitlist-btn { border: 0; cursor: pointer; }
   .waitlist-btn[disabled] { opacity: 0.6; cursor: default; }
   .waitlist-label, .waitlist-trap {
     position: absolute;
@@ -556,13 +793,13 @@
   }
   .waitlist-status { font-size: 14px; line-height: 1.6; color: var(--soft); margin: 14px auto 0; max-width: 480px; }
   .waitlist-status:empty { display: none; }
-  .waitlist-status.is-error { color: var(--down); }
+  .waitlist-status.is-error { color: #FFD0D0; }
   .waitlist-status.is-done { color: var(--gold300); font-weight: 600; font-size: 16px; }
 
   /* ── FOOTER (shared with faq.html) ── */
   footer {
     border-top: 1px solid var(--border1);
-    max-width: 1120px;
+    max-width: 1160px;
     margin: 0 auto;
     padding: 40px;
   }
@@ -574,16 +811,17 @@
   }
   .footer-brand { display: flex; align-items: center; gap: 8px; }
   .footer-brand-name {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 800;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     color: var(--text);
+    transform: skewX(-8deg);
   }
   .footer-tagline {
-    font-size: 12px;
-    color: var(--faint);
-    margin-top: 6px;
-    max-width: 260px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+    max-width: 300px;
     line-height: 1.6;
   }
   .footer-cols { display: flex; gap: 56px; }
@@ -592,18 +830,18 @@
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--gold500);
     margin-bottom: 12px;
   }
   .footer-cols a {
     display: block;
-    color: var(--faint);
+    color: var(--muted);
     text-decoration: none;
     font-size: 13px;
     margin-bottom: 8px;
     transition: color 0.2s;
   }
-  .footer-cols a:hover { color: var(--muted); }
+  .footer-cols a:hover { color: var(--text); }
   .footer-bottom {
     display: flex;
     justify-content: space-between;
@@ -616,16 +854,29 @@
   .footer-links a { color: var(--faint); transition: color 0.2s; }
   .footer-links a:hover { color: var(--gold500); }
 
+  /* ── REVEAL ON SCROLL (only when the script is running) ── */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2,0.8,0.2,1);
+  }
+  .js .reveal.is-in { opacity: 1; transform: none; }
+  .js .reveal.d1 { transition-delay: 0.08s; }
+  .js .reveal.d2 { transition-delay: 0.16s; }
+  .js .reveal.d3 { transition-delay: 0.24s; }
+
   /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 120px; }
-    .phone-deck { height: 560px; }
-    .f-row, .f-row.reverse { grid-template-columns: 1fr; gap: 28px; }
-    .f-row.reverse .f-shot { order: 0; }
-    .f-shot { max-width: 280px; }
-    .ledger-inner { grid-template-columns: 1fr; gap: 22px; }
+  @media (max-width: 1020px) {
+    .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 128px; }
+    /* One column: the headline sizes off the viewport so its longest line
+       (ONE SCOREBOARD.) still fits a 320 px phone without wrapping. */
+    .hero-title { font-size: min(10.4vw, 84px); }
+    .phone-fan { max-width: 470px; width: 100%; margin: 0 auto; }
+    .f-row, .f-row.reverse { grid-template-columns: 1fr; gap: 36px; }
+    .f-row.reverse .f-art { order: 2; }
+    .proof { grid-template-columns: 1fr; }
+    .trio { grid-template-columns: 1fr; }
     .how-grid { grid-template-columns: 1fr 1fr; }
-    .money-grid { grid-template-columns: 1fr; gap: 22px; }
     .quotes-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 768px) {
@@ -634,37 +885,40 @@
     .nav-right { gap: 16px; }
     .nav-right .nav-hide-sm { display: none; }
     .nav-cta { padding: 8px 14px; font-size: 12px; }
-    .hero { padding: 108px 20px 56px; }
-    .ledger-inner { padding: 32px 20px; }
-    .features { padding: 72px 20px 0; }
-    .pair { padding: 24px 20px 0; grid-template-columns: 1fr; }
-    .how { padding: 72px 20px; }
-    .how-grid { grid-template-columns: 1fr; }
-    .money { padding: 0 20px 72px; }
-    .money-inner { padding: 26px 22px; }
-    .later { padding: 0 20px 72px; }
-    .quotes { padding: 0 20px 72px; }
-    .cta-section { padding: 0 20px 72px; }
+    .hero { padding: 112px 20px 64px; }
+    .hero-sub { font-size: 16px; }
+    .ticker-item { font-size: 19px; padding: 11px 0; }
+    .ticker-item::after { margin: 0 18px; }
+    .proof { padding: 56px 20px 0; }
+    .features { padding: 84px 20px 0; }
+    .f-row { padding: 44px 0; }
+    .trio { padding: 24px 20px 0; }
+    .how { padding: 88px 20px 84px; }
+    .quotes { padding: 0 20px 84px; }
+    .cta-section { margin: 0 16px 84px; padding: 52px 22px 46px; border-radius: 22px; }
     .waitlist-form { flex-direction: column; }
     footer { padding-left: 20px; padding-right: 20px; }
     .footer-row { flex-direction: column; gap: 28px; }
     .footer-cols { gap: 32px; }
     .footer-bottom { flex-direction: column; gap: 12px; }
   }
-  @media (max-width: 480px) {
+  @media (max-width: 520px) {
     .nav-right .nav-hide-xs { display: none; }
     .footer-cols { flex-direction: column; gap: 20px; }
-    .phone-slide { width: 232px; }
-    /* The 4th slide is invisible (opacity 0) but still occupies layout, and at
-       375px its 104px offset pushed the document 13px wider than the viewport --
-       a horizontal scrollbar on the phone caused by a card nobody can see. Pull
-       it in; nothing changes visually because it is transparent either way. */
-    .phone-slide.depth-hidden { transform: translate(72px,50px) scale(0.82); }
-    .phone-deck { height: 500px; }
+    .how-grid { grid-template-columns: 1fr; }
+    .phone-fan { height: 500px; max-width: min(340px, 100%); }
+    .phone { width: 204px; border-radius: 27px; padding: 5px; }
+    .phone img { border-radius: 22px; }
+    .phone-front { left: 0; }
+    .phone-back { top: 44px; }
+    .f-shot .phone { width: 240px; }
+    .call-card { width: 270px; }
+    .f-art { min-height: 380px; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .phone-slide { transition: none; }
+    .phone-front, .phone-back, .ticker-track, .hero-badge::before, .fo-mic::after, .fo-wave i { animation: none; }
+    .js .reveal { opacity: 1; transform: none; transition: none; }
   }
 </style>
 </head>
@@ -676,7 +930,7 @@
   <a href="#top" class="nav-left" aria-label="Stevo home">
     <!-- The Stevo coin, cut from the same master as the app icon by
          scripts/make-brand-assets.py. -->
-    <img class="nav-mark" src="/stevo-coin.png" width="30" height="30" alt="" aria-hidden="true">
+    <img class="nav-mark" src="/stevo-coin.png" width="32" height="32" alt="" aria-hidden="true">
     <div class="nav-wordmark">STEVO</div>
   </a>
   <div class="nav-right">
@@ -687,23 +941,31 @@
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO
+     Written for someone from App Review as much as for a visitor (Steve,
+     2026-09-29): the word "bet" stays, and nothing on this page talks about
+     stakes, prices or paying anyone. The one sentence about money is the
+     position itself, here and in the footer, and nowhere else. -->
 <section class="hero" id="top">
-  <div>
-    <div class="hero-badge">Coming soon</div>
+  <div class="hero-copy">
+    <div class="hero-badge">Coming soon to the App Store</div>
     <h1 class="hero-title">
-      Bets with<br>your crew,<br><span class="accent">not a book.</span>
+      <span>Your crew.</span>
+      <span>Your games.</span>
+      <span class="accent">One scoreboard.</span>
     </h1>
     <p class="hero-sub">
-      Your crew already bets on games, faces off head to head over whatever is on, and
-      plays poker on Thursdays. Stevo records all of it and keeps <strong>one running balance per person</strong>,
-      so nobody has to remember who owes whom. Stevo keeps score; you settle between yourselves.
+      Stevo is the private app for the bets you make with friends, the Face Offs you call
+      during the game, and the poker nights you host. Everyone in the crew sees the same
+      record, so nobody has to remember who called what.
+      <strong>Stevo keeps score. It never holds, moves, or pays out money.</strong>
     </p>
 
-    <div>
+    <div class="hero-actions">
       <a class="hero-btn" href="#get-stevo">Get early access</a>
-      <p class="hero-note">Stevo is in a private beta. It is not on the App Store yet.</p>
+      <a class="hero-link" href="#features">See what is in it</a>
     </div>
+    <p class="hero-note">Stevo is in a private beta. It is not on the App Store yet.</p>
 
     <div class="hero-socials">
       <a href="https://instagram.com/stevoapp" target="_blank" rel="noopener" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg></a>
@@ -713,219 +975,200 @@
     </div>
   </div>
 
-  <div>
-    <div class="phone-deck" id="deck" role="button" tabindex="0" aria-label="App screenshots, activate to see the next screen">
-      <div class="phone-slide depth-0" data-slide="0"><img src="screen-home.png" alt="The Stevo Home screen: a Make a bet button, quick-access tiles for Bets, Settle, Crews, Face Off and Poker, and a Needs attention row for a Face Off bet a friend proposed" width="600" height="1304"></div>
-      <div class="phone-slide depth-1" data-slide="1"><img src="screen-lines.png" alt="The Stevo game lines board with spread, total and moneyline prices for NFL games" width="600" height="1304" loading="lazy"></div>
-      <div class="phone-slide depth-2" data-slide="2"><img src="screen-poker.png" alt="A finished Stevo poker tournament: the podium, the payouts split, final standings and who owes whom" width="600" height="1304" loading="lazy"></div>
-      <div class="phone-slide depth-hidden" data-slide="3"><img src="screen-faceoff-mic.png" alt="A Stevo Face Off with one friend: who is up at the top, and the Add Bet sheet open on its microphone" width="600" height="1304" loading="lazy"></div>
-      <div class="phone-caption" id="deck-caption">Home</div>
-    </div>
-    <div class="phone-dots" role="tablist" aria-label="Screen selector">
-      <button class="phone-dot active" data-dot="0" aria-label="Home"></button>
-      <button class="phone-dot" data-dot="1" aria-label="Lines board"></button>
-      <button class="phone-dot" data-dot="2" aria-label="Poker results"></button>
-      <button class="phone-dot" data-dot="3" aria-label="Face Off"></button>
+  <div class="hero-art">
+    <div class="phone-fan">
+      <div class="phone phone-back"><img src="screen-poker.png" alt="A Stevo poker night: Friday Night Poker, a tournament on Friday at 7, with the blind levels, the confirmed players and the I'm in, Maybe and Out buttons" width="600" height="1304"></div>
+      <div class="phone phone-front"><img src="screen-home.png" alt="The Stevo Home screen: a Make a bet button, the quick-access tiles, and Friday Night Poker under Upcoming events" width="600" height="1304"></div>
     </div>
   </div>
 </section>
 
-<!-- LEDGER STRIP -->
-<section class="ledger">
-  <div class="ledger-inner">
-    <div>
-      <div class="ledger-item-title">One balance per person</div>
-      <div class="ledger-item-desc">Every bet you have with the same friend nets into a single number. No settling one bet at a time.</div>
+<!-- TICKER: decoration. Every word in it is said again, in full, further down. -->
+<div class="ticker-wrap"><div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <div class="ticker-group">
+      <span class="ticker-item">Bets with your crew</span>
+      <span class="ticker-item">Face Off</span>
+      <span class="ticker-item">Poker nights</span>
+      <span class="ticker-item">Seasons</span>
+      <span class="ticker-item">Private crews</span>
+      <span class="ticker-item">One scoreboard</span>
     </div>
-    <div>
-      <div class="ledger-item-title">Both sides confirm</div>
-      <div class="ledger-item-desc">Game bets settle themselves off the final score. Everything else needs both of you to declare the same result.</div>
+    <div class="ticker-group">
+      <span class="ticker-item">Bets with your crew</span>
+      <span class="ticker-item">Face Off</span>
+      <span class="ticker-item">Poker nights</span>
+      <span class="ticker-item">Seasons</span>
+      <span class="ticker-item">Private crews</span>
+      <span class="ticker-item">One scoreboard</span>
     </div>
-    <div>
-      <div class="ledger-item-title">Stevo never holds the money</div>
-      <div class="ledger-item-desc">It records who owes whom. You pay each other through Venmo, Cash App, Zelle or cash.</div>
-    </div>
+  </div>
+</div></div>
+
+<!-- PROOF STRIP -->
+<section class="proof">
+  <div class="s-card proof-item reveal">
+    <div class="proof-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+    <div class="proof-title">Private crews</div>
+    <div class="proof-desc">A crew is joined with a 6-character code. There is no public feed, and nobody outside the crew sees what is in it.</div>
+  </div>
+  <div class="s-card proof-item reveal d1">
+    <div class="proof-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+    <div class="proof-title">Both sides confirm</div>
+    <div class="proof-desc">A result counts when both of you report the same thing. There is no referee and no host override.</div>
+  </div>
+  <div class="s-card proof-item reveal d2">
+    <div class="proof-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+    <div class="proof-title">One scoreboard</div>
+    <div class="proof-desc">Every bet, Face Off and poker night with the same friend lands in one running record you can both see.</div>
   </div>
 </section>
 
 <!-- FEATURES -->
 <section class="features" id="features">
-  <div class="features-head">
+  <div class="features-head reveal">
     <div class="section-tag">What is in the app</div>
     <h2 class="section-title">Everything your crew<br>already bets on.</h2>
-    <p class="section-desc">Three things carry the app today: the lines board, Face Off, and poker nights. Crews and the Settle tab tie them together.</p>
+    <p class="section-desc">Three things carry the app today: bets with your crew, Face Off, and poker nights. Crews and friends tie them together.</p>
   </div>
 
   <div class="f-row">
-    <div>
-      <div class="f-num">01 · LINES AND BETS</div>
-      <div class="f-title">Real lines, without the book's cut</div>
+    <div class="reveal">
+      <div class="f-num">01 · BETS WITH YOUR CREW</div>
+      <div class="f-title">Make the call. Keep the record.</div>
       <p class="f-desc">
-        Spreads, totals and moneylines for the games on tonight, refreshed through the day, with
-        a LIVE toggle for games already underway. Friends betting each other do not owe a
-        sportsbook anything, so Stevo strips the margin out and settles at the
-        <strong>fair (no-vig) line</strong>: two sides priced -110 / -110 become +100 / +100.
-        Nothing on the board? Write a custom bet in your own words, set the stake and the odds
-        multiplier, and pick who takes it.
+        Pick a game on tonight's board, pro or college, or write a bet in your own words and
+        choose who takes it. Your friend accepts before it counts. Bets on real games close
+        themselves off the final score. Everything else closes when both of you report the
+        same result, so the record is one you both <strong>agreed to</strong>.
       </p>
       <ul class="f-list">
-        <li>American, decimal or fractional odds, your choice</li>
-        <li>Multi-pick parlays, with picks that cannot both happen blocked</li>
-        <li>Bets on real games settle themselves the moment the game goes final</li>
-        <li>Private by default; share one with a crew when you want the audience</li>
+        <li>Bets on real games close on the final score, with nobody keeping track by hand</li>
+        <li>A bet in your own words: both sides report, and matching answers confirm it</li>
+        <li>A live view for games already underway</li>
+        <li>Private by default. Share one with a crew when you want the audience</li>
       </ul>
     </div>
-    <div class="f-shot"><img src="screen-lines.png" alt="Stevo game lines: NFL spreads, totals and moneylines with the fair price above the book price" width="600" height="1304" loading="lazy"></div>
+    <div class="f-art art-calls reveal d1" aria-hidden="true">
+      <div class="call-card c1">
+        <span class="call-tag">Bet</span>
+        <p class="call-text">The home team wins by a touchdown.</p>
+        <span class="call-meta">On tonight's game</span>
+      </div>
+      <div class="call-card c2">
+        <span class="call-tag">Bet</span>
+        <p class="call-text">Dave cannot finish the wings.</p>
+        <span class="call-meta">In your own words</span>
+      </div>
+      <div class="call-card c3">
+        <span class="call-tag">Bet</span>
+        <p class="call-text">It rains before the ninth inning.</p>
+        <span class="call-meta">Both sides confirm</span>
+      </div>
+    </div>
   </div>
 
   <div class="f-row reverse">
-    <div class="f-shot"><img src="screen-faceoff.png" alt="A Stevo Face Off with Tyler: the header reads You are up $10.00, one bet waits on Accept or Decline, one carries I won and I lost buttons, and one is confirmed" width="600" height="1304" loading="lazy"></div>
-    <div>
+    <div class="f-art art-faceoff reveal" aria-hidden="true">
+      <div class="fo-versus">
+        <span class="fo-avatar">M</span>
+        <svg class="fo-bolt" width="46" height="46" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span class="fo-avatar gold">T</span>
+      </div>
+      <div class="fo-mic"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+      <div class="fo-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <p class="fo-quote">"He strikes out this at bat."</p>
+    </div>
+    <div class="reveal d1">
       <div class="f-num">02 · FACE OFF</div>
       <div class="f-title">Say the bet, wherever the game is on</div>
       <p class="f-desc">
-        Start a Face Off with one friend and bet them head to head as the game unfolds. At the
+        Start a Face Off with one friend and go head to head as the game unfolds. At the
         stadium, on the couch, or a thousand miles apart with the same game on. A new bet opens
-        on a <strong>microphone</strong>, not a keyboard: say "he hits a home run next at bat,
-        ten dollars at five to one" and Stevo writes the bet, the stake and the odds into a slip
-        you can fix before it goes over. Your friend gets it as a proposal and taps
-        <strong>Accept</strong> before it counts; a decline just drops it. Both phones stay in
-        sync and the header shows who is up.
+        on a <strong>microphone</strong>, not a keyboard: say "he strikes out this at bat" and
+        Stevo writes it into a slip you can fix before it goes over. Your friend gets it as a
+        proposal and taps <strong>Accept</strong> before it counts; a decline just drops it.
+        Both phones stay in sync and the header shows who is up.
+      </p>
+      <p class="f-desc">
         Each of you declares your own result with <strong>I won</strong> or
         <strong>I lost</strong>, and their answer stays hidden until you have given yours, so
         you report what you saw rather than reacting to them. Matching answers confirm the bet;
-        a mismatch marks it disputed and nothing settles until you sort it out between you.
-        There is no referee and no host override.
+        a mismatch marks it disputed until you sort it out between you.
       </p>
       <ul class="f-list">
-        <li>Say the money and the odds any way you say them out loud: "ten dollars at five to one", "$5 at 10x", "a buck at even money"</li>
-        <li>Set a dollar line and Stevo nudges you to settle once the running score passes it</li>
-        <li>Every bet nets into one number, and settling posts that single amount</li>
-        <li>Broadcast a single bet to two to four friends and let them take it</li>
+        <li>Say it the way you would say it out loud, then fix the slip before you send it</li>
+        <li>One running score for the whole Face Off, on both phones</li>
+        <li>There is no referee and no host override</li>
+        <li>Broadcast a single bet to two to four friends and let one of them take it</li>
       </ul>
     </div>
   </div>
 
   <div class="f-row">
-    <div>
+    <div class="reveal">
       <div class="f-num">03 · POKER NIGHTS AND SEASONS</div>
-      <div class="f-title">From the RSVP to who owes whom</div>
+      <div class="f-title">From the RSVP to the final table</div>
       <p class="f-desc">
-        Cash nights and tournaments. RSVPs with an automatic waitlist when the table fills, a
-        live blind clock, rebuys, add-ons and an end-of-night chop, and a payout split by finish
-        order. When it is over Stevo turns the buy-ins and the payouts into
-        <strong>who owes whom</strong> and sends them to the Settle tab. Run a season and every
-        tournament feeds one crew-wide standings table.
+        Schedule the night and the crew answers <strong>I'm in</strong>, Maybe or Out, with an
+        automatic waitlist when the table fills. On the night Stevo runs the blind clock and
+        tracks who is still in. When it is over, the finish order goes on the record and feeds
+        one standings table for the whole crew. Run a season and every tournament counts
+        toward it.
       </p>
       <ul class="f-list">
         <li>Season points by field size or a fixed points table, with a participation floor</li>
-        <li>Monthly leaderboards are record-only: the crew hands the money over in the room</li>
-        <li>Guests without a Stevo account can play; you settle their cash in person</li>
+        <li>Monthly leaderboards alongside the season race</li>
+        <li>Guests without a Stevo account can still take a seat</li>
       </ul>
     </div>
-    <div class="f-shot"><img src="screen-poker.png" alt="A finished Stevo tournament: the winner podium with the payouts split, final standings and two settle-up rows" width="600" height="1304" loading="lazy"></div>
+    <div class="f-shot reveal d1"><div class="phone"><img src="screen-poker.png" alt="A Stevo poker night: the date, the blind levels, one confirmed player, and the I'm in, Maybe and Out buttons under Your RSVP" width="600" height="1304" loading="lazy"></div></div>
   </div>
 
 </section>
 
-<div class="pair">
-  <div class="pair-card">
-    <div class="pair-card-title">Crews</div>
-    <p>A private group with a <strong>6-character invite code</strong> (no I, O, 0 or 1, so it still works read out loud). Everyone in a crew can see and take each other's shared bets, gets invited to its poker nights, and can start a Face Off. Public crews let anyone with the code join; in a private crew the code files a request the owner or an admin approves. Find your people by username or by
-    name, or text them an invite that gets them the app; Match names from Contacts puts their real
-    names next to their handles, on the phone itself.</p>
+<div class="trio">
+  <div class="s-card trio-card reveal">
+    <div class="trio-card-title">Crews</div>
+    <p>A private group with a <strong>6-character invite code</strong> (no I, O, 0 or 1, so it still works read out loud). Everyone in a crew can see and take each other's shared bets, gets invited to its poker nights, and can start a Face Off. Public crews let anyone with the code join; in a private crew the code files a request the owner or an admin approves.</p>
   </div>
-  <div class="pair-card">
-    <div class="pair-card-title">Settle</div>
-    <p>Every bet with the same person totals into one balance under <strong>I owe</strong> and <strong>Owed to me</strong>. Tap Pay and Stevo opens Venmo or Cash App addressed to your friend, shows their Zelle details, or just records that you handed over cash. You mark it sent, they confirm received, and the balance clears for both of you. Spots go on the
-    same balance: cover a friend's buy-in, tap <strong>Spot</strong> on their profile, and the ledger
-    changes with a note on why. No odds, no result to argue. Write that you owe and it lands at once;
-    write that they owe you and they confirm it first.</p>
+  <div class="s-card trio-card reveal d1">
+    <div class="trio-card-title">Friends</div>
+    <p>Find your people by username or by name, or text them an invite that gets them the app. <strong>Match names from Contacts</strong> puts their real names next to their handles, on the phone itself.</p>
+  </div>
+  <div class="s-card trio-card reveal d2">
+    <div class="trio-card-title">Private by design</div>
+    <p>There is no public feed in Stevo. Your record stays between you and the people in it, <strong>Face ID</strong> locks the app, and report and block are built in.</p>
   </div>
 </div>
 
 <!-- HOW IT WORKS -->
 <section class="how" id="how">
-  <div class="how-head">
+  <div class="how-head reveal">
     <div class="section-tag">How it works</div>
-    <h2 class="section-title">Four steps, then it runs itself</h2>
+    <h2 class="section-title">Four steps, then<br>it runs itself</h2>
     <p class="section-desc">No setup headache. Your crew, your games, your rules.</p>
   </div>
   <div class="how-grid">
-    <div class="how-step">
+    <div class="s-card how-step reveal">
       <div class="how-num">01</div>
       <div class="how-step-title">Start a crew</div>
-      <p class="how-step-desc">Create a private group and share the 6-character code, or the invite link, with your guys.</p>
+      <p class="how-step-desc">Create a private group and share the 6-character code, or the invite link, with your people.</p>
     </div>
-    <div class="how-step">
+    <div class="s-card how-step reveal d1">
       <div class="how-num">02</div>
       <div class="how-step-title">Make the bet</div>
-      <p class="how-step-desc">Take a line off the board, write a custom bet, start a Face Off, or schedule a poker night.</p>
+      <p class="how-step-desc">Take a game off the board, write a bet in your own words, start a Face Off, or schedule a poker night.</p>
     </div>
-    <div class="how-step">
+    <div class="s-card how-step reveal d2">
       <div class="how-num">03</div>
-      <div class="how-step-title">It settles itself</div>
-      <p class="how-step-desc">Bets on real games settle off the final score. On everything else, both sides declare the result.</p>
+      <div class="how-step-title">Both sides confirm</div>
+      <p class="how-step-desc">Bets on real games close on the final score. On everything else, both of you report the result.</p>
     </div>
-    <div class="how-step">
+    <div class="s-card how-step reveal d3">
       <div class="how-num">04</div>
-      <div class="how-step-title">Square up</div>
-      <p class="how-step-desc">Balances net per person. Pay in the app you already use, then confirm it landed.</p>
-    </div>
-  </div>
-</section>
-
-<!-- MONEY -->
-<section class="money">
-  <div class="money-inner">
-    <div class="section-tag">The money</div>
-    <h2 class="section-title" style="font-size:clamp(28px,3.4vw,40px)">Stevo never touches it</h2>
-    <p class="section-desc">Stevo is a scorekeeper for bets and games among friends. It is not a sportsbook, a wallet, or a payment processor.</p>
-    <div class="money-grid">
-      <div>
-        <div class="money-item-title">No wallet, no balances, no house</div>
-        <div class="money-item-desc">There are no deposits and nothing to cash out. Stevo records amounts; it never holds, moves, charges or pays out a cent.</div>
-      </div>
-      <div>
-        <div class="money-item-title">Settling is a hand-off</div>
-        <div class="money-item-desc">Pay through Venmo, Cash App, Zelle or in cash, between the two of you. Stevo opens the other app and then records that you said you sent it.</div>
-      </div>
-      <div>
-        <div class="money-item-title">No rake, no vig</div>
-        <div class="money-item-desc">The sportsbook margin is stripped out of every line taken off the board, and Stevo takes no cut of anything.</div>
-      </div>
-    </div>
-    <p class="money-foot">
-      Stevo is for adults 18 and over. Bet tracking is for entertainment purposes only.
-      More detail is in the <a href="https://stevoapp.com/faq">FAQ</a>, and the full terms are
-      under <a href="/terms">Terms</a>.
-    </p>
-  </div>
-</section>
-
-<!-- LATER -->
-<section class="later">
-  <div class="later-inner">
-    <div>
-      <div class="section-tag">Coming later</div>
-      <h2 class="section-title" style="font-size:clamp(28px,3.4vw,40px)">Already in the app,<br>marked coming soon</h2>
-      <p class="section-desc">These sit in the Games tab today with a SOON badge. They are next after launch, not shipped.</p>
-      <div class="later-list">
-        <div class="later-item">
-          <div>
-            <div class="later-item-name">Squares</div>
-            <div class="later-item-desc">Grid boards for any game</div>
-          </div>
-          <span class="later-pill">Soon</span>
-        </div>
-        <div class="later-item">
-          <div>
-            <div class="later-item-name">Pick'em pools</div>
-            <div class="later-item-desc">Weekly slates with the crew</div>
-          </div>
-          <span class="later-pill">Soon</span>
-        </div>
-      </div>
+      <div class="how-step-title">See where you stand</div>
+      <p class="how-step-desc">Every result lands on one running record with each friend, and in the crew's standings.</p>
     </div>
   </div>
 </section>
@@ -946,8 +1189,9 @@
      its table. The form stays hidden until the script below is running, so a
      browser without JavaScript never submits an email into the address bar. -->
 <section class="cta-section" id="get-stevo">
+  <img class="cta-coin" src="/stevo-coin.png" width="72" height="72" alt="" aria-hidden="true">
   <div class="section-tag">Get early access</div>
-  <h2 class="section-title" style="font-size:clamp(34px,4.6vw,56px)">It comes from<br>the App Store</h2>
+  <h2 class="section-title">It comes from<br>the App Store</h2>
   <p class="section-desc">
     Stevo is in a private beta, and goes to Apple for review after that. There is nothing
     to download today. Leave your email and you get one email from us: on the day Stevo is
@@ -979,7 +1223,7 @@
       <div class="footer-brand">
         <div class="footer-brand-name">STEVO</div>
       </div>
-      <p class="footer-tagline">Bets with your crew, not a book. Stevo keeps score; it never holds, moves, or pays out money.</p>
+      <p class="footer-tagline">The private crew app. Stevo keeps score; it never holds, moves, or pays out money.</p>
     </div>
     <div class="footer-cols">
       <div>
@@ -1037,59 +1281,20 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
   update();
 })();
 
-// Hero screenshot deck
-(function initDeck() {
-  const stack = document.getElementById('deck');
-  if (!stack) return;
-  const slides = Array.from(stack.querySelectorAll('.phone-slide'));
-  const dots = Array.from(document.querySelectorAll('.phone-dot'));
-  const caption = document.getElementById('deck-caption');
-  const labels = ['Home', 'Lines', 'Poker results', 'Face Off'];
-  const total = slides.length;
-  let current = 0;
-
-  function showSlide(i) {
-    current = (i + total) % total;
-    slides.forEach((s, idx) => {
-      const offset = (idx - current + total) % total;
-      s.classList.remove('depth-0', 'depth-1', 'depth-2', 'depth-hidden');
-      if (offset === 0) s.classList.add('depth-0');
-      else if (offset === 1) s.classList.add('depth-1');
-      else if (offset === 2) s.classList.add('depth-2');
-      else s.classList.add('depth-hidden');
+// Reveal on scroll. Without IntersectionObserver, or with reduced motion,
+// everything is simply shown.
+(function initReveal() {
+  const items = Array.from(document.querySelectorAll('.reveal'));
+  if (reducedMotion || !('IntersectionObserver' in window)) {
+    items.forEach((el) => el.classList.add('is-in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) { entry.target.classList.add('is-in'); io.unobserve(entry.target); }
     });
-    dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
-    if (caption) caption.textContent = labels[current] || '';
-  }
-
-  let autoTimer = null;
-  function startAuto() {
-    if (reducedMotion || autoTimer) return;
-    autoTimer = setInterval(() => showSlide(current + 1), 5000);
-  }
-  function stopAuto() {
-    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-  }
-  function restartAuto() { stopAuto(); startAuto(); }
-
-  stack.addEventListener('click', () => { showSlide(current + 1); restartAuto(); });
-  stack.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') {
-      e.preventDefault(); showSlide(current + 1); restartAuto();
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault(); showSlide(current - 1); restartAuto();
-    }
-  });
-  dots.forEach((dot, idx) => {
-    dot.addEventListener('click', (e) => { e.stopPropagation(); showSlide(idx); restartAuto(); });
-  });
-
-  ['mouseenter', 'focusin'].forEach(ev => stack.addEventListener(ev, stopAuto));
-  ['mouseleave', 'focusout'].forEach(ev => stack.addEventListener(ev, startAuto));
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopAuto(); else startAuto();
-  });
-  startAuto();
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+  items.forEach((el) => io.observe(el));
 })();
 
 // Crew quotes.
@@ -1131,7 +1336,7 @@ const CREW_QUOTES = [];
   section.innerHTML =
     '<div class="quotes-head">' +
       '<div class="section-tag">From the crews</div>' +
-      '<h2 class="section-title" style="font-size:clamp(28px,3.4vw,40px)">What the beta says</h2>' +
+      '<h2 class="section-title">What the beta says</h2>' +
     '</div>' +
     '<div class="quotes-grid">' +
       CREW_QUOTES.map((q) =>

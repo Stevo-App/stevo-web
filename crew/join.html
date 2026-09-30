@@ -16,7 +16,7 @@
      TestFlight so the code never leaves the page in a header. -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#09182F">
+<meta name="theme-color" content="#06132E">
 <link rel="icon" href="/stevo-coin.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,18 +25,18 @@
 <style>
   /* Navy & Warm Gold, the same tokens as web/index.html (constants/theme.ts). */
   :root {
-    --bg: #09182F;
-    --surface1: #0F2440;
-    --surface2: #152D4D;
-    --border1: #1A3352;
-    --border2: #23446B;
-    --gold500: #D9AD50;
-    --gold300: #E7C77E;
-    --gold-ink: #20180A;
-    --text: #F3F0E8;
-    --muted: #93A9C4;
-    --soft: #C9D9EC;
-    --faint: #6C88AC;
+    --bg: #06132E;
+    --surface1: #062A6B;
+    --surface2: #07388C;
+    --border1: #245291;
+    --border2: #3A93F5;
+    --gold500: #F3C744;
+    --gold300: #F7D15C;
+    --gold-ink: #101B30;
+    --text: #FFFFFF;
+    --muted: #C6DDF7;
+    --soft: #E3EEFB;
+    --faint: #8DAFDB;
     --up: #6FD3A0;
     --down: #FF7B7B;
   }
@@ -57,8 +57,10 @@
     inset: 0;
     z-index: -1;
     background:
-      radial-gradient(ellipse 700px 500px at 20% 0%, rgba(217,173,80,0.10), transparent 62%),
-      radial-gradient(ellipse 700px 500px at 85% 60%, rgba(53,104,176,0.14), transparent 62%);
+      radial-gradient(ellipse 900px 640px at 0% 0%,
+        rgba(36,150,252,0.70) 0%, rgba(8,105,228,0.52) 22%, rgba(1,80,200,0.36) 42%,
+        rgba(0,58,157,0.20) 62%, rgba(6,19,46,0) 100%),
+      radial-gradient(ellipse 700px 500px at 100% 60%, rgba(8,105,228,0.20), rgba(6,19,46,0) 70%);
     pointer-events: none;
   }
 
@@ -172,7 +174,7 @@
     font-weight: 700;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(217,173,80,0.22);
+    box-shadow: 0 8px 24px rgba(241,194,64,0.40);
   }
   .primary:hover { background: var(--gold300); }
 
