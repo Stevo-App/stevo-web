@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Get Stevo</title>
+<!-- stevoapp.com/get (Steve, 2026-10-02). The one link to print, post or text.
+     Until Stevo is live it shows the logo, one line and "Coming soon to the App
+     Store." On launch day it sends people straight to the App Store listing.
+
+     LAUNCH DAY: fill in APP_STORE_URL below and push. That line is the only
+     place the link lives. site/build.sh reads it and adds a server-side
+     redirect (/get -> the listing, 302), so the page itself is never seen; the
+     script here redirects too, as a backstop. The build refuses to publish a
+     value that is not an https://apps.apple.com/ link.
+
+     Copy rule for this page (Steve, 2026-10-02): no "bet", "wager" or
+     "gambling", and none of the money words the home page drops either
+     (lib/__tests__/getPage.test.ts holds the list). -->
+<script>
+  // Stevo's App Store listing. Empty means "not live yet".
+  // On launch day: 'https://apps.apple.com/app/id6766080618'
+  var APP_STORE_URL = '';
+  if (/^https:\/\/apps\.apple\.com\//.test(APP_STORE_URL)) location.replace(APP_STORE_URL);
+</script>
+<meta name="description" content="Stevo is the private app that keeps score for your crew. Coming soon to the App Store.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#06132E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stevo">
+<meta property="og:url" content="https://stevoapp.com/get">
+<meta property="og:title" content="Get Stevo">
+<meta property="og:description" content="The private app that keeps score for your crew. Coming soon to the App Store.">
+<meta property="og:image" content="https://stevoapp.com/apple-touch-icon.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@stevoapp">
+<link rel="icon" href="/stevo-coin.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  /* Electric Sapphire, the same tokens as web/index.html (constants/theme.ts). */
+  :root {
+    --bg: #06132E;
+    --gold500: #F3C744;
+    --text: #FFFFFF;
+    --soft: #E3EEFB;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { overflow-x: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    position: relative;
+    overflow-x: hidden;
+  }
+  /* The home page's corner glow: brightest top-left, deep navy by the middle. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 900px 680px at 0% 0%,
+        #2496FC 0%, #0869E4 22%, #0150C8 36%, #003A9D 52%,
+        #002C78 66%, #011F54 82%, rgba(6,19,46,0) 100%),
+      radial-gradient(ellipse 700px 520px at 100% 70%, rgba(8,105,228,0.28), rgba(6,19,46,0) 70%);
+    pointer-events: none;
+  }
+  a:focus-visible { outline: 2px solid var(--gold500); outline-offset: 4px; border-radius: 8px; }
+
+  main { max-width: 440px; }
+  /* The designer's horizontal lock-up (coin and STEVO), the file the site's nav
+     uses, at hero size. Its viewBox is trimmed to the art, about 3.38 : 1. */
+  .logo { display: inline-block; text-decoration: none; }
+  .logo img { display: block; width: min(300px, 78vw); height: auto; filter: drop-shadow(0 10px 28px rgba(2,8,22,0.45)); }
+  .line {
+    margin-top: 22px;
+    color: var(--soft);
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-wrap: balance;
+  }
+  .soon {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    padding: 10px 18px;
+    border: 1px solid rgba(243,199,68,0.45);
+    border-radius: 999px;
+    background: rgba(2,27,76,0.78);
+    color: var(--gold500);
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .soon::before {
+    content: '';
+    flex: none;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold500);
+    animation: pulse 2.2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(243,199,68,0.65); }
+    100% { box-shadow: 0 0 0 10px rgba(243,199,68,0); }
+  }
+  @media (prefers-reduced-motion: reduce) { .soon::before { animation: none; } }
+  @media (max-width: 380px) { .line { font-size: 17px; } }
+</style>
+</head>
+<body>
+<main>
+  <a class="logo" href="/">
+    <img src="/stevo-horizontal-color-white-text.svg" width="300" height="89" alt="Stevo">
+  </a>
+  <p class="line">The private app that keeps score for your crew.</p>
+  <p class="soon" id="soon">Coming soon to the App Store.</p>
+</main>
+<script>
+  // Backstop for the redirect above: if it did not happen (an in-app browser
+  // that refuses scripted navigation), the line becomes the link to tap.
+  (function () {
+    if (!/^https:\/\/apps\.apple\.com\//.test(APP_STORE_URL)) return;
+    var soon = document.getElementById('soon');
+    var link = document.createElement('a');
+    link.className = 'soon';
+    link.href = APP_STORE_URL;
+    link.textContent = 'Get Stevo on the App Store';
+    soon.parentNode.replaceChild(link, soon);
+  })();
+</script>
+</body>
+</html>

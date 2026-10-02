@@ -98,13 +98,7 @@
     gap: 10px;
     text-decoration: none;
   }
-  .nav-wordmark {
-    font-size: 24px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    color: var(--text);
-    transform: skewX(-8deg);
-  }
+  .nav-logo { display: block; height: 34px; width: auto; }
   .nav-right {
     display: flex;
     gap: 28px;
@@ -287,12 +281,7 @@
     align-items: center;
     gap: 8px;
   }
-  .footer-brand-name {
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: var(--text);
-  }
+  .footer-logo { display: block; height: 28px; width: auto; }
   .footer-tagline {
     font-size: 12px;
     color: var(--text3);
@@ -353,10 +342,10 @@
 
 <nav id="nav">
   <a href="https://stevoapp.com/" class="nav-left" aria-label="Stevo home">
-    <!-- The Stevo coin, cut from the same master as the app icon by
+    <!-- The designer's horizontal lock-up (the coin and STEVO), copied from
+         assets/brand/vector/svg/ and trimmed to the art by
          scripts/make-brand-assets.py. -->
-    <img class="nav-mark" src="/stevo-coin.png" width="30" height="30" alt="" aria-hidden="true">
-    <div class="nav-wordmark">STEVO</div>
+    <img class="nav-logo" src="/stevo-horizontal-color-white-text.svg" width="115" height="34" alt="" aria-hidden="true">
   </a>
   <div class="nav-right">
     <a href="https://stevoapp.com/">Home</a>
@@ -515,7 +504,7 @@
   <div class="footer-row">
     <div>
       <div class="footer-brand">
-        <div class="footer-brand-name">STEVO</div>
+        <img class="footer-logo" src="/stevo-horizontal-color-white-text.svg" width="95" height="28" alt="Stevo">
       </div>
       <p class="footer-tagline">The private crew app. Stevo keeps score; it never holds, moves, or pays out money.</p>
     </div>
