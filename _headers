@@ -1,2 +1,17 @@
+# Baseline security headers for every page (security audit 2026-10-02, card
+# 9f0e2656). stevoapp.com is the App Store support domain and is shared widely
+# (invite / beta / crew pages). HSTS blocks SSL-strip on hostile networks;
+# X-Frame-Options + CSP frame-ancestors block clickjacking of the framable
+# invite/beta pages; nosniff blocks MIME sniffing. CSP is intentionally
+# frame-ancestors/base-uri/form-action only — NOT a default-src lockdown — so it
+# cannot break the existing Google-Fonts / inline-style rendering; a full CSP can
+# follow once the pages' exact sources are enumerated.
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+
 /.well-known/apple-app-site-association
   Content-Type: application/json

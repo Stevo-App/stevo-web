@@ -18,7 +18,10 @@ const PASS_VARS = ['HQ_PASSWORD', 'HQ_PASS', 'DASH_PASS', 'DASH_PASSWORD'];
 const URL_VARS  = ['TRACKER_URL', 'TRACKER_SUPABASE_URL'];
 const KEY_VARS  = ['TRACKER_SERVICE', 'TRACKER_SERVICE_KEY'];
 
-// Length-independent comparison so the response time does not leak the password.
+// Constant-time comparison of the password bytes. The length check short-circuits
+// first, so response time does reveal the expected length (security audit
+// 2026-10-02, card 09bff592) — accepted: this is one high-entropy shared secret
+// with no username to enumerate, so the length alone narrows nothing usable.
 function sameSecret(a, b) {
   if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false;
   let diff = 0;
@@ -51,7 +54,10 @@ export default async (req) => {
   // Row 1 is the dashboard; row 2 is the device-test plan (regen-test-plan.py
   // writes it every cycle). Same password, same pipe -- the plan lists card
   // titles, which is why it left the public site with the board.
-  const rowId = new URL(request.url).searchParams.get('page') === 'test-plan' ? 2 : 1;
+  // Use the handler's own `req` (security audit 2026-10-02, card 09bff592): the
+  // param is `req`, so `request` was undefined and this threw a ReferenceError
+  // (500) after the password check on every authenticated request.
+  const rowId = new URL(req.url).searchParams.get('page') === 'test-plan' ? 2 : 1;
   let page = '';
   try {
     const r = await fetch(`${url}/rest/v1/stevo_hq_state?id=eq.${rowId}&select=data`, {
