@@ -11,8 +11,9 @@
      LAUNCH DAY: fill in APP_STORE_URL below and push. That line is the only
      place the link lives. site/build.sh reads it and adds a server-side
      redirect (/get -> the listing, 302), so the page itself is never seen; the
-     script here redirects too, as a backstop. The build refuses to publish a
-     value that is not an https://apps.apple.com/ link.
+     script here redirects too, as a backstop. The same line switches the install
+     link on the crew invite, friend invite and /beta pages. The build refuses to
+     publish a value that is not an https://apps.apple.com/ link.
 
      Copy rule for this page (Steve, 2026-10-02): no "bet", "wager" or
      "gambling", and none of the money words the home page drops either

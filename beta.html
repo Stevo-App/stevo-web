@@ -205,10 +205,11 @@
    Pure helpers, no DOM. lib/__tests__/betaPage.test.ts runs exactly this block,
    so what the test pins is what the page does. */
 
-// Where "Install Stevo" goes. The TestFlight public link until launch; at launch
-// replace it with the App Store URL (the same line lives in web/crew/join.html,
-// web/invite/friend.html and lib/friendInvite.ts; the LAUNCH-PLAN swap task
-// names all of them).
+// Where "Install Stevo" goes: the TestFlight public link until launch, the same
+// line as web/crew/join.html and web/invite/friend.html. Do not edit it at launch.
+// Filling in APP_STORE_URL in web/get.html (the site's one App Store setting)
+// makes site/build.sh put the listing here in the published page, and the
+// TestFlight step drops by itself (getStevoIsBeta).
 var GET_STEVO_URL = 'https://testflight.apple.com/join/RpchYrJc';
 
 // Apple's own App Store page for TestFlight.

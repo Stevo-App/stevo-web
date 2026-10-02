@@ -357,9 +357,10 @@
    Pure helpers, no DOM. lib/__tests__/crewInvitePage.test.ts runs exactly this
    block, so what the test pins is what the page does. */
 
-// Where "Get Stevo" goes. The TestFlight public link until launch; at launch
-// replace it with the App Store URL. This is the only place it lives: the step-1
-// wording follows its host (getStevoIsBeta), and only an iPhone is ever sent to it.
+// Where "Get Stevo" goes: the TestFlight public link until launch. Do not edit it
+// at launch. Filling in APP_STORE_URL in web/get.html (the site's one App Store
+// setting) makes site/build.sh put the listing here in the published page. The
+// step-1 wording follows its host (getStevoIsBeta), and only an iPhone is ever sent to it.
 var GET_STEVO_URL = 'https://testflight.apple.com/join/RpchYrJc';
 
 // Same alphabet and length as lib/crewInvite.ts (INVITE_CODE_ALPHABET,

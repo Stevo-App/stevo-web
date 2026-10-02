@@ -316,9 +316,10 @@
    Pure helpers, no DOM. lib/__tests__/friendInvitePage.test.ts runs exactly this
    block, so what the test pins is what the page does. */
 
-// Where "Get Stevo" goes. The TestFlight public link until launch; at launch
-// replace it with the App Store URL (the same line lives in web/crew/join.html and
-// lib/friendInvite.ts; the LAUNCH-PLAN swap task names all three).
+// Where "Get Stevo" goes: the TestFlight public link until launch, the same line
+// as web/crew/join.html and web/beta.html. Do not edit it at launch. Filling in
+// APP_STORE_URL in web/get.html (the site's one App Store setting) makes
+// site/build.sh put the listing here in the published page.
 var GET_STEVO_URL = 'https://testflight.apple.com/join/RpchYrJc';
 
 // The same two URLs buildFriendInviteUrl() makes in the app (lib/friendInvite.ts).
