@@ -1,0 +1,124 @@
+/* Color by area; scope density to the overview so drill-downs stay readable. */
+.hq-compact { --page:#0c1729; --text:#eef3fb; --muted:#b4c2d6; --faint:#a0b2c9; --border1:#314158; --border2:#40546e; --gold:#e8bf62; --outline:#314158; --sec:6px; }
+.hq-compact body { background:var(--page); padding:8px 18px; font-size:13px; line-height:1.3; }
+.hq-compact body::before { display:none; }
+.hq-compact .hq-shell { display:block; max-width:none; padding:0; }
+.hq-compact .hq-sidebar { display:none; }
+.hq-compact .hq-shell .wrap { max-width:none; }
+.hq-compact .hq-shell header { padding:5px 0 9px; gap:12px; }
+.hq-compact .hq-shell header > h1 { display:flex; margin:0; font-size:22px; gap:12px; }
+.hq-wordmark { display:block; width:152px; height:38px; object-fit:contain; object-position:left center; }
+.hq-compact h1 > span { padding-left:12px; border-left:1px solid #40546e; font:700 22px 'Geist',sans-serif; letter-spacing:1px; }
+.hq-tools-button,.hq-tools-close { color:#eef3fb; background:#1a2a40; border:1px solid #526680; padding:7px 12px; border-radius:5px; cursor:pointer; font:inherit; }
+.hq-compact .chips { margin-left:auto; }
+.hq-compact .chip { font-size:10px; padding:2px 7px; background:#142237; border-color:#40546e; }
+.hq-compact .wrap > .kpis { margin:8px 0 10px; gap:8px; grid-template-columns:repeat(4,minmax(0,1fr)); }
+.hq-compact .wrap > .kpis .kpi { background:#142237; min-height:0; padding:7px 10px; border:1px solid #314158; border-radius:5px; box-shadow:none; }
+.hq-compact .wrap > .kpis .knum { font-size:20px; margin:2px 0; }
+.hq-compact .wrap > .kpis .klbl { font-size:10px; }
+.hq-compact .wrap > .kpis .ksub { font-size:11px; }
+.hq-compact .wrap > .dash { display:grid; grid-template-columns:1.05fr 1.1fr 1fr; gap:14px; align-items:stretch; }
+.hq-column { min-width:0; display:flex; flex-direction:column; gap:9px; }
+.hq-column-label { color:#b4c2d6; font-size:10px; text-transform:uppercase; letter-spacing:1.7px; flex:none; }
+.hq-section { --surface:#29261e; --edge:#4a422f; --stripe:#302b21; --acc:#e8bf62; border:1px solid var(--edge); background:var(--surface); border-radius:6px; overflow:hidden; min-height:0; display:flex; flex-direction:column; }
+.hq-section[data-area="product"] { --surface:#142a3b; --edge:#2b4b60; --stripe:#193245; --acc:#7cc5ec; }
+.hq-section[data-area="finance"] { --surface:#142f2b; --edge:#30524a; --stripe:#193a33; --acc:#85cdb4; }
+.hq-section[data-area="growth"] { --surface:#28233d; --edge:#49405f; --stripe:#302a46; --acc:#c3b0f4; }
+.hq-compact .hq-section > h2 { color:var(--acc); font:600 13px/1.2 'Geist',sans-serif; text-transform:none; letter-spacing:0; margin:0!important; padding:8px 10px; border-top:2px solid var(--acc); border-bottom:1px solid var(--edge); flex:none; background:rgba(255,255,255,.025); }
+.hq-section > h2::after { display:none; }
+.hq-section > h2 em { display:none; }
+.hq-section-body { overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable; min-height:0; padding:7px; max-height:400px; }
+.hq-section-body,.hq-table-scroll { scrollbar-width:thin; scrollbar-color:#71859b #101c2b; }
+.hq-section-body::-webkit-scrollbar,.hq-table-scroll::-webkit-scrollbar { width:8px; height:8px; }
+.hq-section-body::-webkit-scrollbar-thumb,.hq-table-scroll::-webkit-scrollbar-thumb { background:#71859b; border:2px solid #101c2b; border-radius:7px; }
+.hq-compact .hq-section .panel,.hq-compact .hq-section .mblock { background:transparent; border-color:var(--edge); border-radius:4px; padding:7px; box-shadow:none; }
+.hq-section-body > .panel { border:0; padding:0!important; }
+.hq-section .kpis,.hq-section .odds-grid,.hq-section .soc-cards { gap:5px; margin:4px 0 7px; grid-template-columns:repeat(4,minmax(0,1fr)); }
+.hq-section .kpi,.hq-section .odds-tile { background:var(--stripe); border:1px solid var(--edge); min-height:0; padding:6px; border-radius:4px; box-shadow:none; }
+.hq-section .knum { font-size:20px!important; margin:3px 0; }
+.hq-section .klbl { font-size:9px; letter-spacing:.4px; }
+.hq-section .ksub { font-size:10px; line-height:1.25; }
+.hq-section .tsub,.hq-section h3 { margin:6px 0 4px; font-size:11px; }
+.hq-section .tsub small { font-size:10px; }
+.hq-section .mlead,.hq-section .cnote,.hq-section .odds-note,.hq-section .mnone { font-size:11px; margin:5px 0; line-height:1.35; }
+.hq-section .legend { font-size:10px; gap:8px; margin:4px 0; }
+.hq-section svg.chart-svg { height:105px; width:100%; }
+.hq-section .grid2 { gap:7px; }
+.hq-section .grid2 > .panel { margin-bottom:5px; }
+.hq-section .lane { padding:5px 2px; gap:6px; }
+.hq-section .lane-head { font-size:11px; gap:5px; }
+.hq-section .lane-text { font-size:11px; line-height:1.3; }
+.hq-section .lane-tag,.hq-section .lane-n { font-size:9px; }
+.hq-section .av { width:21px; height:21px; font-size:10px; }
+.hq-section .hbar { padding:4px 0; margin:0; gap:6px; }
+.hq-section .hname,.hq-section .hval { font-size:11px; }
+.hq-section .hval small { font-size:10px; }
+.hq-section .htrack { height:5px; }
+.hq-table-scroll { max-height:225px; overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable; }
+.hq-section .tscroll { overflow:visible; }
+.hq-section table { width:100%; font-size:11px; border-collapse:separate; border-spacing:0; }
+.hq-section th,.hq-section td { padding:4px 5px; border-color:var(--edge); line-height:1.25; }
+.hq-section table tr:nth-child(even) td { background:var(--stripe); }
+.hq-table-scroll thead th,.hq-table-scroll tr:first-child:has(th) th { position:sticky; top:0; background:var(--surface); z-index:1; box-shadow:0 1px 0 var(--edge); }
+.hq-section .tlog { max-height:150px; overflow:auto; overscroll-behavior:contain; padding-right:5px; }
+.hq-section .tlog li { padding:4px 0; font-size:11px; }
+.hq-section .mrow { font-size:11px; gap:5px; }
+.hq-section .mbars { gap:5px; }
+.hq-section .tl { display:block; margin:0; padding:0; }
+.hq-section .tl::before,.hq-section .tl::after,.hq-section .tl-item::before,.hq-section .tl-item::after,.hq-section .tl-dot { display:none; }
+.hq-section .tl-item { display:grid; grid-template-columns:42px 1fr 94px; align-items:center; gap:5px; padding:4px 0; min-width:0; border-bottom:1px solid var(--edge); }
+.hq-section .tl-date,.hq-section .tl-name,.hq-section .tl-meta { position:static; transform:none; font-size:10px; margin:0; line-height:1.25; }
+.hq-section .tl-bar { display:none; }
+.hq-section .soc-card { padding:6px; background:var(--stripe); border-color:var(--edge); }
+.hq-section .soc-name { font-size:11px; }
+.hq-section .soc-card .spark { height:24px; }
+.hq-section .soc-card .cnote { font-size:9px; }
+.hq-section .soc-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.hq-section .pgrid th { white-space:normal; }
+.hq-section .pgrid th,.hq-section .pgrid td { font-size:10px; padding:3px; }
+.hq-section .empty-chart { padding:8px; min-height:0; font-size:11px; }
+.hq-compact .ok { color:#9ddcbb; }.hq-compact .warn,.hq-compact .lateb { color:#f2c275; }
+.hq-section .tflag { font-size:9px; }
+.hq-section .more,.hq-section .link { font-size:11px; }
+.hq-compact .foot { font-size:10px; margin:8px 0 0; padding:5px 0; }
+.hq-tools-dialog { color:#eef3fb; background:#142237; border:1px solid #526680; border-radius:8px; width:min(1000px,94vw); max-height:88dvh; padding:18px; }
+.hq-tools-dialog::backdrop { background:#000a; }
+.hq-tools-close { float:right; }
+.hq-tools-dialog h2 { margin-top:8px!important; font-size:18px; }
+.hq-tools-dialog .panel { background:#142237; border:0; box-shadow:none; padding:8px; }
+.hq-tools-dialog .lgroups { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.hq-section-body:focus-visible,.hq-table-scroll:focus-visible { outline:2px solid var(--acc); outline-offset:-2px; }
+.hq-tools-button:focus-visible,.hq-tools-close:focus-visible { outline:2px solid #e8bf62; outline-offset:2px; }
+/* A stable screen: growing lists scroll inside their section, not the page. */
+@media(min-width:1200px) and (min-height:800px) {
+ .hq-compact .wrap > .dash { height:calc(100dvh - 165px); min-height:630px; }
+ .hq-section { flex:1 1 0; }
+ .hq-section-body { flex:1; max-height:none; }
+ .hq-section[data-topic="do-this-next"] { flex:1.4; }
+ .hq-section[data-topic="on-pace"] { flex:1.05; }
+ .hq-section[data-topic="the-road"] { flex:1.1; }
+ .hq-section[data-topic="team"] { flex:.7; }
+ .hq-section[data-topic="app-health"] { flex:.75; }
+ .hq-section[data-topic="testers-on-stevo"] { flex:1.5; }
+ .hq-section[data-topic="odds-api-credits"] { flex:1.15; }
+ .hq-section[data-topic="money"] { flex:1.1; }
+ .hq-section[data-topic="vendors-orders"] { flex:.65; }
+ .hq-section[data-topic="marketing-social"] { flex:1.15; }
+ .hq-section[data-topic="web-traffic-links"] { flex:1.1; }
+}
+@media(max-width:1199px) { .hq-compact .wrap > .dash { grid-template-columns:repeat(2,minmax(0,1fr)); } .hq-column:last-child { grid-column:span 2; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .hq-column:last-child .hq-column-label { grid-column:span 2; } }
+@media(max-width:760px) { .hq-compact body { padding:8px; } .hq-compact .wrap > .dash { display:block; } .hq-column,.hq-column:last-child { display:flex; margin-bottom:16px; } .hq-compact .wrap > .kpis { grid-template-columns:repeat(2,minmax(0,1fr)); } .hq-wordmark { width:120px; height:32px; } .hq-compact .chips { width:100%; order:3; margin:0; } .hq-tools-button { margin-left:auto; } .hq-tools-dialog .lgroups { grid-template-columns:1fr; } }
+.hq-column { min-height:0; }
+.hq-section { --topic-accent:#e8bf62; }
+.hq-section[data-area="product"] { --topic-accent:#7cc5ec; }
+.hq-section[data-area="finance"] { --topic-accent:#85cdb4; }
+.hq-section[data-area="growth"] { --topic-accent:#c3b0f4; }
+.hq-compact .hq-section > h2 { color:var(--topic-accent); border-top-color:var(--topic-accent); }
+@media(min-width:1200px) and (min-height:800px) {
+ .hq-compact .wrap > .dash { height:var(--hq-available,calc(100dvh - 200px)); min-height:0; }
+ .hq-column { height:100%; }
+}
+.hq-social-summary { margin-bottom:5px; }
+.hq-section details > summary { font-size:10px; color:var(--muted); padding:4px 0; cursor:pointer; }
+.hq-section .soc-card .soc-num { font-size:22px; }
+.hq-section .soc-card .soc-stats { font-size:10px; }
