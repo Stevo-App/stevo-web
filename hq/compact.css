@@ -58,6 +58,7 @@
 .hq-section .tscroll { overflow:visible; }
 .hq-section table { width:100%; font-size:11px; border-collapse:separate; border-spacing:0; }
 .hq-section th,.hq-section td { padding:4px 5px; border-color:var(--edge); line-height:1.25; }
+.hq-section .hq-social-summary th,.hq-section .hq-social-summary td { text-align:left; }
 .hq-section table tr:nth-child(even) td { background:var(--stripe); }
 .hq-table-scroll thead th,.hq-table-scroll tr:first-child:has(th) th { position:sticky; top:0; background:var(--surface); z-index:1; box-shadow:0 1px 0 var(--edge); }
 .hq-section .tlog { max-height:150px; overflow:auto; overscroll-behavior:contain; padding-right:5px; }
@@ -160,3 +161,97 @@
 .hq-expanded th,.hq-expanded td { padding:7px; }
 .hq-expanded .hq-expand-button { font-size:12px; }
 @media(max-width:760px) { .hq-expand-mask { padding:2vh 2vw; } .hq-expanded .hq-section-body { padding:10px; } }
+
+/* Two-monitor workspaces: independent URLs and larger, wider report panels. */
+.hq-view-nav { display:flex; gap:5px; margin:3px 0 7px; }
+.hq-view-nav a { color:#fff; border:1px solid #ffffff60; padding:4px 12px; border-radius:5px; font-size:12px; text-decoration:none; }
+.hq-view-nav a[aria-current="page"] { background:#fff; color:#17324D; font-weight:700; }
+.hq-attention { display:flex; gap:10px; margin:6px 0; }
+.hq-attention[hidden] { display:none; }
+.hq-attention button { display:flex; align-items:center; gap:12px; background:#142237; border:1px solid #ffffff60; color:#fff; padding:7px 12px; border-radius:5px; font:inherit; cursor:pointer; }
+.hq-attention span { color:#b4c2d6; font-size:11px; }
+.hq-compact[data-hq-view="run"] .wrap > .kpis { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.hq-compact[data-hq-view="run"] .wrap > .kpis > :nth-child(4) { display:none; }
+.hq-compact[data-hq-view="growth"] .wrap > .kpis { display:none; }
+.hq-compact[data-hq-view="run"] .wrap > .dash,.hq-compact[data-hq-view="growth"] .wrap > .dash { grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+.hq-compact:not([data-hq-view="all"]) .hq-column:last-child { grid-column:auto; display:flex; }
+.hq-compact:not([data-hq-view="all"]) .hq-section > h2 { font-size:15px; padding:9px 12px; }
+.hq-compact:not([data-hq-view="all"]) .hq-section-body { padding:10px; }
+.hq-compact:not([data-hq-view="all"]) .hq-section .lane-text,
+.hq-compact:not([data-hq-view="all"]) .hq-section table,
+.hq-compact:not([data-hq-view="all"]) .hq-section .mlead,
+.hq-compact:not([data-hq-view="all"]) .hq-section .cnote { font-size:13px; }
+.hq-compact:not([data-hq-view="all"]) .hq-section th,
+.hq-compact:not([data-hq-view="all"]) .hq-section td { padding:6px; }
+.hq-compact:not([data-hq-view="all"]) .hq-table-scroll { max-height:330px; }
+.hq-compact:not([data-hq-view="all"]) .hq-section svg.chart-svg { height:145px; }
+.hq-compact[data-hq-view="run"] .hq-section[data-topic="do-this-next"] { flex:1.3; }
+.hq-compact[data-hq-view="run"] .hq-section[data-topic="team"] { flex:.65; }
+.hq-compact[data-hq-view="growth"] .hq-section { flex:1; }
+@media(max-width:760px) {
+ .hq-attention { flex-wrap:wrap; }
+ .hq-attention button { flex:1; flex-wrap:wrap; gap:3px; }
+ .hq-view-nav a { padding:5px 8px; font-size:11px; }
+}
+
+.hq-compact .hq-expanded .hq-table-scroll,.hq-compact .hq-expanded .tlog { max-height:none; }
+.hq-compact .hq-expanded svg.chart-svg { height:auto; max-height:330px; }
+
+.hq-compact[data-hq-view="run"] .hq-section[data-topic="team"] { flex:1; }
+.hq-compact[data-hq-view="run"] .hq-section[data-topic="do-this-next"] { flex:1.05; }
+.hq-compact[data-hq-view="run"] .hq-section[data-topic="the-road"] { flex:1.25; }
+.hq-compact:not([data-hq-view="all"]) table.orders { table-layout:fixed; }
+.hq-compact:not([data-hq-view="all"]) table.orders th:nth-child(1) { width:19%; }
+.hq-compact:not([data-hq-view="all"]) table.orders th:nth-child(2) { width:17%; }
+.hq-compact:not([data-hq-view="all"]) table.orders th:nth-child(3) { width:12%; }
+.hq-compact:not([data-hq-view="all"]) table.orders th:nth-child(4) { width:9%; }
+.hq-compact:not([data-hq-view="all"]) table.orders td { white-space:normal; overflow-wrap:anywhere; }
+.hq-compact:not([data-hq-view="all"]) table.orders td.wrap { min-width:0; }
+@media(min-width:1600px) {
+ .hq-compact[data-hq-view="growth"] .money-grid { grid-template-columns:repeat(6,minmax(0,1fr)); }
+}
+
+/* Launch progress is one fitted chart, not a scrolling report. */
+.hq-compact .hq-section[data-topic="on-pace"] .hq-section-body { display:flex; overflow:hidden; }
+.hq-compact .hq-section[data-topic="on-pace"] .hq-section-body > .panel { display:flex; flex-direction:column; flex:1; min-height:0; min-width:0; }
+.hq-compact .hq-section[data-topic="on-pace"] .legend,
+.hq-compact .hq-section[data-topic="on-pace"] .cnote { display:none; }
+.hq-pace-chart { display:flex; flex:1; min-height:0; min-width:0; width:100%; }
+.hq-compact .hq-section[data-topic="on-pace"] svg.chart-svg { width:100%; height:100%; max-height:none; min-height:0; }
+.hq-compact .hq-section[data-topic="on-pace"] .hq-pace-detail { display:none; }
+.hq-compact .hq-expanded[data-topic="on-pace"] .hq-pace-overview { display:none; }
+.hq-compact .hq-expanded[data-topic="on-pace"] .hq-pace-detail { display:block; }
+.hq-pace-chart .pace-stat { fill:#eef3fb; font:700 13px 'Geist',sans-serif; }
+.hq-pace-chart .pace-meta { fill:#b4c2d6; font:14px 'Geist',sans-serif; }
+.hq-pace-detail .pace-stat { font-size:22px; }
+.hq-pace-detail .axis { font-size:15px; }
+.hq-pace-detail .endval { font-size:16px; }
+@media(max-width:1199px), (max-height:799px) {
+ .hq-section[data-topic="on-pace"] .hq-pace-chart { height:220px; flex:none; }
+ .hq-expanded[data-topic="on-pace"] .hq-pace-chart { height:auto; flex:1; }
+}
+/* Run Stevo follows the shape of its content, rather than equal column stacks. */
+@media(min-width:1200px) and (min-height:800px) {
+ .hq-compact[data-hq-view="run"] .wrap > .dash { display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); grid-template-rows:150px minmax(0,1fr) minmax(0,1.2fr); gap:12px; grid-template-areas:"plan plan plan plan plan plan plan plan plan plan plan plan" "next next next next next health health health health pace pace pace" "testers testers testers testers testers odds odds odds odds team team team"; }
+ .hq-compact[data-hq-view="run"] .dash > .hq-column { display:contents; }
+ .hq-compact[data-hq-view="run"] .dash > .hq-column > .hq-column-label { display:none; }
+ .hq-compact[data-hq-view="run"] .dash .hq-section { min-height:0; height:100%; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="do-this-next"] { grid-area:next; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="app-health"] { grid-area:health; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="on-pace"] { grid-area:pace; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="the-road"] { grid-area:plan; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="the-road"] .hq-section-body { overflow:hidden; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="the-road"] .tl { display:flex; height:100%; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="the-road"] .tl-item { display:block; flex:1; padding:22px 6px 0; border-bottom:0; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="the-road"] .tl-item::before,
+ .hq-compact[data-hq-view="run"] .dash [data-topic="the-road"] .tl-dot { display:block; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="the-road"] .tl-date { font-size:11px; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="the-road"] .tl-name { font-size:12px; margin:4px 0; min-height:2.4em; text-align:center; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="the-road"] .tl-meta { font-size:11px; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="the-road"] .tl-bar { display:block; margin:4px 0; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="testers-on-stevo"] { grid-area:testers; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="odds-api-credits"] { grid-area:odds; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="team"] { grid-area:team; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="odds-api-credits"] .grid2 { grid-template-columns:1fr; }
+ .hq-compact[data-hq-view="run"] .dash [data-topic="app-health"] .grid2 { grid-template-columns:1fr; }
+}

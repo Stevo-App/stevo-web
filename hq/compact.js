@@ -181,6 +181,79 @@
     var reserved = (foot ? foot.getBoundingClientRect().height : 0) + 26;
     dash.style.setProperty('--hq-available', Math.max(400, window.innerHeight - dash.getBoundingClientRect().top - reserved) + 'px');
   }
+  // Separate URLs keep each monitor's view independent, with no saved global mode.
+  var viewNav = document.createElement('nav'); viewNav.className = 'hq-view-nav';
+  viewNav.setAttribute('aria-label', 'HQ views');
+  [['all','Combined'],['run','Run Stevo'],['growth','Money & Growth']].forEach(function (item) {
+    var link = document.createElement('a'); link.href = '#view-' + item[0];
+    link.dataset.view = item[0]; link.textContent = item[1]; viewNav.appendChild(link);
+  });
+  document.querySelector('.wrap > header').after(viewNav);
+  var attention = document.createElement('div'); attention.className = 'hq-attention';
+  attention.setAttribute('aria-label', 'Morning attention'); viewNav.after(attention);
+  var stash = document.createElement('div'); stash.hidden = true; document.body.appendChild(stash);
+  var layouts = {
+    all: groups,
+    run: [
+      {label:'Plans & next actions', sections:['do-this-next','on-pace','the-road']},
+      {label:'Operations & team', sections:['app-health','testers-on-stevo','odds-api-credits','team']}
+    ],
+    growth: [
+      {label:'Money & orders', sections:['money','vendors-orders']},
+      {label:'Marketing & reach', sections:['marketing-social','web-traffic-links']}
+    ]
+  };
+  function attentionItem(label, value, slug) {
+    var button = document.createElement('button'); button.type = 'button';
+    var title = document.createElement('span'); title.textContent = label;
+    var content = document.createElement('strong'); content.textContent = value;
+    button.appendChild(title); button.appendChild(content);
+    button.addEventListener('click', function () { expandSection(sections[slug], sections[slug].querySelector('.hq-expand-button')); });
+    attention.appendChild(button);
+  }
+  function textOf(section, selector, fallback) {
+    var node = sections[section] && sections[section].querySelector(selector);
+    return node ? node.textContent.trim() : fallback;
+  }
+  function applyView() {
+    var hash = location.hash, view = hash === '#view-run' ? 'run' : hash === '#view-growth' ? 'growth' : 'all';
+    if (hash && !/^#view-(all|run|growth)$/.test(hash) && document.documentElement.dataset.hqView) return;
+    collapseSection();
+    Object.keys(sections).forEach(function (slug) {
+      if (slug !== 'everything-one-tap-away') stash.appendChild(sections[slug]);
+    });
+    dash.querySelectorAll(':scope > .hq-column').forEach(function (column) { column.remove(); });
+    layouts[view].forEach(function (group) {
+      var column = document.createElement('div'); column.className = 'hq-column';
+      column.setAttribute('aria-label', group.label);
+      var label = document.createElement('div'); label.className = 'hq-column-label'; label.textContent = group.label;
+      column.appendChild(label);
+      group.sections.forEach(function (slug) { if (sections[slug]) column.appendChild(sections[slug]); });
+      dash.appendChild(column);
+    });
+    document.documentElement.dataset.hqView = view;
+    document.title = view === 'run' ? 'Run Stevo — HQ' : view === 'growth' ? 'Money & Growth — HQ' : 'Stevo HQ';
+    viewNav.querySelectorAll('a').forEach(function (link) {
+      if (link.dataset.view === view) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    attention.replaceChildren(); attention.hidden = view === 'all';
+    if (view === 'run') {
+      attentionItem('Next actions', sections['do-this-next'].querySelectorAll('.lane.late').length + ' overdue next actions', 'do-this-next');
+      attentionItem('App health', textOf('app-health', '.knum', '—') + ' open user reports', 'app-health');
+    } else if (view === 'growth') {
+      attentionItem('Due in 30 days', textOf('money', '.money-grid .odds-tile:nth-child(2) .knum', 'See payment schedule'), 'money');
+      attentionItem('Orders needing attention', textOf('vendors-orders', '.mlead', 'See open orders'), 'vendors-orders');
+      var schedule = sections['marketing-social'].querySelector('.pgrid');
+      var scheduleText = schedule && schedule.closest('.panel').querySelector('.csub');
+      if (scheduleText && scheduleText.textContent.includes('next:')) {
+        attentionItem('Next marketing post', scheduleText.textContent.split('next:')[1].trim(), 'marketing-social');
+      }
+    }
+    sizeOverview();
+  }
+  window.addEventListener('hashchange', applyView);
+  applyView();
   sizeOverview();
   window.addEventListener('resize', sizeOverview);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeOverview);
