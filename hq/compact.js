@@ -39,6 +39,69 @@
     });
     dash.appendChild(column);
   });
+  // Move the live section into an overlay; never clone charts or refresh controls.
+  var expanded = null;
+  function collapseSection() {
+    if (!expanded) return;
+    var current = expanded; expanded = null;
+    current.placeholder.replaceWith(current.section);
+    current.section.classList.remove('hq-expanded');
+    current.section.removeAttribute('role');
+    current.section.removeAttribute('aria-modal');
+    current.section.removeAttribute('aria-labelledby');
+    current.button.textContent = 'Expand';
+    current.button.setAttribute('aria-label', 'Expand ' + current.section.querySelector('h2').firstChild.textContent.trim());
+    current.button.setAttribute('aria-expanded', 'false');
+    current.folds.forEach(function (fold) { fold.open = false; });
+    current.mask.remove();
+    document.body.classList.remove('hq-expansion-open');
+    current.button.focus();
+  }
+  function expandSection(section, button) {
+    if (expanded) { collapseSection(); return; }
+    var placeholder = section.cloneNode(false);
+    placeholder.removeAttribute('id'); placeholder.setAttribute('aria-hidden', 'true');
+    placeholder.classList.add('hq-section-placeholder');
+    section.before(placeholder);
+    var mask = document.createElement('div'); mask.className = 'hq-expand-mask';
+    var folds = Array.from(section.querySelectorAll('details:not([open])'));
+    expanded = {section:section, button:button, placeholder:placeholder, mask:mask, folds:folds};
+    section.classList.add('hq-expanded');
+    section.setAttribute('role', 'dialog'); section.setAttribute('aria-modal', 'true');
+    section.setAttribute('aria-labelledby', section.querySelector('h2').id);
+    button.textContent = 'Close'; button.setAttribute('aria-label', 'Close expanded section'); button.setAttribute('aria-expanded', 'true');
+    folds.forEach(function (fold) { fold.open = true; });
+    mask.appendChild(section); document.body.appendChild(mask);
+    document.body.classList.add('hq-expansion-open');
+    mask.addEventListener('click', function (e) { if (e.target === mask) collapseSection(); });
+    button.focus();
+  }
+  dash.querySelectorAll('.hq-section').forEach(function (section) {
+    var heading = section.querySelector('h2'), button = document.createElement('button');
+    button.type = 'button'; button.className = 'hq-expand-button'; button.textContent = 'Expand';
+    button.setAttribute('aria-label', 'Expand ' + heading.firstChild.textContent.trim());
+    button.setAttribute('aria-expanded', 'false'); button.setAttribute('aria-haspopup', 'dialog');
+    heading.appendChild(button); heading.classList.add('hq-expand-heading');
+    heading.addEventListener('click', function () { expandSection(section, button); });
+    // Empty space in a card also opens it; existing links and drill-downs win.
+    section.addEventListener('click', function (e) {
+      if (expanded || e.target.closest('h2,a,button,input,select,textarea,summary,[data-modal],svg,table')) return;
+      expandSection(section, button);
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!expanded) return;
+    var detail = document.getElementById('mask');
+    if (detail && !detail.hidden) return; // Keep the existing detail dialog above this one.
+    if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); collapseSection(); }
+    if (e.key === 'Tab') {
+      var nodes = Array.from(expanded.section.querySelectorAll('a[href],button,input,select,textarea,[tabindex="0"],summary'))
+        .filter(function (node) { return !node.disabled && node.getClientRects().length; });
+      var first = nodes[0], last = nodes[nodes.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }, true);
   // Tools remain the original live links; a native dialog keeps them one click away.
   var tools = sections['everything-one-tap-away'];
   if (tools) {
@@ -105,13 +168,13 @@
       table.parentNode.insertBefore(wrap, table); wrap.appendChild(table);
     });
   }
-  boundTables(dash);
+  boundTables(document);
   var queued = false;
   new MutationObserver(function () {
     if (queued) return;
     queued = true;
-    requestAnimationFrame(function () { queued = false; boundTables(dash); });
-  }).observe(dash, {childList: true, subtree: true});
+    requestAnimationFrame(function () { queued = false; boundTables(document); });
+  }).observe(document.body, {childList: true, subtree: true});
   document.documentElement.classList.add('hq-compact');
   function sizeOverview() {
     var foot = document.querySelector('.wrap > .foot');
