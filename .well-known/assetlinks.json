@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.stevoapp.stevo",
+      "sha256_cert_fingerprints": [
+        "58:7F:10:C3:0E:2C:02:BA:BC:ED:43:6E:7D:4D:6C:CB:72:09:9D:C4:52:D8:73:93:11:50:78:4C:ED:28:C9:0C"
+      ]
+    }
+  }
+]
