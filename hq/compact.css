@@ -255,3 +255,65 @@
  .hq-compact[data-hq-view="run"] .dash [data-topic="odds-api-credits"] .grid2 { grid-template-columns:1fr; }
  .hq-compact[data-hq-view="run"] .dash [data-topic="app-health"] .grid2 { grid-template-columns:1fr; }
 }
+
+/* Focused pages give each subject the screen, with histories one click away. */
+.hq-view-nav { flex-wrap:wrap; }
+.hq-report-details > summary { font-size:12px!important; padding:8px 0!important; }
+.hq-report-details[open] { margin-top:6px; }
+.hq-compact:not([data-hq-view="all"]):not([data-hq-view="run"]):not([data-hq-view="growth"]) .wrap > .kpis { display:none; }
+.hq-compact:is([data-hq-view="money"],[data-hq-view="orders"],[data-hq-view="marketing"],[data-hq-view="traffic"]) .wrap > .dash { grid-template-columns:1fr; }
+.hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .hq-column-label { display:none; }
+.hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .hq-section-body { max-height:none; }
+.hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .hq-table-scroll { max-height:none; }
+.hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .hq-section th { text-align:left; }
+@media(min-width:1200px) and (min-height:800px) {
+ .hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .dash > .hq-column { display:contents; }
+ .hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .dash .hq-section { height:100%; min-height:0; }
+ .hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .hq-section-body { flex:1; }
+ .hq-compact[data-hq-view="run"] .wrap > .dash { grid-template-columns:repeat(12,minmax(0,1fr)); grid-template-rows:150px minmax(0,1fr); grid-template-areas:"plan plan plan plan plan plan plan plan plan plan plan plan" "next next next next next next next pace pace pace pace pace"; }
+ .hq-compact[data-hq-view="operations"] .wrap > .dash { grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); grid-template-rows:minmax(0,.8fr) minmax(0,1fr) minmax(0,.8fr); grid-template-areas:"testers health" "testers odds" "testers team"; }
+ .hq-compact[data-hq-view="operations"] [data-topic="testers-on-stevo"] { grid-area:testers; }
+ .hq-compact[data-hq-view="operations"] [data-topic="app-health"] { grid-area:health; }
+ .hq-compact[data-hq-view="operations"] [data-topic="odds-api-credits"] { grid-area:odds; }
+ .hq-compact[data-hq-view="operations"] [data-topic="team"] { grid-area:team; }
+ .hq-compact[data-hq-view="operations"] .hq-section td { padding:7px 5px; }
+ .hq-compact[data-hq-view="operations"] .hq-section .grid2 { grid-template-columns:1fr; }
+ .hq-compact[data-hq-view="operations"] .hq-section .tlog { max-height:none; }
+ .hq-compact[data-hq-view="money"] .money-panel { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; align-content:start; }
+ .hq-compact[data-hq-view="money"] .money-panel > .mlead,
+ .hq-compact[data-hq-view="money"] .money-panel > .money-grid,
+ .hq-compact[data-hq-view="money"] .money-panel > .odds-more,
+ .hq-compact[data-hq-view="money"] .money-panel > .cnote { grid-column:1/-1; }
+ .hq-compact[data-hq-view="money"] .money-grid { grid-template-columns:repeat(6,minmax(0,1fr)); }
+ .hq-compact[data-hq-view="money"] .money-two { display:contents; }
+ .hq-compact[data-hq-view="money"] .money-panel > .mb-gold { grid-column:1; grid-row:3/5; }
+ .hq-compact[data-hq-view="money"] .money-two > .mb-aqua { grid-column:2; grid-row:3; }
+ .hq-compact[data-hq-view="money"] .money-two > .mb-violet { grid-column:2; grid-row:4; }
+ .hq-compact[data-hq-view="money"] .money-panel > .mb-mint { grid-column:3; grid-row:3; }
+ .hq-compact[data-hq-view="money"] .money-panel > .mb-pink { grid-column:3; grid-row:4; }
+ .hq-compact[data-hq-view="money"] .mblock table { font-size:12px; }
+ .hq-compact[data-hq-view="money"] .mblock .tlog { max-height:none; }
+ .hq-compact[data-hq-view="orders"] .hq-orders-panel { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,3fr); gap:8px 20px; }
+ .hq-compact[data-hq-view="orders"] .hq-orders-panel > .mlead { grid-column:1/-1; }
+ .hq-compact[data-hq-view="orders"] .hq-orders-waiting { grid-column:1; grid-row:2/5; }
+ .hq-compact[data-hq-view="orders"] .hq-orders-panel > .tsub,
+ .hq-compact[data-hq-view="orders"] .hq-orders-panel > .tscroll,
+ .hq-compact[data-hq-view="orders"] .hq-orders-panel > .odds-more { grid-column:2; }
+ .hq-compact[data-hq-view="orders"] .todo { max-height:none; }
+ .hq-compact[data-hq-view="orders"] table.orders th:nth-child(1) { width:16%; }
+ .hq-compact[data-hq-view="orders"] table.orders th:nth-child(2) { width:15%; }
+ .hq-compact[data-hq-view="orders"] table.orders th:nth-child(3) { width:12%; }
+ .hq-compact[data-hq-view="orders"] table.orders th:nth-child(4) { width:8%; }
+ .hq-compact[data-hq-view="marketing"] .hq-section-body > .grid2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .hq-compact[data-hq-view="marketing"] .hq-section svg.chart-svg { height:210px; }
+ .hq-compact[data-hq-view="marketing"] .pgrid th,.hq-compact[data-hq-view="marketing"] .pgrid td { font-size:12px; padding:7px; }
+ .hq-compact[data-hq-view="traffic"] .web-panel { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; align-items:start; }
+ .hq-compact[data-hq-view="traffic"] .hq-section svg.chart-svg { height:260px; }
+}
+
+.hq-compact:not([data-hq-view="all"]) .lane-text { display:block; -webkit-line-clamp:unset; }
+@media(min-width:1200px) and (min-height:800px) {
+ .hq-compact[data-hq-view="run"] .dash .hq-section[data-topic="do-this-next"] { height:min(100%,450px); align-self:start; }
+ .hq-compact[data-hq-view="run"] .dash .hq-section[data-topic="on-pace"] { height:min(100%,380px); align-self:start; }
+ .hq-compact[data-hq-view="traffic"] .web-panel > .mblock { margin:0; }
+}

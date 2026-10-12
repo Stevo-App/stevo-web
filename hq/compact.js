@@ -156,6 +156,35 @@
     socialCards.parentNode.insertBefore(summary, socialCards);
     socialCards.parentNode.insertBefore(fold, socialCards); fold.appendChild(socialCards);
   }
+  function foldNodes(nodes, label) {
+    if (!nodes.length) return;
+    var fold = document.createElement('details'); fold.className = 'hq-report-details';
+    var summary = document.createElement('summary'); summary.textContent = label;
+    nodes[0].before(fold); fold.appendChild(summary);
+    nodes.forEach(function (node) { fold.appendChild(node); });
+  }
+  function foldTesterHistory() {
+    var testerPanel = sections['testers-on-stevo'].querySelector('.panel');
+    var firstLog = testerPanel && testerPanel.querySelector('h3');
+    if (firstLog && !firstLog.closest('details')) {
+      var history = [], next = firstLog;
+      while (next) { history.push(next); next = next.nextElementSibling; }
+      foldNodes(history, 'Build changes & tester activity');
+    }
+  }
+  foldTesterHistory();
+  var healthPanel = sections['app-health'].querySelector('.health');
+  if (healthPanel) foldNodes(Array.from(healthPanel.children).slice(1), 'User reports & crash details');
+  var oddsPanel = sections['odds-api-credits'].querySelector('.odds-compact');
+  if (oddsPanel) foldNodes(Array.from(oddsPanel.children).filter(function (node) { return node.matches('.odds-two,.cnote'); }), 'Usage charts & reading details');
+  var ordersPanel = sections['vendors-orders'].querySelector('.panel');
+  var waiting = ordersPanel && ordersPanel.querySelector('.todo');
+  if (waiting) {
+    var waitingBlock = document.createElement('div'); waitingBlock.className = 'hq-orders-waiting';
+    var title = waiting.previousElementSibling; title.before(waitingBlock);
+    waitingBlock.appendChild(title); waitingBlock.appendChild(waiting);
+    ordersPanel.classList.add('hq-orders-panel');
+  }
   // A bounded region around tables keeps all rows accessible, including live refreshes.
   function boundTables(root) {
     root.querySelectorAll('.hq-section-body table').forEach(function (table) {
@@ -173,7 +202,7 @@
   new MutationObserver(function () {
     if (queued) return;
     queued = true;
-    requestAnimationFrame(function () { queued = false; boundTables(document); });
+    requestAnimationFrame(function () { queued = false; foldTesterHistory(); boundTables(document); });
   }).observe(document.body, {childList: true, subtree: true});
   document.documentElement.classList.add('hq-compact');
   function sizeOverview() {
@@ -184,7 +213,7 @@
   // Separate URLs keep each monitor's view independent, with no saved global mode.
   var viewNav = document.createElement('nav'); viewNav.className = 'hq-view-nav';
   viewNav.setAttribute('aria-label', 'HQ views');
-  [['all','Combined'],['run','Run Stevo'],['growth','Money & Growth']].forEach(function (item) {
+  [['all','Overview'],['run','Run Stevo'],['operations','Operations'],['money','Money'],['orders','Orders'],['marketing','Marketing'],['traffic','Web Traffic']].forEach(function (item) {
     var link = document.createElement('a'); link.href = '#view-' + item[0];
     link.dataset.view = item[0]; link.textContent = item[1]; viewNav.appendChild(link);
   });
@@ -194,10 +223,12 @@
   var stash = document.createElement('div'); stash.hidden = true; document.body.appendChild(stash);
   var layouts = {
     all: groups,
-    run: [
-      {label:'Plans & next actions', sections:['do-this-next','on-pace','the-road']},
-      {label:'Operations & team', sections:['app-health','testers-on-stevo','odds-api-credits','team']}
-    ],
+    run: [{label:'Launch & next actions', sections:['the-road','do-this-next','on-pace']}],
+    operations: [{label:'Product & operations', sections:['testers-on-stevo','app-health','odds-api-credits','team']}],
+    money: [{label:'Company finances', sections:['money']}],
+    orders: [{label:'Vendors & deliveries', sections:['vendors-orders']}],
+    marketing: [{label:'Marketing & social', sections:['marketing-social']}],
+    traffic: [{label:'Website & campaign traffic', sections:['web-traffic-links']}],
     growth: [
       {label:'Money & orders', sections:['money','vendors-orders']},
       {label:'Marketing & reach', sections:['marketing-social','web-traffic-links']}
@@ -216,8 +247,10 @@
     return node ? node.textContent.trim() : fallback;
   }
   function applyView() {
-    var hash = location.hash, view = hash === '#view-run' ? 'run' : hash === '#view-growth' ? 'growth' : 'all';
-    if (hash && !/^#view-(all|run|growth)$/.test(hash) && document.documentElement.dataset.hqView) return;
+    var hash = location.hash, requested = hash.replace('#view-', '');
+    var known = Object.prototype.hasOwnProperty.call(layouts, requested);
+    var view = known ? requested : hash ? 'all' : 'run';
+    if (hash && !known && document.documentElement.dataset.hqView) return;
     collapseSection();
     Object.keys(sections).forEach(function (slug) {
       if (slug !== 'everything-one-tap-away') stash.appendChild(sections[slug]);
@@ -232,18 +265,26 @@
       dash.appendChild(column);
     });
     document.documentElement.dataset.hqView = view;
-    document.title = view === 'run' ? 'Run Stevo — HQ' : view === 'growth' ? 'Money & Growth — HQ' : 'Stevo HQ';
+    var activeLink = viewNav.querySelector('[data-view="' + view + '"]');
+    document.title = (activeLink ? activeLink.textContent : 'Money & Growth') + ' — Stevo Headquarters';
     viewNav.querySelectorAll('a').forEach(function (link) {
       if (link.dataset.view === view) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });
-    attention.replaceChildren(); attention.hidden = view === 'all';
+    attention.replaceChildren(); attention.hidden = !['run','operations','money','orders','marketing','growth'].includes(view);
     if (view === 'run') {
       attentionItem('Next actions', sections['do-this-next'].querySelectorAll('.lane.late').length + ' overdue next actions', 'do-this-next');
+    }
+    if (view === 'operations') {
       attentionItem('App health', textOf('app-health', '.knum', '—') + ' open user reports', 'app-health');
-    } else if (view === 'growth') {
+    }
+    if (view === 'money' || view === 'growth') {
       attentionItem('Due in 30 days', textOf('money', '.money-grid .odds-tile:nth-child(2) .knum', 'See payment schedule'), 'money');
+    }
+    if (view === 'orders' || view === 'growth') {
       attentionItem('Orders needing attention', textOf('vendors-orders', '.mlead', 'See open orders'), 'vendors-orders');
+    }
+    if (view === 'marketing' || view === 'growth') {
       var schedule = sections['marketing-social'].querySelector('.pgrid');
       var scheduleText = schedule && schedule.closest('.panel').querySelector('.csub');
       if (scheduleText && scheduleText.textContent.includes('next:')) {
