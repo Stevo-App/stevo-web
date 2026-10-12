@@ -23,7 +23,7 @@
 .hq-section { --surface:#17324D; --edge:#365570; --stripe:#1d3c59; --acc:#e8bf62; border:1px solid var(--edge); background:var(--surface); border-radius:6px; overflow:hidden; min-height:0; display:flex; flex-direction:column; }
 .hq-section[data-area="product"] { --surface:#142a3b; --edge:#2b4b60; --stripe:#193245; --acc:#7cc5ec; }
 .hq-section[data-area="finance"] { --surface:#142f2b; --edge:#30524a; --stripe:#193a33; --acc:#85cdb4; }
-.hq-section[data-area="growth"] { --surface:#28233d; --edge:#49405f; --stripe:#302a46; --acc:#c3b0f4; }
+.hq-section[data-area="growth"] { --surface:#182d43; --edge:#35516a; --stripe:#1e374f; --acc:#91d2df; }
 .hq-compact .hq-section > h2 { color:var(--acc); font:600 13px/1.2 'Geist',sans-serif; text-transform:none; letter-spacing:0; margin:0!important; padding:8px 10px; border-top:2px solid var(--acc); border-bottom:1px solid var(--edge); flex:none; background:rgba(255,255,255,.025); }
 .hq-section > h2::after { display:none; }
 .hq-section > h2 em { display:none; }
@@ -113,7 +113,7 @@
 .hq-section { --topic-accent:#e8bf62; }
 .hq-section[data-area="product"] { --topic-accent:#7cc5ec; }
 .hq-section[data-area="finance"] { --topic-accent:#85cdb4; }
-.hq-section[data-area="growth"] { --topic-accent:#c3b0f4; }
+.hq-section[data-area="growth"] { --topic-accent:#91d2df; }
 .hq-compact .hq-section > h2 { color:var(--topic-accent); border-top-color:var(--topic-accent); }
 @media(min-width:1200px) and (min-height:800px) {
  .hq-compact .wrap > .dash { height:var(--hq-available,calc(100dvh - 200px)); min-height:0; }
@@ -271,7 +271,7 @@
  .hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .dash .hq-section { height:100%; min-height:0; }
  .hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .hq-section-body { flex:1; }
  .hq-compact[data-hq-view="run"] .wrap > .dash { grid-template-columns:repeat(12,minmax(0,1fr)); grid-template-rows:150px minmax(0,1fr); grid-template-areas:"plan plan plan plan plan plan plan plan plan plan plan plan" "next next next next next next next pace pace pace pace pace"; }
- .hq-compact[data-hq-view="operations"] .wrap > .dash { grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); grid-template-rows:minmax(0,.8fr) minmax(0,1fr) minmax(0,.8fr); grid-template-areas:"testers health" "testers odds" "testers team"; }
+ .hq-compact[data-hq-view="operations"] .wrap > .dash { grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); grid-template-rows:minmax(0,.7fr) minmax(0,1.2fr) minmax(0,.7fr); grid-template-areas:"testers health" "testers odds" "testers team"; }
  .hq-compact[data-hq-view="operations"] [data-topic="testers-on-stevo"] { grid-area:testers; }
  .hq-compact[data-hq-view="operations"] [data-topic="app-health"] { grid-area:health; }
  .hq-compact[data-hq-view="operations"] [data-topic="odds-api-credits"] { grid-area:odds; }
@@ -305,7 +305,7 @@
  .hq-compact[data-hq-view="orders"] table.orders th:nth-child(3) { width:12%; }
  .hq-compact[data-hq-view="orders"] table.orders th:nth-child(4) { width:8%; }
  .hq-compact[data-hq-view="marketing"] .hq-section-body > .grid2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
- .hq-compact[data-hq-view="marketing"] .hq-section svg.chart-svg { height:210px; }
+ .hq-compact[data-hq-view="marketing"] .hq-section svg.chart-svg { height:135px; }
  .hq-compact[data-hq-view="marketing"] .pgrid th,.hq-compact[data-hq-view="marketing"] .pgrid td { font-size:12px; padding:7px; }
  .hq-compact[data-hq-view="traffic"] .web-panel { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; align-items:start; }
  .hq-compact[data-hq-view="traffic"] .hq-section svg.chart-svg { height:260px; }
@@ -317,3 +317,11 @@
  .hq-compact[data-hq-view="run"] .dash .hq-section[data-topic="on-pace"] { height:min(100%,380px); align-self:start; }
  .hq-compact[data-hq-view="traffic"] .web-panel > .mblock { margin:0; }
 }
+
+.hq-section[data-topic="odds-api-credits"] .odds-grid { grid-template-columns:repeat(5,minmax(0,1fr)); }
+@media(max-width:760px) { .hq-section[data-topic="odds-api-credits"] .odds-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
+.odds-advice { margin:8px 0; padding:7px 9px; border-left:2px solid var(--acc); background:var(--stripe); font-size:11px; line-height:1.4; }
+.odds-advice div + div { margin-top:4px; }
+.odds-advice b { color:var(--acc); }
+.odds-method { font-size:12px; line-height:1.5; }

@@ -176,7 +176,7 @@
   var healthPanel = sections['app-health'].querySelector('.health');
   if (healthPanel) foldNodes(Array.from(healthPanel.children).slice(1), 'User reports & crash details');
   var oddsPanel = sections['odds-api-credits'].querySelector('.odds-compact');
-  if (oddsPanel) foldNodes(Array.from(oddsPanel.children).filter(function (node) { return node.matches('.odds-two,.cnote'); }), 'Usage charts & reading details');
+  if (oddsPanel) foldNodes(Array.from(oddsPanel.children).filter(function (node) { return node.matches('.odds-method,.odds-two,.cnote,.odds-more'); }), 'Setup, forecast & usage charts');
   var ordersPanel = sections['vendors-orders'].querySelector('.panel');
   var waiting = ordersPanel && ordersPanel.querySelector('.todo');
   if (waiting) {
