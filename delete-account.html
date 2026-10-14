@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stevo | Delete your account</title>
+<meta name="description" content="How to delete your Stevo account, and what is removed and what is kept.">
+<link rel="canonical" href="https://stevoapp.com/delete-account">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Stevo">
+<meta property="og:url" content="https://stevoapp.com/delete-account">
+<meta property="og:title" content="Stevo | Delete your account">
+<meta property="og:description" content="How to delete your Stevo account, and what is removed and what is kept.">
+<meta property="og:image" content="https://stevoapp.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@stevoapp">
+<meta name="twitter:title" content="Stevo | Delete your account">
+<meta name="twitter:description" content="How to delete your Stevo account, and what is removed and what is kept.">
+<meta name="twitter:image" content="https://stevoapp.com/og-image.png">
+<link rel="icon" href="/stevo-coin.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06132E;
+    --surface: #062A6B;
+    --surface2: #07388C;
+    --border: #245291;
+    --accent: #F3C744;
+    --accent-hover: #F7D15C;
+    --blue-ice: #E3EEFB;
+    --purple: #2496FC;
+    --gold: #F3C744;
+    --text: #FFFFFF;
+    --text2: #C6DDF7;
+    --text3: #8DAFDB;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Ambient gradient mesh background (same as the landing page) */
+  /* The corner glow at part strength: on a phone the small gold label and the
+     intro copy sit inside it, and at full strength the label fell under 3:1. */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1100px;
+    z-index: -2;
+    background:
+      radial-gradient(ellipse 900px 640px at 0% 0%,
+        rgba(36,150,252,0.70) 0%, rgba(8,105,228,0.52) 22%, rgba(1,80,200,0.36) 42%,
+        rgba(0,58,157,0.20) 62%, rgba(6,19,46,0) 100%),
+      radial-gradient(ellipse 700px 500px at 100% 60%, rgba(8,105,228,0.20), rgba(6,19,46,0) 70%);
+    pointer-events: none;
+  }
+
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ── NAV (copied from index.html) ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(6,19,46,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(58,147,245,0.18);
+    transition: padding 0.3s ease, background 0.3s ease,
+                box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  nav.scrolled {
+    padding: 10px 40px;
+    background: rgba(6,19,46,0.95);
+    border-bottom-color: #245291;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo { display: block; height: 34px; width: auto; }
+  .nav-right {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .nav-right a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-right a:hover { color: var(--text); }
+  .nav-cta {
+    background: linear-gradient(160deg, #F7D15C, #F1C240 30%, #E8B73C);
+    box-shadow: 0 4px 14px rgba(241,194,64,0.35);
+    color: #101B30 !important;
+    padding: 9px 20px;
+    border-radius: 12px;
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { filter: brightness(1.06); }
+
+  /* ── PAGE ── */
+  .section-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(32px, 4.2vw, 52px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  .faq {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 120px 40px 64px;
+  }
+
+  .toc {
+    margin: 32px 0 8px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .toc-head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+  .toc ol {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+  }
+  .toc a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .toc a:hover { color: var(--blue-ice); }
+
+  .faq section {
+    padding-top: 48px;
+    scroll-margin-top: 80px;
+  }
+  .faq h2 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    line-height: 1.15;
+    color: var(--text);
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .faq h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 24px;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    overflow-wrap: anywhere;
+  }
+  .faq p {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+  }
+  .faq p strong { color: var(--text); font-weight: 600; }
+  .faq ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 10px;
+  }
+  .faq ul li {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.7;
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 6px;
+    overflow-wrap: anywhere;
+  }
+  .faq ul li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 11px;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .faq a { color: var(--accent); text-decoration: none; }
+  .faq a:hover { text-decoration: underline; }
+  .faq .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .faq .top {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .faq .top:hover { color: var(--text2); }
+
+  .contact {
+    margin-top: 48px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .contact-head {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+    margin-bottom: 6px;
+  }
+  .contact p { margin-bottom: 0; }
+
+  /* ── FOOTER (copied from index.html) ── */
+  footer {
+    border-top: 1px solid var(--border);
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-logo { display: block; height: 28px; width: auto; }
+  .footer-tagline {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 6px;
+    max-width: 220px;
+  }
+  .footer-cols {
+    display: flex;
+    gap: 56px;
+  }
+  .footer-col-head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+  .footer-cols a {
+    display: block;
+    color: var(--text3);
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+  .footer-cols a:hover { color: var(--text2); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-copy { font-size: 12px; color: var(--text3); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    nav.scrolled { padding: 10px 20px; }
+    .nav-right { gap: 16px; }
+    .faq { padding: 96px 20px 48px; }
+    .toc ol { grid-template-columns: 1fr; }
+    footer { padding-left: 20px; padding-right: 20px; }
+    .footer-row { flex-direction: column; gap: 28px; }
+    .footer-cols { gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; }
+  }
+  @media (max-width: 480px) {
+    .footer-cols { flex-direction: column; gap: 20px; }
+  }
+</style>
+<style>
+  .faq .legal-meta { color: var(--text3); font-size: 14px; margin-bottom: 28px; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="https://stevoapp.com/" class="nav-left" aria-label="Stevo home">
+    <!-- The designer's horizontal lock-up (the coin and STEVO), copied from
+         assets/brand/vector/svg/ and trimmed to the art by
+         scripts/make-brand-assets.py. -->
+    <img class="nav-logo" src="/stevo-horizontal-color-white-text.svg" width="115" height="34" alt="" aria-hidden="true">
+  </a>
+  <div class="nav-right">
+    <a href="https://stevoapp.com/">Home</a>
+    <a href="mailto:support@stevoapp.com" class="nav-cta">Contact support</a>
+  </div>
+</nav>
+
+<main class="faq" id="top">
+  <div class="section-tag">Legal</div>
+  <h1 class="section-title">Delete your Stevo account</h1>
+  <p class="section-desc">How to delete your Stevo account, and what is removed and what is kept.</p>
+  <p class="legal-meta">Last updated: October 4, 2026 &middot; This is the deletion section of the <a href="/privacy">Privacy Policy</a>, word for word.</p>
+
+  <section>
+    <h3>How to delete your account</h3>
+    <p>We keep your information for as long as your account exists. You can delete your account yourself, from inside the app: Profile (tap your picture at the top right), then Delete account. Deleting removes your name, username, photo, bio, phone number, payment handles, push token, friend list, invites and diagnostic records, and stops you signing in. It is immediate and cannot be undone. Records that other people share with you, such as a settled bet, a poker game or a crew post, are kept for them, with your name replaced by &quot;Deleted user&quot;. Deletion is blocked while something is still open between you and another person (an unsettled balance, an accepted bet that has not finished, a Face Off with an accepted bet, or a live poker night you are hosting), because the other person is counting on that record. Crash reports already sent to the crash-reporting service carry only your user id and stay there until that service's own retention period ends. You can also email <a href="mailto:support@stevoapp.com">support@stevoapp.com</a> and we will delete the account for you.</p>
+  </section>
+
+  <div class="contact">
+    <div class="contact-head">Questions about this page?</div>
+    <p>Email <a href="mailto:support@stevoapp.com">support@stevoapp.com</a>. The other document is here: <a href="/privacy">Privacy Policy</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <div>
+      <div class="footer-brand">
+        <img class="footer-logo" src="/stevo-horizontal-color-white-text.svg" width="95" height="28" alt="Stevo">
+      </div>
+      <p class="footer-tagline">The private crew app. Stevo keeps score; it never holds, moves, or pays out money.</p>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-head">Product</div>
+        <a href="https://stevoapp.com/#features">Features</a>
+        <a href="https://stevoapp.com/#how">How it works</a>
+        <a href="/faq">FAQ</a>
+      </div>
+      <div>
+        <div class="footer-col-head">Company</div>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="mailto:support@stevoapp.com">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 Stevo App LLC</div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+</script>
+</body>
+</html>
