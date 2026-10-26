@@ -20,10 +20,9 @@
 .hq-compact .wrap > .dash { display:grid; grid-template-columns:1.05fr 1.1fr 1fr; gap:14px; align-items:stretch; }
 .hq-column { min-width:0; display:flex; flex-direction:column; gap:9px; }
 .hq-column-label { color:#b4c2d6; font-size:10px; text-transform:uppercase; letter-spacing:1.7px; flex:none; }
-.hq-section { --surface:#17324D; --edge:#365570; --stripe:#1d3c59; --acc:#e8bf62; border:1px solid var(--edge); background:var(--surface); border-radius:6px; overflow:hidden; min-height:0; display:flex; flex-direction:column; }
-.hq-section[data-area="product"] { --surface:#142a3b; --edge:#2b4b60; --stripe:#193245; --acc:#7cc5ec; }
-.hq-section[data-area="finance"] { --surface:#142f2b; --edge:#30524a; --stripe:#193a33; --acc:#85cdb4; }
-.hq-section[data-area="growth"] { --surface:#182d43; --edge:#35516a; --stripe:#1e374f; --acc:#91d2df; }
+/* Every section looks the same (Steve, 2026-10-26): the sapphire-navy surface, a white heading over a gold rule, gold for
+   buttons and in-panel accents. The chip rack at the top is where the sections differ; the panels are the drill-downs. */
+.hq-section { --surface:#0B2558; --edge:#245291; --stripe:#11306B; --acc:#F3C744; border:1px solid var(--edge); background:var(--surface); border-radius:6px; overflow:hidden; min-height:0; display:flex; flex-direction:column; }
 .hq-compact .hq-section > h2 { color:var(--acc); font:600 13px/1.2 'Geist',sans-serif; text-transform:none; letter-spacing:0; margin:0!important; padding:8px 10px; border-top:2px solid var(--acc); border-bottom:1px solid var(--edge); flex:none; background:rgba(255,255,255,.025); }
 .hq-section > h2::after { display:none; }
 .hq-section > h2 em { display:none; }
@@ -110,11 +109,8 @@
 @media(max-width:1199px) { .hq-compact .wrap > .dash { grid-template-columns:repeat(2,minmax(0,1fr)); } .hq-column:last-child { grid-column:span 2; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); } .hq-column:last-child .hq-column-label { grid-column:span 2; } }
 @media(max-width:760px) { .hq-compact body { padding:8px; } .hq-compact .wrap > .dash { display:block; } .hq-column,.hq-column:last-child { display:flex; margin-bottom:16px; } .hq-compact .wrap > .kpis { grid-template-columns:repeat(2,minmax(0,1fr)); } .hq-wordmark { width:120px; height:32px; } .hq-compact .chips { width:100%; order:3; margin:0; } .hq-tools-button { margin-left:auto; } .hq-tools-dialog .lgroups { grid-template-columns:1fr; } }
 .hq-column { min-height:0; }
-.hq-section { --topic-accent:#e8bf62; }
-.hq-section[data-area="product"] { --topic-accent:#7cc5ec; }
-.hq-section[data-area="finance"] { --topic-accent:#85cdb4; }
-.hq-section[data-area="growth"] { --topic-accent:#91d2df; }
-.hq-compact .hq-section > h2 { color:var(--topic-accent); border-top-color:var(--topic-accent); }
+.hq-section { --topic-accent:#F3F0E8; }
+.hq-compact .hq-section > h2 { color:var(--topic-accent); border-top-color:var(--acc); }
 @media(min-width:1200px) and (min-height:800px) {
  .hq-compact .wrap > .dash { height:var(--hq-available,calc(100dvh - 200px)); min-height:0; }
  .hq-column { height:100%; }

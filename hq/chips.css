@@ -1,0 +1,31 @@
+/* The chip rack: one poker chip per section in place of the KPI row. The 3D is drawn on one transparent
+   canvas over the page; each chip is pinned to an invisible slot, so hover, focus and tap are plain DOM.
+   Until the rack renders (no WebGL, offline, slow network) the KPI row stays exactly as it was. */
+.hq-rack { display:flex; align-items:flex-end; justify-content:center; gap:8px; overflow-x:auto; overflow-y:visible; padding:14px 4px 34px; margin:4px 0 6px; scrollbar-width:thin; position:relative; }
+.hq-rack[hidden] { display:none; }
+.hq-slot { flex:none; width:92px; height:100px; position:relative; cursor:pointer; border-radius:10px; background:transparent; border:0; padding:0; font:inherit; color:inherit; }
+.hq-slot:focus-visible { outline:2px solid #e8bf62; outline-offset:2px; }
+.hq-slot.coin { width:128px; height:128px; }
+.hq-slot .cap { position:absolute; left:-6px; right:-6px; bottom:-30px; text-align:center; font:600 10.5px/1.25 'Geist',system-ui,sans-serif; color:#eef3fb; }
+.hq-slot .cap small { display:block; font-weight:500; color:#b9cbe8; font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hq-slot .cap b { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:700; }
+.hq-slot.late .cap small { color:#ffb3b3; }
+.hq-slot.due .cap small { color:#F3C744; }
+/* The compact stylesheet gives .kpis a display, which would beat the hidden attribute. */
+.hq-compact .wrap > .kpis[hidden], .wrap > .kpis[hidden] { display:none !important; }
+#hq-chips-gl { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:12; }
+#hq-chips-gl[hidden] { display:none; }
+.hq-chip-card { position:fixed; z-index:14; max-width:280px; background:#0d1f3df2; border:1px solid #F3C744; border-radius:8px; padding:10px 12px; color:#eef3fb; font:500 12.5px/1.4 'Geist',system-ui,sans-serif; pointer-events:none; opacity:0; transform:translateY(6px); transition:opacity .15s,transform .15s; }
+.hq-chip-card.on { opacity:1; transform:none; }
+.hq-chip-card b { display:block; color:#F3C744; font-size:13.5px; margin-bottom:3px; }
+.hq-chip-card .w { color:#ffb3b3; font-weight:700; }
+.hq-chip-card .m { color:#b9cbe8; }
+.hq-chip-card .hint { color:#b9cbe8; font-size:11px; margin-top:6px; }
+.hq-kpi-mask { position:fixed; inset:0; z-index:40; display:flex; align-items:flex-start; justify-content:center; padding:8vh 4vw; background:#020b22bc; backdrop-filter:blur(3px); }
+.hq-kpi-sheet { width:min(980px,100%); background:#17324D; border:1px solid #365570; border-top:3px solid #F3C744; border-radius:8px; padding:12px 14px 14px; }
+.hq-kpi-sheet .kh { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.hq-kpi-sheet .kh b { font:700 16px/1.2 'Geist',system-ui,sans-serif; color:#F3C744; }
+.hq-kpi-sheet .kh button { margin-left:auto; color:#eef3fb; background:#1a2a40; border:1px solid #526680; border-radius:5px; padding:6px 12px; cursor:pointer; font:inherit; }
+.hq-kpi-sheet .kpis { margin:0; }
+@media (prefers-reduced-motion:reduce) { .hq-chip-card { transition:none; } }
+@media (max-width:760px) { .hq-rack { justify-content:flex-start; padding-bottom:34px; } .hq-slot { width:80px; height:88px; } .hq-slot.coin { width:108px; height:108px; } }
