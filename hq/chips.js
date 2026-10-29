@@ -11,8 +11,8 @@
   var THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.158.0/three.min.js';
   var URGENCY = ['#2b63d9', '#F3C744', '#ff6b6b']; // nothing waiting · waiting on Steve · overdue, late, behind or over
   // Rack order, left to right, with the coin in the middle (after the sixth).
-  var ORDER = ['do-this-next', 'on-pace', 'the-road', 'team', 'app-health', 'testers-on-stevo', 'odds-api-credits', 'money', 'vendors-orders', 'marketing-social', 'web-traffic-links', 'tools'];
-  var AREAS = {'do-this-next': 'launch', 'on-pace': 'launch', 'the-road': 'launch', 'team': 'launch', 'app-health': 'product', 'testers-on-stevo': 'product', 'odds-api-credits': 'product', 'money': 'finance', 'vendors-orders': 'finance', 'marketing-social': 'growth', 'web-traffic-links': 'growth', 'tools': 'launch'};
+  var ORDER = ['do-this-next', 'on-pace', 'the-road', 'team', 'app-health', 'testers-on-stevo', 'who-uses-what', 'odds-api-credits', 'money', 'vendors-orders', 'marketing-social', 'web-traffic-links', 'tools'];
+  var AREAS = {'do-this-next': 'launch', 'on-pace': 'launch', 'the-road': 'launch', 'team': 'launch', 'app-health': 'product', 'testers-on-stevo': 'product', 'who-uses-what': 'product', 'odds-api-credits': 'product', 'money': 'finance', 'vendors-orders': 'finance', 'marketing-social': 'growth', 'web-traffic-links': 'growth', 'tools': 'launch'};
   var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   function text(el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
@@ -61,6 +61,10 @@
         ml = text(q('.mlead')); r.value = num(ml) !== null ? String(num(ml)) : '·'; m = ml.match(/(\d+) opened today/); r.label = 'testers' + (m ? ' · ' + m[1] + ' today' : '');
         var wl = text(q('.warnlead')); var names = wl ? wl.replace(/^[^:]*:\s*/, '').split(/,\s*/).filter(Boolean) : [];
         r.waiting = names.length; r.why = names.length ? names.length + ' idle or on an old build' : '';
+        break;
+      case 'who-uses-what':
+        items = all('.odds-tile'); k = items[2] || items[0];
+        if (k) { r.value = clip(text(k.querySelector('.knum')), 9); r.label = 'active this week'; }
         break;
       case 'marketing-social':
         var total = 0, any = false; all('.soc-num').forEach(function (e) { var n = num(text(e)); if (n !== null) { total += n; any = true; } });

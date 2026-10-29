@@ -5,7 +5,7 @@
   dash.dataset.compact = 'true';
   var groups = [
     {label: 'Act & launch', area: 'launch', sections: ['do-this-next', 'on-pace', 'the-road', 'team']},
-    {label: 'Product & operations', area: 'product', sections: ['app-health', 'testers-on-stevo', 'odds-api-credits']},
+    {label: 'Product & operations', area: 'product', sections: ['app-health', 'testers-on-stevo', 'who-uses-what', 'odds-api-credits']},
     {label: 'Money & growth', area: 'finance', sections: ['money', 'vendors-orders', 'marketing-social', 'web-traffic-links']}
   ];
   var sections = {};
@@ -213,7 +213,7 @@
   // Separate URLs keep each monitor's view independent, with no saved global mode.
   var viewNav = document.createElement('nav'); viewNav.className = 'hq-view-nav';
   viewNav.setAttribute('aria-label', 'HQ views');
-  [['all','Overview'],['run','Run Stevo'],['operations','Operations'],['money','Money'],['orders','Orders'],['marketing','Marketing'],['traffic','Web Traffic']].forEach(function (item) {
+  [['all','Overview'],['run','Run Stevo'],['operations','Operations'],['usage','Usage'],['money','Money'],['orders','Orders'],['marketing','Marketing'],['traffic','Web Traffic']].forEach(function (item) {
     var link = document.createElement('a'); link.href = '#view-' + item[0];
     link.dataset.view = item[0]; link.textContent = item[1]; viewNav.appendChild(link);
   });
@@ -225,6 +225,7 @@
     all: groups,
     run: [{label:'Launch & next actions', sections:['the-road','do-this-next','on-pace']}],
     operations: [{label:'Product & operations', sections:['testers-on-stevo','app-health','odds-api-credits','team']}],
+    usage: [{label:'Who uses what', sections:['who-uses-what']}],
     money: [{label:'Company finances', sections:['money']}],
     orders: [{label:'Vendors & deliveries', sections:['vendors-orders']}],
     marketing: [{label:'Marketing & social', sections:['marketing-social']}],

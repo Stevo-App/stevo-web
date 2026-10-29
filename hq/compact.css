@@ -100,6 +100,7 @@
  .hq-section[data-topic="team"] { flex:1; }
  .hq-section[data-topic="app-health"] { flex:.75; }
  .hq-section[data-topic="testers-on-stevo"] { flex:1.5; }
+ .hq-section[data-topic="who-uses-what"] { flex:1; }
  .hq-section[data-topic="odds-api-credits"] { flex:1.15; }
  .hq-section[data-topic="money"] { flex:1.1; }
  .hq-section[data-topic="vendors-orders"] { flex:1; }
@@ -257,7 +258,7 @@
 .hq-report-details > summary { font-size:12px!important; padding:8px 0!important; }
 .hq-report-details[open] { margin-top:6px; }
 .hq-compact:not([data-hq-view="all"]):not([data-hq-view="run"]):not([data-hq-view="growth"]) .wrap > .kpis { display:none; }
-.hq-compact:is([data-hq-view="money"],[data-hq-view="orders"],[data-hq-view="marketing"],[data-hq-view="traffic"]) .wrap > .dash { grid-template-columns:1fr; }
+.hq-compact:is([data-hq-view="money"],[data-hq-view="usage"],[data-hq-view="orders"],[data-hq-view="marketing"],[data-hq-view="traffic"]) .wrap > .dash { grid-template-columns:1fr; }
 .hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .hq-column-label { display:none; }
 .hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .hq-section-body { max-height:none; }
 .hq-compact:not([data-hq-view="all"]):not([data-hq-view="growth"]) .hq-table-scroll { max-height:none; }
