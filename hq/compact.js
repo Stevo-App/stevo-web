@@ -217,7 +217,8 @@
     var link = document.createElement('a'); link.href = '#view-' + item[0];
     link.dataset.view = item[0]; link.textContent = item[1]; viewNav.appendChild(link);
   });
-  document.querySelector('.wrap > header').after(viewNav);
+  // The launch numbers (hq_launch.py) stay above the tabs: the first thing on every view.
+  (document.querySelector('.wrap > .launch-note') || document.querySelector('.wrap > header')).after(viewNav);
   var attention = document.createElement('div'); attention.className = 'hq-attention';
   attention.setAttribute('aria-label', 'Morning attention'); viewNav.after(attention);
   var stash = document.createElement('div'); stash.hidden = true; document.body.appendChild(stash);

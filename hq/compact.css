@@ -12,6 +12,11 @@
 .hq-tools-button,.hq-tools-close { color:#eef3fb; background:#1a2a40; border:1px solid #526680; padding:7px 12px; border-radius:5px; cursor:pointer; font:inherit; }
 .hq-compact .chips { margin-left:auto; }
 .hq-compact .chip { font-size:10px; padding:2px 7px; background:#142237; border-color:#40546e; }
+.hq-compact .wrap > .launch { margin:6px 0 0; gap:8px; }
+.hq-compact .wrap > .launch .launch-tile { padding:6px 12px 6px; border-radius:8px; }
+.hq-compact .wrap > .launch .launch-num { font-size:30px; margin-top:0; }
+.hq-compact .wrap > .launch .launch-sub { margin-top:1px; }
+.hq-compact .wrap > .launch-note { margin:3px 2px 2px; font-size:10.5px; }
 .hq-compact .wrap > .kpis { margin:4px 0 6px; gap:8px; grid-template-columns:repeat(4,minmax(0,1fr)); }
 .hq-compact .wrap > .kpis .kpi { background:#142237; min-height:0; padding:4px 9px; border:1px solid #314158; border-radius:5px; box-shadow:none; }
 .hq-compact .wrap > .kpis .knum { font-size:18px; margin:0; }
