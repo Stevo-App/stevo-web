@@ -267,13 +267,16 @@
 
     <a class="secondary" id="openInApp" href="#">Stevo installed? Open the invite</a>
 
-    <!-- With Stevo installed, the https link is a universal link: iOS opens the app
-         on it, and app/invite/friend/[id].tsx either connects the two accounts (signed
-         in) or keeps the invite and sends the person to sign up (signed out). -->
+    <!-- With Stevo installed, the https link is a universal link on iOS and an App
+         Link on Android: the phone opens the app on it, and app/invite/friend/[id].tsx
+         either connects the two accounts (signed in) or keeps the invite and sends the
+         person to sign up (signed out). If a phone opens this page instead, the
+         stevo:// button above still gets there. -->
     <ol class="steps" id="steps">
       <li><strong>Get Stevo.</strong> <span id="stepGet"></span></li>
       <li><strong>Tap the invite link again.</strong> The one you were sent, or the copy
-        this page just made. With Stevo installed, the link opens the app.</li>
+        this page just made. With Stevo installed, the link opens the app. If this page
+        opens instead, tap Stevo installed? Open the invite.</li>
       <li><strong>Finish signing up.</strong> Stevo connects you with the person who
         invited you as soon as your account is ready.</li>
     </ol>
@@ -321,6 +324,10 @@
 // APP_STORE_URL in web/get.html (the site's one App Store setting) makes
 // site/build.sh put the listing here in the published page.
 var GET_STEVO_URL = 'https://testflight.apple.com/join/RpchYrJc';
+
+// Where "Get Stevo" goes on an Android phone: the Google Play listing, public since
+// launch day (Steve, 2026-10-31), tagged so Play Console can tell friend invites apart.
+var PLAY_URL = 'https://play.google.com/store/apps/details?id=com.stevoapp.stevo&referrer=utm_source%3Dstevoapp.com%26utm_campaign%3Dfriend-invite';
 
 // The same two URLs buildFriendInviteUrl() makes in the app (lib/friendInvite.ts).
 var APP_LINK_BASE = 'stevo://invite/friend/';
@@ -371,9 +378,10 @@ function detectPlatform(userAgent, maxTouchPoints) {
   return 'other';
 }
 
-// Everything the page shows that depends on the device. Only iOS gets the
-// install link; Android and desktop get a note, because TestFlight and the App
-// Store listing are iPhone-only.
+// Everything the page shows that depends on the device. An iPhone gets the
+// TestFlight or App Store link, an Android phone the Google Play listing; desktop
+// gets a note, because there is nothing to install there. hint is what a failed
+// copy or a stuck in-app browser is told to try.
 function inviteView(platform) {
   if (platform === 'ios') {
     return {
@@ -382,6 +390,16 @@ function inviteView(platform) {
       stepGet: getStevoIsBeta()
         ? 'Stevo is in a private beta, so it comes through TestFlight, Apple’s app for beta testing. Install TestFlight, accept the invite, then install Stevo.'
         : 'Install it from the App Store.',
+      hint: ' If nothing happens, open this page in Safari (Share > Open in Safari).',
+      note: null
+    };
+  }
+  if (platform === 'android') {
+    return {
+      install: true,
+      installUrl: PLAY_URL,
+      stepGet: 'Install it from Google Play.',
+      hint: ' If nothing happens, open this page in Chrome.',
       note: null
     };
   }
@@ -389,9 +407,8 @@ function inviteView(platform) {
     install: false,
     installUrl: null,
     stepGet: null,
-    note: platform === 'android'
-      ? 'Stevo is on iPhone for now, so there is nothing to install on this phone. Keep this link and open it on an iPhone to use your invite.'
-      : 'Stevo is on iPhone for now. Open this link on your iPhone to use your invite.'
+    hint: '',
+    note: 'Stevo is an app for iPhone and Android. Open this link on your phone to use your invite.'
   };
 }
 /* invite-core:end */
@@ -445,7 +462,6 @@ function copyText(text) {
   var links = inviteLinks(id);
   var view = inviteView(detectPlatform(navigator.userAgent, navigator.maxTouchPoints));
   var status = document.getElementById('status');
-  var SAFARI_HINT = ' If nothing happens, open this page in Safari (Share > Open in Safari).';
 
   document.getElementById('invite').hidden = false;
   document.getElementById('link').textContent = links.web;
@@ -459,12 +475,12 @@ function copyText(text) {
     copyText(links.web).then(function (ok) {
       var label = document.getElementById('copyLinkLabel');
       label.textContent = ok ? 'Copied' : 'Copy';
-      if (!ok) say('Could not copy. Press and hold the link to copy it.' + SAFARI_HINT, true);
+      if (!ok) say('Could not copy. Press and hold the link to copy it.' + view.hint, true);
       else setTimeout(function () { label.textContent = 'Copy'; }, 2000);
     });
   });
 
-  // Android and desktop: no install button, no iPhone steps, no stevo:// link.
+  // Desktop: no install button, no steps, no stevo:// link.
   if (!view.install) {
     document.getElementById('getStevo').hidden = true;
     document.getElementById('openInApp').hidden = true;
@@ -483,8 +499,8 @@ function copyText(text) {
     copyText(links.web).then(function (ok) {
       if (ok) {
         say('Invite link copied. Taking you to get Stevo… ', false);
-        // A tap on this link carries the gesture iOS needs to hand the install
-        // link to TestFlight / the App Store; the timer is the fallback.
+        // A tap on this link carries the gesture the phone needs to hand the install
+        // link to TestFlight, the App Store or Google Play; the timer is the fallback.
         var now = document.createElement('a');
         now.href = view.installUrl;
         now.textContent = 'Go now';
@@ -498,7 +514,7 @@ function copyText(text) {
       go.href = view.installUrl;
       go.textContent = 'continue to get Stevo';
       status.appendChild(go);
-      status.appendChild(document.createTextNode('.' + SAFARI_HINT));
+      status.appendChild(document.createTextNode('.' + view.hint));
     });
   });
 })();

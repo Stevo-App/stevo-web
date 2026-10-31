@@ -297,7 +297,7 @@
     margin-bottom: 30px;
   }
   .hero-sub strong { color: var(--text); font-weight: 700; }
-  .hero-actions { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+  .hero-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
 
   .hero-btn {
     display: inline-block;
@@ -322,6 +322,38 @@
     filter: brightness(1.05);
     box-shadow: 0 16px 36px rgba(241,194,64,0.55);
   }
+  /* Google Play beside the App Store button (live 2026-10-31): the same shape,
+     outlined in gold, so the two stores read as a pair. */
+  .hero-btn-alt {
+    background: rgba(2,27,76,0.78);
+    color: var(--gold500);
+    box-shadow: inset 0 0 0 2px var(--gold500);
+  }
+  .hero-btn-alt:hover { box-shadow: inset 0 0 0 2px var(--gold300), 0 10px 28px rgba(241,194,64,0.25); }
+  /* The two store buttons sit side by side at equal width (Steve, 2026-10-31),
+     in the store-badge shape: a small line over the store name, so the pair
+     still fits on one row on a phone. */
+  .store-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: 100%; max-width: 480px; }
+  /* Under 360 px the pair cannot share a row legibly: stack them, still equal width. */
+  @media (max-width: 359px) { .store-row { grid-template-columns: minmax(0, 1fr); } }
+  .hero-btn.store-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 12px 12px;
+    line-height: 1.05;
+    text-align: center;
+  }
+  .store-btn small {
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    margin-bottom: 4px;
+    opacity: 0.85;
+  }
+  .store-btn span { font-size: clamp(18px, 5vw, 24px); }
   .hero-link {
     color: var(--text);
     font-size: 15px;
@@ -748,48 +780,12 @@
   .cta-section .section-tag::after { display: none; }
   .cta-section .section-desc { margin: 0 auto 26px; color: var(--soft); }
   .cta-section .hero-note { text-align: center; margin: 16px auto 0; color: var(--soft); }
+  .cta-section .store-row { margin: 0 auto; }
   .cta-coin {
     display: block;
     margin: 0 auto 18px;
     filter: drop-shadow(0 10px 26px rgba(2,8,22,0.55));
   }
-  /* Early-access list: one email field and the gold action, same radius and
-     weights as .hero-btn so it reads as the page's own control. */
-  .waitlist-form {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    max-width: 520px;
-    margin: 0 auto;
-  }
-  .waitlist-form[hidden] { display: none; }
-  .waitlist-email {
-    flex: 1;
-    min-width: 0;
-    background: rgba(2,27,76,0.78);
-    border: 1px solid var(--border2);
-    border-radius: 14px;
-    padding: 15px 18px;
-    color: var(--text);
-    font: inherit;
-    font-size: 15px;
-  }
-  .waitlist-email::placeholder { color: var(--faint); }
-  .waitlist-email[aria-invalid="true"] { border-color: var(--down); }
-  .waitlist-btn { border: 0; cursor: pointer; }
-  .waitlist-btn[disabled] { opacity: 0.6; cursor: default; }
-  .waitlist-label, .waitlist-trap {
-    position: absolute;
-    width: 1px; height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  .waitlist-status { font-size: 14px; line-height: 1.6; color: var(--soft); margin: 14px auto 0; max-width: 480px; }
-  .waitlist-status:empty { display: none; }
-  .waitlist-status.is-error { color: #FFD0D0; }
-  .waitlist-status.is-done { color: var(--gold300); font-weight: 600; font-size: 16px; }
-
   /* ── FOOTER (shared with faq.html) ── */
   footer {
     border-top: 1px solid var(--border1);
@@ -884,7 +880,6 @@
     .how { padding: 88px 20px 84px; }
     .quotes { padding: 0 20px 84px; }
     .cta-section { margin: 0 16px 84px; padding: 52px 22px 46px; border-radius: 22px; }
-    .waitlist-form { flex-direction: column; }
     footer { padding-left: 20px; padding-right: 20px; }
     .footer-row { flex-direction: column; gap: 28px; }
     .footer-cols { gap: 32px; }
@@ -925,7 +920,7 @@
     <a href="#features" class="nav-hide-xs">Features</a>
     <a href="#how" class="nav-hide-sm">How it works</a>
     <a href="https://stevoapp.com/faq">FAQ</a>
-    <a href="#get-stevo" class="nav-cta">App Store soon</a>
+    <a href="#get-stevo" class="nav-cta">Get Stevo</a>
   </div>
 </nav>
 
@@ -936,7 +931,7 @@
      position itself, here and in the footer, and nowhere else. -->
 <section class="hero" id="top">
   <div class="hero-copy">
-    <div class="hero-badge">Coming soon to the App Store</div>
+    <div class="hero-badge">Now on iPhone and Android</div>
     <h1 class="hero-title">
       <span>Your crew.</span>
       <span>Your games.</span>
@@ -950,7 +945,10 @@
     </p>
 
     <div class="hero-actions">
-      <a class="hero-btn" href="#get-stevo">Get early access</a>
+      <div class="store-row">
+        <a class="hero-btn store-btn" href="https://apps.apple.com/app/id6766080618"><small>Download on the</small> <span>App Store</span></a>
+        <a class="hero-btn hero-btn-alt store-btn" href="https://play.google.com/store/apps/details?id=com.stevoapp.stevo&amp;referrer=utm_source%3Dstevoapp.com%26utm_campaign%3Dhomepage"><small>Get it on</small> <span>Google Play</span></a>
+      </div>
       <a class="hero-link" href="#features">See what is in it</a>
     </div>
 
@@ -1167,40 +1165,24 @@
      page without a real, permitted quote in it. -->
 <section class="quotes" id="crew-quotes" hidden></section>
 
-<!-- CTA: the early-access list.
-     The form posts straight to the app's own database (public.waitlist_signups,
-     supabase/add-waitlist-signups.sql) with the publishable key, and that table
-     lets the key INSERT and nothing else. There is no third-party script and no
-     server of ours in between. Card #380 removed the last form because it
-     posted to an endpoint that never existed; this one must not ship ahead of
-     its table. The form stays hidden until the script below is running, so a
-     browser without JavaScript never submits an email into the address bar. -->
+<!-- CTA: the two store buttons.
+     The early-access form that stood here was removed on 2026-10-31 (Steve): it
+     only saved the address to public.waitlist_signups, and nothing ever sent the
+     one email it promised. The App Store and Google Play buttons are the whole
+     call to action now. -->
 <section class="cta-section" id="get-stevo">
   <img class="cta-coin" src="/stevo-coin.png" width="72" height="72" alt="" aria-hidden="true">
-  <div class="section-tag">Get early access</div>
-  <h2 class="section-title">It comes from<br>the App Store</h2>
+  <div class="section-tag">Get Stevo</div>
+  <h2 class="section-title">On iPhone<br>and Android</h2>
   <p class="section-desc">
-    Stevo is coming soon to the App Store. There is nothing
-    to download today. Leave your email and you get one email from us: on the day Stevo is
-    in the App Store, with the link. Stevo is for adults, 18 and over.
+    Stevo is on the App Store and Google Play today. Download it, make your crew,
+    and start keeping score. Stevo is for adults, 18 and over.
   </p>
-  <form class="waitlist-form" id="waitlist-form" novalidate hidden>
-    <label class="waitlist-label" for="waitlist-email">Email address</label>
-    <input class="waitlist-email" id="waitlist-email" name="email" type="email" inputmode="email"
-           autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254"
-           placeholder="you@example.com" required>
-    <!-- Honeypot. People never see or reach it; a bot that fills every field does,
-         and its submission is dropped without a request. -->
-    <div class="waitlist-trap" aria-hidden="true">
-      <label for="waitlist-company">Leave this field empty</label>
-      <input id="waitlist-company" name="company" type="text" tabindex="-1" autocomplete="off">
-    </div>
-    <button class="hero-btn waitlist-btn" id="waitlist-submit" type="submit">Get early access</button>
-  </form>
-  <p class="waitlist-status" id="waitlist-status" role="status" aria-live="polite"></p>
-  <noscript><p class="hero-note">To be told on launch day, email <a href="mailto:support@stevoapp.com" style="color:var(--gold500)">support@stevoapp.com</a>.</p></noscript>
-  <p class="hero-note">One email, on launch day. We do not share or sell your address, and <a href="/privacy" style="color:var(--gold500)">the privacy policy</a> says what happens to it.</p>
-  <p class="hero-note">Questions in the meantime: <a href="mailto:support@stevoapp.com" style="color:var(--gold500)">support@stevoapp.com</a>.</p>
+  <div class="store-row">
+    <a class="hero-btn store-btn" href="https://apps.apple.com/app/id6766080618"><small>Download on the</small> <span>App Store</span></a>
+    <a class="hero-btn hero-btn-alt store-btn" href="https://play.google.com/store/apps/details?id=com.stevoapp.stevo&amp;referrer=utm_source%3Dstevoapp.com%26utm_campaign%3Dhomepage"><small>Get it on</small> <span>Google Play</span></a>
+  </div>
+  <p class="hero-note">Questions: <a href="mailto:support@stevoapp.com" style="color:var(--gold500)">support@stevoapp.com</a>.</p>
 </section>
 
 <!-- FOOTER -->
@@ -1339,72 +1321,6 @@ const CREW_QUOTES = [];
         '</figure>').join('') +
     '</div>';
   section.hidden = false;
-})();
-
-// Early-access list.
-// The key below is the app's PUBLISHABLE key: the same one that ships inside the
-// app bundle, public by design, and able to do only what row level security
-// allows. On public.waitlist_signups that is INSERT and nothing else
-// (supabase/add-waitlist-signups.sql). A secret key must never appear in this file;
-// lib/__tests__/waitlistCapture.test.ts fails if one does.
-const WAITLIST_ENDPOINT = 'https://cskoqudiumgaquqwowlc.supabase.co/rest/v1/waitlist_signups';
-const WAITLIST_KEY = 'sb_publishable_DOD8Ob8N5OW4EP5Q8-AW4A_LLi3l5rQ';
-
-(function initWaitlist() {
-  const form = document.getElementById('waitlist-form');
-  const status = document.getElementById('waitlist-status');
-  if (!form || !status) return;
-  const email = form.querySelector('input[name="email"]');
-  const trap = form.querySelector('input[name="company"]');
-  const button = form.querySelector('button[type="submit"]');
-  // The same loose shape the table's CHECK enforces.
-  const LOOKS_LIKE_EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-  form.hidden = false;
-
-  function say(text, kind) {
-    status.textContent = text;
-    status.className = 'waitlist-status' + (kind ? ' is-' + kind : '');
-  }
-  function done() {
-    form.remove();
-    say('Thank you. You are on the list, and you will get one email from us on launch day.', 'done');
-  }
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    // A filled honeypot is a bot: answer as if it worked and send nothing.
-    if (trap && trap.value) { done(); return; }
-    const value = email.value.trim();
-    if (value.length > 254 || !LOOKS_LIKE_EMAIL.test(value)) {
-      email.setAttribute('aria-invalid', 'true');
-      say('That does not look like an email address.', 'error');
-      email.focus();
-      return;
-    }
-    email.removeAttribute('aria-invalid');
-    button.disabled = true;
-    say('Saving...', '');
-    try {
-      const res = await fetch(WAITLIST_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'apikey': WAITLIST_KEY,
-          'Authorization': 'Bearer ' + WAITLIST_KEY,
-          'Content-Type': 'application/json',
-          // The key may not read the table, so ask for no row back.
-          'Prefer': 'return=minimal',
-        },
-        body: JSON.stringify({ email: value, source: 'site-cta' }),
-      });
-      // 409 is the unique index on lower(email): already on the list, which is
-      // the outcome the person wanted.
-      if (res.ok || res.status === 409) { done(); return; }
-      throw new Error('waitlist ' + res.status);
-    } catch (err) {
-      button.disabled = false;
-      say('That did not save. Try again in a minute, or email support@stevoapp.com and we will add you.', 'error');
-    }
-  });
 })();
 
 </script>

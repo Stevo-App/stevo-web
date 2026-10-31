@@ -148,7 +148,7 @@
 
   <div class="tag">Private beta</div>
   <h1>Get Stevo in four taps</h1>
-  <p class="lede">Do these on your iPhone, in order. Each one is a link.</p>
+  <p class="lede">Do these on your phone, in order. Each one is a link.</p>
 
   <p class="note" id="platformNote" hidden></p>
 
@@ -187,8 +187,8 @@
   </p>
 
   <noscript>
-    <p class="fine">This page needs JavaScript for its buttons. Stevo is in a private beta on iPhone: install
-      Apple's TestFlight app, then open the beta invite link you were sent.</p>
+    <p class="fine">This page needs JavaScript for its buttons. Get Stevo from the App Store on an iPhone
+      or Google Play on an Android phone, then open the invite link you were sent.</p>
   </noscript>
 
   <nav class="foot" aria-label="Site">
@@ -214,6 +214,10 @@ var GET_STEVO_URL = 'https://testflight.apple.com/join/RpchYrJc';
 
 // Apple's own App Store page for TestFlight.
 var TESTFLIGHT_APP_URL = 'https://apps.apple.com/app/testflight/id899247664';
+
+// Where "Install Stevo" goes on an Android phone: the Google Play listing, public
+// since launch day (Steve, 2026-10-31). TestFlight is iPhone-only, so Android skips it.
+var PLAY_URL = 'https://play.google.com/store/apps/details?id=com.stevoapp.stevo&referrer=utm_source%3Dstevoapp.com%26utm_campaign%3Dbeta-page';
 
 // The same links the app makes (lib/friendInvite.ts, lib/crewInvite.ts).
 var FRIEND_LINK_BASE = 'https://stevoapp.com/invite/friend/';
@@ -256,9 +260,11 @@ function detectPlatform(userAgent, maxTouchPoints) {
 }
 
 // Everything the page shows. The links are always shown (someone reading on a
-// Mac still wants to see them); only the note changes off an iPhone.
+// Mac still wants to see them). An Android phone installs from Google Play;
+// anything that is not a phone gets a note to open the page on one.
 function betaView(params, platform) {
-  var beta = getStevoIsBeta();
+  var android = platform === 'android';
+  var beta = getStevoIsBeta() && !android;
   var friendUrl = params.from ? FRIEND_LINK_BASE + params.from : null;
   var crewUrl = params.crew ? CREW_LINK_BASE + params.crew : null;
   var connectSub;
@@ -268,17 +274,15 @@ function betaView(params, platform) {
   else connectSub = 'Social > Friends > Add, and search a name or @username. Got a crew code? Social > Join a crew.';
   return {
     testFlightUrl: beta ? TESTFLIGHT_APP_URL : null,
-    installUrl: GET_STEVO_URL,
-    installSub: beta ? 'Opens in TestFlight. Tap Accept, then Install.' : 'Opens the App Store.',
+    installUrl: android ? PLAY_URL : GET_STEVO_URL,
+    installSub: android ? 'Opens Google Play.' : (beta ? 'Opens in TestFlight. Tap Accept, then Install.' : 'Opens the App Store.'),
     openUrl: 'stevo://',
     friendUrl: friendUrl,
     crewUrl: crewUrl,
     connectTitle: friendUrl || crewUrl ? 'Connect' : 'Find your people',
     connectSub: connectSub,
-    note: platform === 'ios' ? null
-      : (platform === 'android'
-        ? 'Stevo is on iPhone for now. Open this page on an iPhone to use these links.'
-        : 'Stevo is on iPhone for now. Send this page to your iPhone, or open it there, to use these links.')
+    note: platform === 'ios' || android ? null
+      : 'Stevo is an app for iPhone and Android. Send this page to your phone, or open it there, to use these links.'
   };
 }
 /* invite-core:end */

@@ -239,7 +239,7 @@
   .fine a { color: var(--faint); }
   .fine strong { color: var(--soft); font-weight: 700; letter-spacing: 1px; }
 
-  /* Android and desktop: nothing to install here, so a note replaces the button. */
+  /* Desktop: nothing to install here, so a note replaces the button. */
   .elsewhere {
     background: var(--surface1);
     border: 1px solid var(--border2);
@@ -309,7 +309,7 @@
     <ol class="steps" id="steps">
       <li><strong>Get Stevo.</strong> <span id="stepGet"></span></li>
       <li><strong>Open Stevo.</strong> If it offers to paste your invite, tap Paste. If not,
-        tap the invite link you were sent again (or come back to this page with Safari's Back
+        tap the invite link you were sent again (or come back to this page with the Back
         button and tap Open the invite) before you sign up.</li>
       <li><strong>Finish signing up.</strong> Stevo picks up your invite as soon as your
         account is ready.</li>
@@ -363,6 +363,10 @@
 // step-1 wording follows its host (getStevoIsBeta), and only an iPhone is ever sent to it.
 var GET_STEVO_URL = 'https://testflight.apple.com/join/RpchYrJc';
 
+// Where "Get Stevo" goes on an Android phone: the Google Play listing, public since
+// launch day (Steve, 2026-10-31), tagged so Play Console can tell crew invites apart.
+var PLAY_URL = 'https://play.google.com/store/apps/details?id=com.stevoapp.stevo&referrer=utm_source%3Dstevoapp.com%26utm_campaign%3Dcrew-invite';
+
 // Same alphabet and length as lib/crewInvite.ts (INVITE_CODE_ALPHABET,
 // CREW_INVITE_CODE_LENGTH): 6 characters, no I, O, 0 or 1.
 var CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -408,9 +412,10 @@ function detectPlatform(userAgent, maxTouchPoints) {
   return 'other';
 }
 
-// Everything the page shows that depends on the device. Only iOS gets the
-// install link; Android and desktop get a note with the code to keep, because
-// TestFlight and the App Store listing are iPhone-only.
+// Everything the page shows that depends on the device. An iPhone gets the
+// TestFlight or App Store link, an Android phone the Google Play listing; desktop
+// gets a note with the code to keep, because there is nothing to install there.
+// hint is what a failed copy or a stuck in-app browser is told to try.
 function inviteView(code, platform) {
   if (platform === 'ios') {
     return {
@@ -419,6 +424,16 @@ function inviteView(code, platform) {
       stepGet: getStevoIsBeta()
         ? 'Stevo is in a private beta, so it comes through TestFlight, Apple\u2019s app for beta testing. Install TestFlight, accept the invite, then install Stevo.'
         : 'Install it from the App Store.',
+      hint: ' If nothing happens, open this page in Safari (Share > Open in Safari).',
+      note: null
+    };
+  }
+  if (platform === 'android') {
+    return {
+      install: true,
+      installUrl: PLAY_URL,
+      stepGet: 'Install it from Google Play.',
+      hint: ' If nothing happens, open this page in Chrome.',
       note: null
     };
   }
@@ -426,9 +441,8 @@ function inviteView(code, platform) {
     install: false,
     installUrl: null,
     stepGet: null,
-    note: platform === 'android'
-      ? 'Stevo is on iPhone for now, so there is nothing to install on this phone. Keep your code, ' + code + ', and open this link on an iPhone to use your invite.'
-      : 'Stevo is on iPhone for now. Open this link on your iPhone to use your invite, and keep your code: ' + code + '.'
+    hint: '',
+    note: 'Stevo is an app for iPhone and Android. Open this link on your phone to use your invite, and keep your code: ' + code + '.'
   };
 }
 /* invite-core:end */
@@ -485,7 +499,6 @@ function copyText(text) {
   var links = inviteLinks(code);
   var view = inviteView(code, detectPlatform(navigator.userAgent, navigator.maxTouchPoints));
   var status = document.getElementById('status');
-  var SAFARI_HINT = ' If nothing happens, open this page in Safari (Share > Open in Safari).';
 
   document.getElementById('invite').hidden = false;
   document.getElementById('code').textContent = code;
@@ -500,12 +513,12 @@ function copyText(text) {
     copyText(code).then(function (ok) {
       var label = document.getElementById('copyCodeLabel');
       label.textContent = ok ? 'Copied' : 'Copy';
-      if (!ok) say('Could not copy. Press and hold the code to copy it.' + SAFARI_HINT, true);
+      if (!ok) say('Could not copy. Press and hold the code to copy it.' + view.hint, true);
       else setTimeout(function () { label.textContent = 'Copy'; }, 2000);
     });
   });
 
-  // Android and desktop: no install button, no iPhone steps, no stevo:// link.
+  // Desktop: no install button, no steps, no stevo:// link.
   if (!view.install) {
     document.getElementById('getStevo').hidden = true;
     document.getElementById('openInApp').hidden = true;
@@ -525,8 +538,8 @@ function copyText(text) {
       if (ok) {
         // Show the code long enough to be read: after the install the page is gone.
         say('Invite copied. Your code is ' + code + ' if you need it. Taking you to get Stevo\u2026 ', false);
-        // A tap on this link carries the gesture iOS needs to hand the install
-        // link to TestFlight / the App Store; the timer is the fallback.
+        // A tap on this link carries the gesture the phone needs to hand the install
+        // link to TestFlight, the App Store or Google Play; the timer is the fallback.
         var now = document.createElement('a');
         now.href = view.installUrl;
         now.textContent = 'Go now';
@@ -541,7 +554,7 @@ function copyText(text) {
       go.href = view.installUrl;
       go.textContent = 'continue to get Stevo';
       status.appendChild(go);
-      status.appendChild(document.createTextNode('.' + SAFARI_HINT));
+      status.appendChild(document.createTextNode('.' + view.hint));
     });
   });
 })();
