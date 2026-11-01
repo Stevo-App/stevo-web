@@ -146,8 +146,8 @@
     <img class="brand-logo" src="/stevo-horizontal-color-white-text.svg" width="101" height="30" alt="" aria-hidden="true">
   </a>
 
-  <div class="tag">Private beta</div>
-  <h1>Get Stevo in four taps</h1>
+  <div class="tag" id="pageTag">Free on iPhone and Android</div>
+  <h1 id="pageHeading">Get Stevo in three taps</h1>
   <p class="lede">Do these on your phone, in order. Each one is a link.</p>
 
   <p class="note" id="platformNote" hidden></p>
@@ -280,6 +280,10 @@ function betaView(params, platform) {
     friendUrl: friendUrl,
     crewUrl: crewUrl,
     connectTitle: friendUrl || crewUrl ? 'Connect' : 'Find your people',
+    // Since launch day (2026-10-31) the page is for a released app: three taps, unless the
+    // TestFlight step is still on the page (the source copy before the launch swap).
+    tag: beta ? 'Private beta' : 'Free on iPhone and Android',
+    heading: beta ? 'Get Stevo in four taps' : 'Get Stevo in three taps',
     connectSub: connectSub,
     note: platform === 'ios' || android ? null
       : 'Stevo is an app for iPhone and Android. Send this page to your phone, or open it there, to use these links.'
@@ -292,6 +296,11 @@ function betaView(params, platform) {
 
   var tf = document.getElementById('getTestFlight');
   if (view.testFlightUrl) tf.href = view.testFlightUrl; else tf.parentNode.hidden = true;
+  document.getElementById('pageTag').textContent = view.tag;
+  document.getElementById('pageHeading').textContent = view.heading;
+  // Number the steps that are showing, so a hidden TestFlight step leaves 1, 2, 3.
+  [].slice.call(document.querySelectorAll('.step')).filter(function (s) { return !s.hidden; })
+    .forEach(function (s, i) { s.querySelector('.num').textContent = String(i + 1); });
   document.getElementById('getStevo').href = view.installUrl;
   document.getElementById('getStevoSub').textContent = view.installSub;
   document.getElementById('openStevo').href = view.openUrl;
