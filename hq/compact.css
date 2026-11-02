@@ -168,6 +168,8 @@
 .hq-view-nav { display:flex; gap:5px; margin:3px 0 7px; }
 .hq-view-nav a { color:#fff; border:1px solid #ffffff60; padding:4px 12px; border-radius:5px; font-size:12px; text-decoration:none; }
 .hq-view-nav a[aria-current="page"] { background:#fff; color:#17324D; font-weight:700; }
+.hq-view-nav a.hq-external { margin-left:auto; color:#17324D; background:#F3C744; border-color:#F3C744; font-weight:700; }
+.hq-view-nav a.hq-external:hover,.hq-view-nav a.hq-external:focus-visible { background:#ffd966; }
 .hq-attention { display:flex; gap:10px; margin:6px 0; }
 .hq-attention[hidden] { display:none; }
 .hq-attention button { display:flex; align-items:center; gap:12px; background:#142237; border:1px solid #ffffff60; color:#fff; padding:7px 12px; border-radius:5px; font:inherit; cursor:pointer; }

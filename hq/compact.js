@@ -217,6 +217,17 @@
     var link = document.createElement('a'); link.href = '#view-' + item[0];
     link.dataset.view = item[0]; link.textContent = item[1]; viewNav.appendChild(link);
   });
+  // The Conference Room (Steve, 2026-11-01): the AI team's shared room, pinned beside the tabs. The
+  // URL is the one the Tools & links directory carries (data-conference-room on the body, from the
+  // generator); an external page, so it opens in its own tab and never takes a view's aria-current.
+  var room = document.body.dataset.conferenceRoom;
+  if (room) {
+    var roomLink = document.createElement('a'); roomLink.href = room;
+    roomLink.className = 'hq-external'; roomLink.textContent = 'Conference Room ↗';
+    roomLink.target = '_blank'; roomLink.rel = 'noopener';
+    roomLink.title = 'The AI team’s shared room: operating model and status (opens in a new tab)';
+    viewNav.appendChild(roomLink);
+  }
   // The launch numbers (hq_launch.py) stay above the tabs: the first thing on every view.
   (document.querySelector('.wrap > .launch-note') || document.querySelector('.wrap > header')).after(viewNav);
   var attention = document.createElement('div'); attention.className = 'hq-attention';
