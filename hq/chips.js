@@ -3,8 +3,8 @@
    that section are waiting on Steve; the color is urgency (Steve, 2026-10-25): blue nothing waiting,
    gold something waiting on him, red overdue, late, behind pace or over a limit. Hover (or
    focus) floats the summary, a click flips the chip and presses the section's own Expand button, so the
-   panel that opens is the live one. The Stevo coin in the middle carries App Review; clicking it shows
-   the real KPI row. Every number here is read from the page, never rendered a second time.
+   panel that opens is the live one. The Stevo coin in the middle carries the first KPI tile (Opened today since
+   the 2026-11-01 release; App Review before it); clicking it shows the real KPI row. Every number here is read from the page, never rendered a second time.
    Three.js (UMD 0.158) is fetched from cdnjs; until it renders, the KPI row stays. */
 (function () {
   if (window.StevoChips) return;
@@ -97,8 +97,8 @@
   }
   function catalog() { return ORDER.map(read).filter(Boolean); }
   function coinInfo() {
-    var k = kpiByLabel(/app review/i);
-    return {slug: 'kpis', title: 'Today at a glance', value: k ? text(k.querySelector('.knum')) : 'HQ', sub: k ? clip(text(k.querySelector('.ksub')).split(' · ').slice(0, 2).join(' · '), 30) : '', tiles: kpiTiles().map(function (t) { return {label: text(t.querySelector('.klbl')), value: text(t.querySelector('.knum')), sub: text(t.querySelector('.ksub'))}; })};
+    var k = kpiTiles()[0] || null;
+    return {slug: 'kpis', title: 'Today at a glance', label: k ? text(k.querySelector('.klbl')) : 'HQ', value: k ? text(k.querySelector('.knum')) : 'HQ', sub: k ? clip(text(k.querySelector('.ksub')).split(' · ').slice(0, 2).join(' · '), 30) : '', tiles: kpiTiles().map(function (t) { return {label: text(t.querySelector('.klbl')), value: text(t.querySelector('.knum')), sub: text(t.querySelector('.ksub'))}; })};
   }
 
   // What a click does: the page's own controls. The coin shows the real KPI row in a sheet.
@@ -135,7 +135,7 @@
     var s = document.createElement('button'); s.type = 'button'; s.className = 'hq-slot' + (isCoin ? ' coin' : '') + (info.urgency === 2 ? ' late' : info.urgency === 1 ? ' due' : '');
     s.dataset.slug = info.slug; s.setAttribute('aria-label', info.title + ': ' + (isCoin ? info.value : info.value + ' ' + info.label) + (info.why ? ', ' + info.why : '') + '. Opens the panel.');
     var cap = document.createElement('span'); cap.className = 'cap';
-    var b = document.createElement('b'); b.textContent = isCoin ? 'App Review' : info.title; cap.appendChild(b);
+    var b = document.createElement('b'); b.textContent = isCoin ? info.label : info.title; cap.appendChild(b);
     var small = document.createElement('small'); small.textContent = isCoin ? info.value + (info.sub ? ' · ' + info.sub : '') : info.sub; cap.appendChild(small);
     s.appendChild(cap);
     s.addEventListener('mouseenter', function () { hover(s, true); }); s.addEventListener('mouseleave', function () { hover(s, false); });
