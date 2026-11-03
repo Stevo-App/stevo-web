@@ -60,7 +60,9 @@
         r.why = [reports ? plural(reports, 'user report') : '', crashes ? plural(crashes, 'crash report') : ''].filter(Boolean).join(' · ');
         break;
       case 'testers-on-stevo':
-        ml = text(q('.mlead')); r.value = num(ml) !== null ? String(num(ml)) : '·'; m = ml.match(/(\d+) opened today/); r.label = 'testers' + (m ? ' · ' + m[1] + ' today' : '');
+        // Users (Steve, 2026-11-03): every account set up on Stevo, then how many opened the app.
+        ml = text(q('.mlead')); r.value = num(ml) !== null ? String(num(ml)) : '·'; m = ml.match(/(\d+) have opened the app/);
+        r.label = (/accounts on Stevo/.test(ml) ? 'accounts' : 'opened the app') + (m && /accounts on Stevo/.test(ml) ? ' · ' + m[1] + ' opened' : '');
         var wl = text(q('.warnlead')); var names = wl ? wl.replace(/^[^:]*:\s*/, '').split(/,\s*/).filter(Boolean) : [];
         r.waiting = names.length; r.why = names.length ? names.length + ' idle or on an old build' : '';
         break;

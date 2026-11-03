@@ -165,8 +165,15 @@
   }
   function foldTesterHistory() {
     var testerPanel = sections['testers-on-stevo'].querySelector('.panel');
-    var firstLog = testerPanel && testerPanel.querySelector('h3');
-    if (firstLog && !firstLog.closest('details')) {
+    // Everyone who downloaded Stevo but is not a beta tester (2026-11-03): its own fold, named
+    // with its count, so it never hides inside the build history below.
+    var others = testerPanel && testerPanel.querySelector('h3.tothers');
+    if (others && !others.closest('details')) {
+      var othersTable = others.nextElementSibling;
+      foldNodes(othersTable ? [others, othersTable] : [others], others.getAttribute('data-fold') || 'Other people on Stevo');
+    }
+    var firstLog = testerPanel && Array.from(testerPanel.querySelectorAll('h3')).filter(function (h) { return !h.closest('details'); })[0];
+    if (firstLog) {
       var history = [], next = firstLog;
       while (next) { history.push(next); next = next.nextElementSibling; }
       foldNodes(history, 'Build changes & tester activity');
