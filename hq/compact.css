@@ -235,7 +235,15 @@
    2026-11-02: "it needs to be bigger when I open it"); a phone gets the tall chart, which keeps its words readable. */
 .hq-pace-tall, .pace-bars { display:none; }
 html:not(.hq-compact) .hq-pace-detail { display:none; }
+/* Open, the chart's box is sized from the window itself (vh and vw), never from a percentage of a flex box:
+   Steve's Chrome drew it about 255 px tall in an overlay three times that (his screenshot, 2026-11-02), a case
+   the percentage version could not rule out. The bars sit under it; the open section scrolls if they do not fit. */
+.hq-compact .hq-expanded[data-topic="on-pace"] .hq-section-body,
+.hq-compact .hq-expanded[data-topic="on-pace"] .hq-section-body > .panel,
+.hq-compact .hq-expanded[data-topic="on-pace"] .hq-pace-chart { display:block; height:auto; overflow:visible; }
 .hq-compact .hq-expanded[data-topic="on-pace"] .hq-section-body { overflow:auto; }
+.hq-compact .hq-expanded[data-topic="on-pace"] svg.hq-pace-detail { width:100%; height:min(calc(92vh - 210px), 48vw); min-height:300px; max-height:none; margin:0 auto; }
+.hq-compact .hq-expanded[data-topic="on-pace"] svg.hq-pace-tall { width:100%; height:calc((100vw - 44px) * 1.54); max-height:none; }
 .hq-compact .hq-expanded[data-topic="on-pace"] .pace-bars { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-top:12px; flex:none; }
 .hq-pace-tall .pace-stat { font-size:21px; }
 .hq-pace-tall .pace-meta { font-size:16px; }
@@ -254,10 +262,6 @@ html:not(.hq-compact) .hq-pace-detail { display:none; }
 @media(max-width:760px) {
  .hq-compact .hq-expanded[data-topic="on-pace"] .hq-pace-detail { display:none; }
  .hq-compact .hq-expanded[data-topic="on-pace"] .hq-pace-tall { display:block; }
- /* Full width at its own height; the open section scrolls instead of shrinking the chart. */
- .hq-compact .hq-expanded[data-topic="on-pace"] .hq-pace-chart { flex:none; height:auto; }
- .hq-compact .hq-expanded[data-topic="on-pace"] svg.hq-pace-tall { width:100%; height:auto; }
- .hq-compact .hq-expanded[data-topic="on-pace"] .hq-section-body { display:block; }
 }
 @media(max-width:1199px), (max-height:799px) {
  .hq-section[data-topic="on-pace"] .hq-pace-chart { height:220px; flex:none; }
