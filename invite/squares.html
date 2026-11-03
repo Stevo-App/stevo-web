@@ -240,7 +240,7 @@
   <section id="invite" hidden>
     <div class="tag">Squares</div>
     <h1>You're invited to a squares board</h1>
-    <p class="lede">
+    <p class="lede" id="lede">
       Your friend is running a squares board on Stevo. Get the app, then tap this same link
       again: Stevo puts you on the board and you pick your squares. Stevo keeps score; it never
       holds, moves, or pays out money. You settle up with the host.
@@ -276,7 +276,7 @@
          page instead, the stevo:// button above still gets there. -->
     <ol class="steps" id="steps">
       <li><strong>Get Stevo.</strong> <span id="stepGet"></span></li>
-      <li><strong>Tap the board link again.</strong> The one you were sent, or the copy
+      <li id="stepAgain"><strong>Tap the board link again.</strong> The one you were sent, or the copy
         this page just made. With Stevo installed, the link opens the app. If this page
         opens instead, tap Stevo installed? Open the board. If Stevo opens but not the
         board, close Stevo all the way, open it again, and tap the link once more.</li>
@@ -415,6 +415,20 @@ function inviteView(platform) {
     note: 'Stevo is an app for iPhone and Android. Open this link on your phone to join the board.'
   };
 }
+// A host's Show QR code adds ?src=qr (lib/squaresLink.ts scannedLinkUrl). Someone who
+// scanned it has no message to tap again after installing, so the page tells them to
+// scan the host's code again instead.
+function arrivedByScan(search) {
+  try { return new URLSearchParams(String(search || '')).get('src') === 'qr'; } catch (e) { return false; }
+}
+function scanCopy() {
+  return {
+    lede: "Your friend is running a squares board on Stevo. Get the app, then scan your friend's code again. Stevo puts you on the board and you pick your squares. Stevo keeps score and never holds, moves, or pays out money. You settle up with the host.",
+    stepTitle: "Scan the host's code again.",
+    stepBody: "Point your camera at the code on the host's phone. With Stevo installed, it opens the app. If Stevo opens but not the board, close Stevo all the way, open it again, and scan once more.",
+    fine: "Already on Stevo? Scan the code again and it opens the board. If the host has turned the link off or made a new one, ask them to show the code again."
+  };
+}
 /* invite-core:end */
 
 // Clipboard: the async API when there is one (it starts inside the tap). When it
@@ -469,6 +483,18 @@ function copyText(text) {
 
   document.getElementById('invite').hidden = false;
   document.getElementById('link').textContent = links.web;
+
+  if (arrivedByScan(window.location.search)) {
+    var scan = scanCopy();
+    document.getElementById('lede').textContent = scan.lede;
+    document.getElementById('fineLink').textContent = scan.fine;
+    var again = document.getElementById('stepAgain');
+    again.textContent = '';
+    var stepTitle = document.createElement('strong');
+    stepTitle.textContent = scan.stepTitle;
+    again.appendChild(stepTitle);
+    again.appendChild(document.createTextNode(' ' + scan.stepBody));
+  }
 
   function say(msg, warn) {
     status.className = warn ? 'status warn' : 'status';
