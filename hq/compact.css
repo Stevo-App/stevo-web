@@ -230,6 +230,35 @@
 .hq-pace-detail .pace-stat { font-size:22px; }
 .hq-pace-detail .axis { font-size:15px; }
 .hq-pace-detail .endval { font-size:16px; }
+.hq-pace-detail .pace-meta { font-size:17px; }
+/* The phone version of the open chart and the milestone bars show only when the section is open (Steve,
+   2026-11-02: "it needs to be bigger when I open it"); a phone gets the tall chart, which keeps its words readable. */
+.hq-pace-tall, .pace-bars { display:none; }
+html:not(.hq-compact) .hq-pace-detail { display:none; }
+.hq-compact .hq-expanded[data-topic="on-pace"] .hq-section-body { overflow:auto; }
+.hq-compact .hq-expanded[data-topic="on-pace"] .pace-bars { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-top:12px; flex:none; }
+.hq-pace-tall .pace-stat { font-size:21px; }
+.hq-pace-tall .pace-meta { font-size:16px; }
+.hq-pace-tall .axis { font-size:15px; }
+.hq-pace-tall .endval { font-size:16px; }
+.hq-pace-chart .axis.ms.open { fill:#F3C744; }
+.pbar { background:#0B2558; border:1px solid #245291; border-radius:10px; padding:9px 12px; }
+.pbar.late { border-color:#ff6b6b; }
+.pbar-h { display:flex; justify-content:space-between; gap:8px; font-size:13px; }
+.pbar-h b { color:#F3F0E8; }
+.pbar-h span { color:#b9cbe8; font-size:12px; white-space:nowrap; }
+.pbar.late .pbar-h span { color:#ffb3b3; }
+.pbar-t { height:6px; background:rgba(2,27,76,.7); border-radius:99px; overflow:hidden; margin:7px 0 5px; }
+.pbar-t i { display:block; height:100%; background:#F3C744; }
+.pbar-n { font:11px 'Geist Mono',monospace; color:#8DAFDB; }
+@media(max-width:760px) {
+ .hq-compact .hq-expanded[data-topic="on-pace"] .hq-pace-detail { display:none; }
+ .hq-compact .hq-expanded[data-topic="on-pace"] .hq-pace-tall { display:block; }
+ /* Full width at its own height; the open section scrolls instead of shrinking the chart. */
+ .hq-compact .hq-expanded[data-topic="on-pace"] .hq-pace-chart { flex:none; height:auto; }
+ .hq-compact .hq-expanded[data-topic="on-pace"] svg.hq-pace-tall { width:100%; height:auto; }
+ .hq-compact .hq-expanded[data-topic="on-pace"] .hq-section-body { display:block; }
+}
 @media(max-width:1199px), (max-height:799px) {
  .hq-section[data-topic="on-pace"] .hq-pace-chart { height:220px; flex:none; }
  .hq-expanded[data-topic="on-pace"] .hq-pace-chart { height:auto; flex:1; }

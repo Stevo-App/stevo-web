@@ -1,14 +1,20 @@
 /* The chip rack: one poker chip per section in place of the KPI row. The 3D is drawn on one transparent
    canvas over the page; each chip is pinned to an invisible slot, so hover, focus and tap are plain DOM.
    Until the rack renders (no WebGL, offline, slow network) the KPI row stays exactly as it was. */
-.hq-rack { display:flex; align-items:flex-end; justify-content:center; gap:8px; overflow-x:auto; overflow-y:visible; padding:14px 4px 34px; margin:4px 0 6px; scrollbar-width:thin; position:relative; }
+.hq-rack { overflow-x:auto; overflow-y:hidden; padding:18px 2px 0; margin:6px 0 4px; position:relative; scrollbar-width:thin; }
 .hq-rack[hidden] { display:none; }
-.hq-slot { flex:none; width:92px; height:100px; position:relative; cursor:pointer; border-radius:10px; background:transparent; border:0; padding:0; font:inherit; color:inherit; }
+/* One long row of chips under the launch numbers (Steve, 2026-11-02), as many equal columns as there are chips;
+   a caption wraps to a second line in its own column instead of running into its neighbor. */
+.hq-rack-chips { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); column-gap:8px; }
+.hq-slot { justify-self:center; width:100%; max-width:130px; height:100px; margin-bottom:58px; position:relative; cursor:pointer; border-radius:10px; background:transparent; border:0; padding:0; font:inherit; color:inherit; }
 .hq-slot:focus-visible { outline:2px solid #e8bf62; outline-offset:2px; }
-.hq-slot.coin { width:128px; height:128px; }
-.hq-slot .cap { position:absolute; left:-6px; right:-6px; bottom:-30px; text-align:center; font:600 10.5px/1.25 'Geist',system-ui,sans-serif; color:#eef3fb; }
-.hq-slot .cap small { display:block; font-weight:500; color:#b9cbe8; font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.hq-slot .cap b { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:700; }
+/* The coin is the brand mark only, with no caption, at the left of the launch tiles (Steve, 2026-11-02). It is
+   drawn from its width (it is tilted, so it reads about half as tall), so the tiles keep their height. */
+.launch.has-coin { grid-template-columns:150px repeat(4,minmax(0,1fr)); }
+.launch .hq-slot.coin { width:150px; max-width:none; height:auto; min-height:90px; margin:0; align-self:stretch; }
+.hq-slot .cap { position:absolute; left:0; right:0; top:100%; margin-top:1px; text-align:center; font:600 11px/1.25 'Geist',system-ui,sans-serif; color:#eef3fb; }
+.hq-slot .cap small { font-weight:500; color:#b9cbe8; font-size:10.5px; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+.hq-slot .cap b { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; font-weight:700; }
 .hq-slot.late .cap small { color:#ffb3b3; }
 .hq-slot.due .cap small { color:#F3C744; }
 /* The compact stylesheet gives .kpis a display, which would beat the hidden attribute. */
@@ -28,4 +34,6 @@
 .hq-kpi-sheet .kh button { margin-left:auto; color:#eef3fb; background:#1a2a40; border:1px solid #526680; border-radius:5px; padding:6px 12px; cursor:pointer; font:inherit; }
 .hq-kpi-sheet .kpis { margin:0; }
 @media (prefers-reduced-motion:reduce) { .hq-chip-card { transition:none; } }
-@media (max-width:760px) { .hq-rack { justify-content:flex-start; padding-bottom:34px; } .hq-slot { width:80px; height:88px; } .hq-slot.coin { width:108px; height:108px; } }
+/* Narrower: the coin takes its own line above the tiles; on a phone the chip row scrolls sideways. */
+@media (max-width:900px) { .launch.has-coin { grid-template-columns:repeat(2,minmax(0,1fr)); } .launch .hq-slot.coin { grid-column:1 / -1; justify-self:center; width:120px; min-height:92px; } }
+@media (max-width:760px) { .hq-rack-chips { grid-auto-columns:92px; } .hq-slot { height:84px; } }

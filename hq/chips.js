@@ -3,14 +3,15 @@
    that section are waiting on Steve; the color is urgency (Steve, 2026-10-25): blue nothing waiting,
    gold something waiting on him, red overdue, late, behind pace or over a limit. Hover (or
    focus) floats the summary, a click flips the chip and presses the section's own Expand button, so the
-   panel that opens is the live one. The Stevo coin in the middle carries the first KPI tile (Opened today since
-   the 2026-11-01 release; App Review before it); clicking it shows the real KPI row. Every number here is read from the page, never rendered a second time.
+   panel that opens is the live one. The Stevo coin is the brand mark only, with no caption,
+   at the left of the launch numbers, and the chips run in one long row under them (Steve, 2026-11-02: "more of
+   a cosmetic visual"; it carried App Review, then Opened today); clicking it still shows the real KPI row. Every number here is read from the page, never rendered a second time.
    Three.js (UMD 0.158) is fetched from cdnjs; until it renders, the KPI row stays. */
 (function () {
   if (window.StevoChips) return;
   var THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.158.0/three.min.js';
   var URGENCY = ['#2b63d9', '#F3C744', '#ff6b6b']; // nothing waiting · waiting on Steve · overdue, late, behind or over
-  // Rack order, left to right, with the coin in the middle (after the sixth).
+  // Rack order, left to right.
   var ORDER = ['do-this-next', 'on-pace', 'the-road', 'team', 'app-health', 'testers-on-stevo', 'who-uses-what', 'odds-api-credits', 'money', 'vendors-orders', 'marketing-social', 'web-traffic-links', 'tools'];
   var AREAS = {'do-this-next': 'launch', 'on-pace': 'launch', 'the-road': 'launch', 'team': 'launch', 'app-health': 'product', 'testers-on-stevo': 'product', 'who-uses-what': 'product', 'odds-api-credits': 'product', 'money': 'finance', 'vendors-orders': 'finance', 'marketing-social': 'growth', 'web-traffic-links': 'growth', 'tools': 'launch'};
   var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -40,8 +41,9 @@
         break;
       case 'on-pace':
         m = text(q('.pace-stat')).match(/(\d+)\s*\/\s*(\d+)/); r.value = m ? m[1] + '/' + m[2] : clip(text(q('.pace-stat')), 9); r.label = 'tasks';
-        k = kpiByLabel(/launch plan/i); m = k ? text(k.querySelector('.ksub')).match(/behind by (\d+)/i) : null;
-        r.waiting = m ? +m[1] : 0; r.why = m ? 'behind the pace by ' + plural(+m[1], 'task') : (k ? text(k.querySelector('.ksub')) : '');
+        // Since 2026-11-02 the chart is the whole plan against its deadlines: what waits is the overdue tasks.
+        m = text(q('.pace-stat')).match(/(\d+) overdue/i);
+        r.waiting = m ? +m[1] : 0; r.why = m ? plural(+m[1], 'overdue task') : 'nothing overdue';
         break;
       case 'the-road':
         items = all('.tl-item'); late = all('.tl-item.late');
@@ -133,11 +135,14 @@
   var rack = null, card = null, rackShown = false, objects = [], renderer, scene, camera, raf = 0, running = false, t0 = 0;
   function makeSlot(info, isCoin) {
     var s = document.createElement('button'); s.type = 'button'; s.className = 'hq-slot' + (isCoin ? ' coin' : '') + (info.urgency === 2 ? ' late' : info.urgency === 1 ? ' due' : '');
-    s.dataset.slug = info.slug; s.setAttribute('aria-label', info.title + ': ' + (isCoin ? info.value : info.value + ' ' + info.label) + (info.why ? ', ' + info.why : '') + '. Opens the panel.');
-    var cap = document.createElement('span'); cap.className = 'cap';
-    var b = document.createElement('b'); b.textContent = isCoin ? info.label : info.title; cap.appendChild(b);
-    var small = document.createElement('small'); small.textContent = isCoin ? info.value + (info.sub ? ' · ' + info.sub : '') : info.sub; cap.appendChild(small);
-    s.appendChild(cap);
+    s.dataset.slug = info.slug;
+    s.setAttribute('aria-label', isCoin ? 'The Stevo coin. Opens today at a glance.' : info.title + ': ' + info.value + ' ' + info.label + (info.why ? ', ' + info.why : '') + '. Opens the panel.');
+    if (!isCoin) {
+      var cap = document.createElement('span'); cap.className = 'cap';
+      var b = document.createElement('b'); b.textContent = info.title; cap.appendChild(b);
+      var small = document.createElement('small'); small.textContent = info.sub; cap.appendChild(small);
+      s.appendChild(cap);
+    }
     s.addEventListener('mouseenter', function () { hover(s, true); }); s.addEventListener('mouseleave', function () { hover(s, false); });
     s.addEventListener('focus', function () { hover(s, true); }); s.addEventListener('blur', function () { hover(s, false); });
     s.addEventListener('click', function () { hideCard(); var o = objectFor(s); if (o && o.chips && !reduced) { o.flip = 0; o.flipping = true; setTimeout(function () { activate(info.slug); }, 600); } else activate(info.slug); });
@@ -238,9 +243,11 @@
     var rr = rack.getBoundingClientRect();
     objects.forEach(function (o) {
       var r = o.slot.getBoundingClientRect();
-      var vis = r.width > 0 && r.bottom > -40 && r.top < window.innerHeight + 40 && r.right > rr.left - 4 && r.left < rr.right + 4;
+      var vis = r.width > 0 && r.bottom > -40 && r.top < window.innerHeight + 40 && (o.coin || (r.right > rr.left - 4 && r.left < rr.right + 4));
       o.group.visible = vis; if (!vis) return;
-      var size = Math.min(r.width, r.height), rad = size * (o.coin ? 0.47 : 0.45);
+      // The coin is tilted, so it reads about half as tall as it is wide: its width sets its size, and it fits
+      // beside the launch tiles without making them taller.
+      var size = o.coin ? r.width : Math.min(r.width, r.height), rad = size * (o.coin ? 0.47 : 0.45);
       o.group.position.set(r.left + r.width / 2 - window.innerWidth / 2, window.innerHeight / 2 - (r.top + r.height / 2) - (o.coin ? 0 : size * 0.08), 0);
       o.group.scale.setScalar(rad);
       o.lift = o.lift === undefined ? 0 : o.lift + ((o.hover ? 1 : 0) - o.lift) * Math.min(1, dt * 10);
@@ -274,12 +281,23 @@
     var items = catalog(); if (!items.length) return false;
     rack = document.createElement('div'); rack.className = 'hq-rack'; rack.setAttribute('aria-label', 'The chip rack: one chip per section; the stack is what is waiting on you, red is overdue');
     card = document.createElement('div'); card.className = 'hq-chip-card'; card.setAttribute('role', 'status'); document.body.appendChild(card);
-    items.forEach(function (info, i) {
-      if (i === 6) { var ci = coinInfo(); var cs = makeSlot(ci, true); rack.appendChild(cs); var coin = makeCoin(); coin.slot = cs; scene.add(coin.group); objects.push(coin); }
-      var s = makeSlot(info, false); rack.appendChild(s); var o = chipStack(info); o.slot = s; scene.add(o.group); objects.push(o);
+    // The coin at the left of the launch numbers, the chips in one long row right under them (Steve,
+    // 2026-11-02: "put the spinning chip to the left of the KPI boxes ... and then have all the other chips
+    // just under that in a long row"). Without the launch row the coin leads the rack instead.
+    var ci = coinInfo(), cs = makeSlot(ci, true), coin = makeCoin(); coin.slot = cs; scene.add(coin.group); objects.push(coin);
+    var grid = document.createElement('div'); grid.className = 'hq-rack-chips'; rack.appendChild(grid);
+    items.forEach(function (info) {
+      var s = makeSlot(info, false); grid.appendChild(s); var o = chipStack(info); o.slot = s; scene.add(o.group); objects.push(o);
     });
-    kpis.parentNode.insertBefore(rack, kpis); kpis.hidden = true; rackShown = true;
-    if ('IntersectionObserver' in window) new IntersectionObserver(function (entries) { setRunning(entries[0].isIntersecting && !document.hidden); }, {rootMargin: '80px'}).observe(rack);
+    var launch = document.querySelector('.wrap > .launch'), note = document.querySelector('.wrap > .launch-note');
+    if (launch) { launch.insertBefore(cs, launch.firstChild); launch.classList.add('has-coin'); } else rack.insertBefore(cs, grid);
+    if (note) note.after(rack); else kpis.parentNode.insertBefore(rack, kpis);
+    kpis.hidden = true; rackShown = true;
+    if ('IntersectionObserver' in window) {
+      var seen = [false, false];
+      var io = new IntersectionObserver(function (entries) { entries.forEach(function (e) { seen[e.target === rack ? 0 : 1] = e.isIntersecting; }); setRunning((seen[0] || seen[1]) && !document.hidden); }, {rootMargin: '80px'});
+      io.observe(rack); io.observe(cs);
+    }
     else setRunning(true);
     document.addEventListener('visibilitychange', function () { setRunning(!document.hidden); });
     setRunning(true);
@@ -294,6 +312,6 @@
   }
   function start() { loadThree(function (ok) { if (ok) mount(); }); }
 
-  window.StevoChips = {catalog: catalog, read: read, coinInfo: coinInfo, activate: activate, mount: mount, refresh: refresh, shown: function () { return rackShown; }};
+  window.StevoChips = {catalog: catalog, read: read, coinInfo: coinInfo, slot: makeSlot, activate: activate, mount: mount, refresh: refresh, shown: function () { return rackShown; }};
   if (document.querySelector('.wrap > .kpis')) start();
 })();
